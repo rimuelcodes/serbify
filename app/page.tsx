@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Gamepad2 } from "lucide-react";
 import { FloatingNavbar } from "@/components/FloatingNavbar";
 import { FourActJourneyStage } from "@/components/FourActJourneyStage";
 import { HeroSection } from "@/components/HeroSection";
@@ -82,29 +81,10 @@ export default function HomePage() {
 
         <div id="landing-experience">
           <HeroSection persona={persona} />
-          <FourActJourneyStage />
+          <FourActJourneyStage onOpenDemo={handleReplayDemo} />
           <LandingSections persona={persona} setPersona={setPersona} />
         </div>
       </main>
-
-      <AnimatePresence>
-        {inLanding && (
-          <motion.button
-            type="button"
-            initial={{ opacity: 0, y: 18, scale: 0.92 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 14, scale: 0.92 }}
-            transition={{ duration: 0.25 }}
-            onClick={handleReplayDemo}
-            className="fixed bottom-5 right-5 z-40 inline-flex items-center gap-2.5 pl-2.5 pr-4 py-2 rounded-full bg-[#121726] hover:bg-[#1E2538] text-[#F7F5F0] text-xs font-bold border border-white/10 shadow-[0_14px_32px_rgba(28,25,23,0.22)] active:scale-95 transition-all cursor-pointer"
-          >
-            <span className="w-6 h-6 rounded-full bg-[#0660E4] text-white flex items-center justify-center shrink-0">
-              <Gamepad2 className="w-3.5 h-3.5" />
-            </span>
-            <span>Play Interactive Demo</span>
-          </motion.button>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
