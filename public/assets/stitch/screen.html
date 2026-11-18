@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"surface-container-high":"#dce9ff","on-secondary-fixed":"#1c0062","surface-variant":"#d3e4fe","tertiary-fixed-dim":"#ffb597","inverse-on-surface":"#eaf1ff","on-primary-container":"#e3e8ff","tertiary":"#853a15","secondary-fixed":"#e6deff","on-tertiary-fixed":"#360f00","on-secondary":"#ffffff","background":"#f8f9ff","error":"#ba1a1a","surface-container-lowest":"#ffffff","primary-fixed-dim":"#b1c5ff","surface-dim":"#cbdbf5","surface":"#f8f9ff","on-tertiary-fixed-variant":"#79310c","outline-variant":"#c2c6d7","primary-container":"#0660e4","surface-container-highest":"#d3e4fe","on-tertiary-container":"#ffe3d9","tertiary-fixed":"#ffdbcd","primary-fixed":"#dae2ff","outline":"#737786","tertiary-container":"#a4512b","on-error":"#ffffff","on-surface":"#0b1c30","inverse-primary":"#b1c5ff","surface-bright":"#f8f9ff","surface-container-low":"#eff4ff","on-tertiary":"#ffffff","secondary-fixed-dim":"#cabeff","on-secondary-fixed-variant":"#4918c8","on-background":"#0b1c30","surface-container":"#e5eeff","surface-tint":"#0056d0","inverse-surface":"#213145","secondary-container":"#7857f8","on-primary":"#ffffff","on-primary-fixed":"#001847","on-error-container":"#93000a","secondary":"#5f3add","error-container":"#ffdad6","primary":"#004ab4","on-surface-variant":"#424654","on-primary-fixed-variant":"#0040a0","on-secondary-container":"#fffbff"},borderRadius:{DEFAULT:"1rem",lg:"2rem",xl:"3rem",full:"9999px"},spacing:{"gutter-mobile":"1rem","space-lg":"1.5rem","space-xl":"2.5rem",margin:"2.5rem","space-md":"1rem","space-xs":"0.25rem","space-sm":"0.5rem",gutter:"1.5rem","margin-mobile":"1.25rem"},fontFamily:{"body-sm":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"label-numeric":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"],"label-lg":["Plus Jakarta Sans"],"display-hero":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"display-hero-mobile":["Plus Jakarta Sans"],"label-md":["Plus Jakarta Sans"]},fontSize:{"body-sm":["13px",{lineHeight:"20px",letterSpacing:"0em",fontWeight:"400"}],"body-lg":["18px",{lineHeight:"28px",letterSpacing:"-0.01em",fontWeight:"400"}],"headline-lg":["36px",{lineHeight:"44px",letterSpacing:"-0.025em",fontWeight:"700"}],"headline-sm":["20px",{lineHeight:"28px",letterSpacing:"-0.015em",fontWeight:"600"}],"label-numeric":["14px",{lineHeight:"18px",letterSpacing:"-0.01em",fontWeight:"700"}],"headline-md":["24px",{lineHeight:"32px",letterSpacing:"-0.02em",fontWeight:"600"}],"headline-lg-mobile":["28px",{lineHeight:"34px",letterSpacing:"-0.02em",fontWeight:"700"}],"label-lg":["14px",{lineHeight:"20px",letterSpacing:"0.01em",fontWeight:"600"}],"display-hero":["56px",{lineHeight:"64px",letterSpacing:"-0.03em",fontWeight:"800"}],"body-md":["15px",{lineHeight:"24px",letterSpacing:"0em",fontWeight:"400"}],"display-hero-mobile":["38px",{lineHeight:"44px",letterSpacing:"-0.03em",fontWeight:"800"}],"label-md":["12px",{lineHeight:"16px",letterSpacing:"0.02em",fontWeight:"600"}]}}}}</script></head><body class="bg-background font-body-md text-on-surface antialiased selection:bg-primary selection:text-on-primary"><header class="fixed top-0 inset-x-0 z-50 flex items-center justify-center p-space-sm md:p-space-md pointer-events-none"><div class="h-20 w-full max-w-7xl mx-auto flex items-center justify-between px-space-md py-space-sm bg-surface-container-lowest/80 backdrop-blur-xl rounded-full shadow-[0_1px_8px_rgba(0,0,0,0.04)] pointer-events-auto"><div class="flex items-center gap-space-lg"><a class="flex items-center gap-space-xs text-primary font-headline-md font-bold tracking-tight" data-path="landing-page" href="#"><span class="material-symbols-outlined text-primary text-[28px]">verified_user</span><span>Serbify</span></a><div class="hidden lg:flex items-center p-space-xs bg-surface-container-low rounded-full"><button class="px-space-md py-space-xs rounded-full bg-surface-container-lowest text-on-surface font-label-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] transition-all" type="button">Client</button><button class="px-space-md py-space-xs rounded-full text-on-surface-variant hover:text-on-surface font-label-md transition-colors" type="button">Pro Partner</button></div></div><nav class="hidden md:flex items-center gap-space-lg" data-active-classes="text-primary font-bold"><a class="font-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="explore-services" href="#">Services</a><a class="font-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="verified-pros" href="#">Verified Pros</a><a class="font-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="trust-and-safety" href="#">Trust &amp; Safety</a><a class="font-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="enterprise-hub" href="#">Enterprise</a></nav><div class="flex items-center gap-space-sm"><div class="hidden sm:flex items-center gap-space-xs px-space-sm py-space-xs bg-surface-container-low rounded-full"><button class="px-space-xs py-0.5 rounded-full font-label-md text-primary font-bold" type="button">EN</button><span class="text-on-surface-variant font-label-md">/</span><button class="px-space-xs py-0.5 rounded-full font-label-md text-on-surface-variant hover:text-on-surface transition-colors" type="button">ES</button></div><a class="hidden sm:inline-flex items-center px-space-md py-space-sm font-label-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="web-portal" href="#">Web App</a><a class="inline-flex items-center justify-center px-space-lg py-space-sm rounded-full bg-primary-container text-on-primary font-label-lg hover:bg-primary transition-colors shadow-[0_1px_8px_rgba(0,0,0,0.04)]" data-path="download-app" href="#">Download App</a><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ml-space-xs"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="w-full pt-20 bg-background"><div class="flex flex-col w-full font-body-md text-on-surface antialiased">
+<!-- ========================================== -->
+<!-- 1. HERO SECTION (Split Editorial + Flutter Showcase) -->
+<!-- ========================================== -->
+<section class="relative w-full max-w-7xl mx-auto px-margin-mobile md:px-margin pt-space-md pb-space-xl overflow-hidden">
+<!-- Ambient mesh background glows -->
+<div class="absolute -top-32 left-1/4 w-96 h-96 bg-primary-container/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<div class="absolute top-1/2 right-10 w-80 h-80 bg-secondary-container/10 rounded-full blur-3xl pointer-events-none -z-10"></div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg lg:gap-space-xl items-center">
+<!-- Left Column: Editorial & Value Prop -->
+<div class="lg:col-span-7 flex flex-col gap-space-md z-10">
+<!-- Live Radar Pill -->
+<div class="inline-flex items-center gap-space-sm px-space-md py-1.5 rounded-full bg-surface-container-high w-fit shadow-sm">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-primary-container"></span>
+</span>
+<span class="font-label-md text-primary font-bold tracking-tight">Live across Metro Manila &amp; Expanding Nationwide</span>
+</div>
+<!-- Display Headline -->
+<h1 class="font-display-hero text-display-hero-mobile md:text-display-hero text-on-surface leading-tight tracking-tight">
+          Verified Local Pros,<br class="hidden sm:inline"/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-container via-primary to-secondary-container">Dispatched on Demand.</span>
+</h1>
+<!-- Subheadline -->
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">
+          Book trusted locksmiths, plumbers, electricians, and aircon technicians in minutes. Upfront pricing, Philippine PSGC address pinning, and live GPS radar tracking.
+        </p>
+<!-- Dual CTA Cluster -->
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-space-sm pt-space-xs">
+<a class="inline-flex items-center justify-center gap-space-xs px-space-xl py-3.5 rounded-full bg-primary-container text-on-primary font-label-lg shadow-lg hover:shadow-primary-container/30 hover:-translate-y-0.5 active:translate-y-0 transition-all duration-200" href="#book-flow">
+<span>Book a Pro Now</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</a>
+<a class="inline-flex items-center justify-center gap-space-xs px-space-xl py-3.5 rounded-full bg-surface-container-lowest text-on-surface font-label-lg shadow-sm hover:bg-surface-container-low transition-all duration-200" href="#pro-onboarding">
+<span class="material-symbols-outlined text-primary text-[20px]">badge</span>
+<span>Join as a Verified Pro</span>
+</a>
+</div>
+<!-- Trust Micro-bar -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm pt-space-md">
+<div class="flex items-center gap-space-xs p-space-sm rounded-DEFAULT bg-surface-container-low">
+<span class="material-symbols-outlined text-[#10B981] text-[20px]">verified</span>
+<span class="font-label-md text-on-surface">Gov't ID + 3D Liveness</span>
+</div>
+<div class="flex items-center gap-space-xs p-space-sm rounded-DEFAULT bg-surface-container-low">
+<span class="material-symbols-outlined text-primary-container text-[20px]">account_balance_wallet</span>
+<span class="font-label-md text-on-surface">GCash, Maya, PayMongo</span>
+</div>
+<div class="flex items-center gap-space-xs p-space-sm rounded-DEFAULT bg-surface-container-low">
+<span class="material-symbols-outlined text-[#F59E0B] text-[20px]">star</span>
+<span class="font-label-md text-on-surface">4.9★ (24,800+ Jobs)</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Tactile Flutter Mockup Cluster -->
+<div class="lg:col-span-5 relative flex items-center justify-center pt-space-lg lg:pt-0">
+<!-- Ambient decorative pulse -->
+<div class="absolute w-72 h-72 rounded-full border border-primary-container/20 animate-ping pointer-events-none opacity-40"></div>
+<div class="absolute w-96 h-96 rounded-full border border-primary-container/10 pointer-events-none"></div>
+<!-- iPhone 16 Stylized Frame -->
+<div class="relative w-[320px] sm:w-[350px] h-[660px] bg-slate-900 rounded-[44px] p-3 shadow-2xl ring-1 ring-slate-800 flex flex-col justify-between overflow-hidden">
+<!-- Dynamic Island Notch -->
+<div class="absolute top-4 left-1/2 -translate-x-1/2 w-28 h-6 bg-black rounded-full z-30 flex items-center justify-between px-3">
+<span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+<span class="text-[9px] text-white/70 font-mono">SERBIFY LIVE</span>
+</div>
+<!-- Screen Inner Container -->
+<div class="relative w-full h-full bg-[#E5EEFF] rounded-[36px] overflow-hidden flex flex-col justify-between pt-10">
+<!-- Map Canvas Simulation (Metro Manila Grid & Waterways) -->
+<div class="absolute inset-0 bg-[#eaf1ff]">
+<!-- Stylized Vector Map Roads -->
+<svg class="w-full h-full opacity-60" fill="none" viewbox="0 0 350 660" xmlns="http://www.w3.org/2000/svg">
+<!-- Pasig River Simulation -->
+<path d="M-20 280 C60 270, 140 330, 220 300 C270 280, 310 290, 380 270" fill="none" stroke="#b1c5ff" stroke-linecap="round" stroke-width="24"></path>
+<!-- Major Corridors: EDSA, C5, Ortigas -->
+<path d="M40 -10 L180 320 L290 680" stroke="#ffffff" stroke-linecap="round" stroke-width="8"></path>
+<path d="M-10 180 L360 210" stroke="#ffffff" stroke-width="6"></path>
+<path d="M0 430 L360 400" stroke="#ffffff" stroke-width="6"></path>
+<path d="M120 0 L260 670" stroke="#dce9ff" stroke-width="4"></path>
+<circle cx="185" cy="275" opacity="0.4" r="90" stroke="#0660e4" stroke-dasharray="4 4" stroke-width="1.5"></circle>
+<circle cx="185" cy="275" opacity="0.2" r="140" stroke="#0660e4" stroke-dasharray="6 6" stroke-width="1.5"></circle>
+</svg>
+<!-- Radar Concentric Pulse from Pin Drop -->
+<div class="absolute top-[255px] left-[165px] -translate-x-1/2 -translate-y-1/2">
+<div class="relative flex items-center justify-center">
+<div class="absolute h-28 w-28 rounded-full bg-primary-container/20 animate-ping"></div>
+<div class="absolute h-14 w-14 rounded-full bg-primary-container/30"></div>
+<div class="relative h-6 w-6 rounded-full bg-primary-container text-white flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-[14px]">home_pin</span>
+</div>
+</div>
+</div>
+<!-- Map Overlay Markers: Active Pros -->
+<div class="absolute top-[180px] left-[70px] bg-surface-container-lowest px-2 py-1 rounded-full shadow-md flex items-center gap-1.5 animate-bounce" style="animation-duration: 3s;">
+<div class="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold">KA</div>
+<div class="flex flex-col">
+<span class="text-[10px] font-bold leading-tight">Kuya Arnel</span>
+<span class="text-[8px] text-[#10B981] font-semibold flex items-center"><span class="material-symbols-outlined text-[10px]">check_circle</span> Plumber 4.9★</span>
+</div>
+</div>
+<div class="absolute top-[310px] right-[40px] bg-surface-container-lowest px-2 py-1 rounded-full shadow-md flex items-center gap-1.5">
+<div class="w-5 h-5 rounded-full bg-secondary-container text-white flex items-center justify-center text-[10px] font-bold">KD</div>
+<div class="flex flex-col">
+<span class="text-[10px] font-bold leading-tight">Kuya Dennis</span>
+<span class="text-[8px] text-[#10B981] font-semibold flex items-center"><span class="material-symbols-outlined text-[10px]">check_circle</span> Locksmith 5.0★</span>
+</div>
+</div>
+</div>
+<!-- Top In-App Status Bar -->
+<div class="relative z-10 px-4 py-2 flex items-center justify-between">
+<div class="bg-surface-container-lowest/90 backdrop-blur-md px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5">
+<img alt="Serbify" class="w-4 h-4 object-contain rounded-full" src="https://lh3.googleusercontent.com/aida/ALJJyrAODQXWXbLpUcy1oV6-S6q9yfYdH6-6GiHmIiAni0WJd5LnoolLqdYf1mJ7yPIOKNPPppVUV3A2I3GKy11GmGdos7TpVBwcZgc1OafwJgXFv3djf8jYhgxzZCrx3g54gN_ZLCoOHQ7-1VJH316XjCg3csE5q-AQZjTjUHSMeAP5Hhk1YAJrG9afiM2nVxhGRT0xDrM0bzZNaYYnj2fmDwAazPg-Bajm64XSAGTspXP1"/>
+<span class="text-[11px] font-bold text-primary">Barangay San Antonio, Pasig</span>
+</div>
+<div class="w-7 h-7 rounded-full bg-surface-container-lowest/90 backdrop-blur-md flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-on-surface text-[16px]">tune</span>
+</div>
+</div>
+<!-- In-App Draggable Bottom Sheet -->
+<div class="relative z-20 m-2 p-3 bg-surface-container-lowest/95 backdrop-blur-xl rounded-[28px] shadow-xl flex flex-col gap-2.5">
+<div class="w-8 h-1 bg-outline-variant/60 rounded-full mx-auto"></div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="relative">
+<div class="w-10 h-10 rounded-full bg-primary-container text-white flex items-center justify-center font-bold text-sm">
+                      AR
+                    </div>
+<span class="absolute bottom-0 right-0 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-white"></span>
+</div>
+<div>
+<h2 class="text-xs font-bold leading-tight">Arnel Mendoza</h2>
+<p class="text-[10px] text-on-surface-variant">Master Plumber • 830+ completed</p>
+</div>
+</div>
+<div class="text-right">
+<span class="text-[11px] font-bold text-primary">₱350 est.</span>
+<p class="text-[9px] text-[#10B981] font-semibold">GCash Protected</p>
+</div>
+</div>
+<!-- ETA Progress Strip -->
+<div class="bg-surface-container-low p-2 rounded-xl flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">near_me</span>
+<div class="flex flex-col">
+<span class="text-[10px] font-bold">Arriving in 18 mins</span>
+<span class="text-[8px] text-on-surface-variant">Via Shaw Blvd Corridor</span>
+</div>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-bold">En Route</span>
+</div>
+<!-- Action Bar inside Sheet -->
+<div class="grid grid-cols-2 gap-2">
+<button class="py-2 rounded-full bg-surface-container text-on-surface text-[11px] font-bold flex items-center justify-center gap-1" type="button">
+<span class="material-symbols-outlined text-[14px]">call</span> Masked Call
+                </button>
+<button class="py-2 rounded-full bg-primary-container text-white text-[11px] font-bold flex items-center justify-center gap-1 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[14px]">chat</span> In-App Chat
+                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Overlapping Satellite Pill 1: WebSocket Chat Notification -->
+<div class="absolute -bottom-4 -left-4 sm:-left-8 bg-surface-container-lowest p-3 rounded-2xl shadow-xl max-w-[260px] z-30 hidden sm:flex items-start gap-2.5">
+<div class="w-8 h-8 rounded-full bg-[#10B981]/15 text-[#10B981] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">forum</span>
+</div>
+<div class="flex flex-col gap-0.5">
+<div class="flex items-center justify-between gap-2">
+<span class="text-[11px] font-bold text-on-surface">Kuya Arnel</span>
+<span class="text-[9px] text-on-surface-variant">Just now</span>
+</div>
+<p class="text-[11px] text-on-surface-variant leading-tight">“Otw na po ma'am, malapit na sa kanto.”</p>
+</div>
+</div>
+<!-- Overlapping Satellite Pill 2: Real-time Dispatch Pulse -->
+<div class="absolute top-16 -right-2 sm:-right-6 bg-surface-container-lowest px-3 py-2 rounded-full shadow-lg z-30 hidden sm:flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#10B981] opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-[#10B981]"></span>
+</span>
+<span class="text-[11px] font-bold text-on-surface">Radar Ping • 9 Pros Near You</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================== -->
+<!-- 2. DUAL-PERSONA INTERACTIVE BENTO GRID -->
+<!-- ========================================== -->
+<section class="w-full max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-xl">
+<!-- Section Title & Segmented Control -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md mb-space-lg">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-md text-primary font-bold uppercase tracking-wider">Dual Sided Ecosystem</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface tracking-tight">
+          One Seamless Infrastructure.<br/>Two Tailored Experiences.
+        </h2>
+</div>
+<!-- Segmented Persona Switcher -->
+<div class="inline-flex p-1.5 bg-surface-container rounded-full shadow-inner self-start md:self-auto">
+<button class="px-space-md py-2 rounded-full font-label-md transition-all duration-200 bg-surface-container-lowest text-on-surface shadow-sm font-bold" id="tab-client" onclick="switchPersona('client')" type="button">
+          Client Experience (Book in Seconds)
+        </button>
+<button class="px-space-md py-2 rounded-full font-label-md transition-all duration-200 text-on-surface-variant hover:text-on-surface" id="tab-pro" onclick="switchPersona('pro')" type="button">
+          Pro Experience (Earn Daily)
+        </button>
+</div>
+</div>
+<!-- Bento Grid Container -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-space-md">
+<!-- Bento 1: Large Span 8-col (PSGC Pinning & On-Demand Radar) -->
+<div class="md:col-span-8 bg-surface-container-lowest p-space-lg rounded-lg shadow-sm hover:shadow-md transition-all flex flex-col justify-between overflow-hidden relative group" id="bento-card-radar">
+<div class="flex flex-col gap-space-xs z-10 max-w-lg">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container w-fit text-primary font-label-md">
+<span class="material-symbols-outlined text-[16px]">pin_drop</span>
+<span id="bento-1-tag">PSGC Philippine Standard Pinning</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface tracking-tight" id="bento-1-title">
+            Micro-Accurate Barangay Geolocation
+          </h3>
+<p class="font-body-md text-on-surface-variant" id="bento-1-desc">
+            No more typing confusing compound landmarks. Pin directly through PSA Philippine Standard Geographic Codes down to Barangay Puroks, matched with instant live GPS tracking.
+          </p>
+</div>
+<!-- Visual Asset inside Bento 1 -->
+<div class="mt-space-lg p-space-md bg-surface-container-low rounded-DEFAULT flex flex-col sm:flex-row items-center justify-between gap-space-md z-10">
+<div class="flex items-center gap-space-sm w-full sm:w-auto">
+<div class="w-12 h-12 rounded-full bg-primary-container text-white flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[24px]">navigation</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-lg text-on-surface">Barangay Kapitolyo, Pasig City</span>
+<span class="font-body-sm text-on-surface-variant">Region IV-A / NCR Corridor • ETA 14 mins</span>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-space-md py-1.5 rounded-full bg-[#10B981]/15 text-[#065F46] font-label-md flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">sensors</span> Pro Radar Active
+            </span>
+</div>
+</div>
+<div class="absolute -right-8 -bottom-8 w-64 h-64 bg-primary-container/5 rounded-full blur-2xl pointer-events-none"></div>
+</div>
+<!-- Bento 2: 4-col (Violet Accent: Competitive Bids) -->
+<div class="md:col-span-4 bg-surface-container-lowest p-space-lg rounded-lg shadow-sm hover:shadow-md transition-all flex flex-col justify-between relative overflow-hidden" id="bento-card-bids">
+<div class="flex flex-col gap-space-xs z-10">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary-container/10 text-secondary font-label-md w-fit">
+<span class="material-symbols-outlined text-[16px]">gavel</span>
+<span id="bento-2-tag">Transparent Custom Bids</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface tracking-tight" id="bento-2-title">
+            Fair Market Bidding
+          </h3>
+<p class="font-body-sm text-on-surface-variant" id="bento-2-desc">
+            For complex multi-day projects, receive itemized proposals from 3+ licensed tradesmen. No hidden fees.
+          </p>
+</div>
+<!-- Mini Quotation Stack -->
+<div class="flex flex-col gap-2 mt-space-md z-10">
+<div class="p-2.5 rounded-DEFAULT bg-surface-container-low flex items-center justify-between hover:bg-surface-container-high transition-colors">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-secondary text-white text-[10px] font-bold flex items-center justify-center">JB</div>
+<span class="font-label-md text-on-surface">Jun B. (Electrician)</span>
+</div>
+<span class="font-label-numeric text-primary-container">₱1,200</span>
+</div>
+<div class="p-2.5 rounded-DEFAULT bg-surface-container-low flex items-center justify-between ring-1 ring-secondary-container/30">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary text-white text-[10px] font-bold flex items-center justify-center">RC</div>
+<span class="font-label-md text-on-surface">Ramil C. (Master Pro)</span>
+</div>
+<span class="font-label-numeric text-secondary font-bold">₱1,450 (Recommended)</span>
+</div>
+</div>
+</div>
+<!-- Bento 3: 4-col (Encrypted Chat & Privacy Masking) -->
+<div class="md:col-span-4 bg-surface-container-lowest p-space-lg rounded-lg shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+<div class="flex flex-col gap-space-xs">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container text-primary font-label-md w-fit">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+<span>Masked Privacy</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface tracking-tight">
+            In-App Voice &amp; Chat
+          </h3>
+<p class="font-body-sm text-on-surface-variant">
+            Zero personal cellphone sharing. WebRTC and WebSocket rails route all calls and media through encrypted virtual relays.
+          </p>
+</div>
+<div class="mt-space-md p-space-sm bg-surface-container-low rounded-DEFAULT flex flex-col gap-2">
+<div class="flex items-center justify-between text-xs font-label-md text-on-surface-variant">
+<span>Encrypted Session #9021</span>
+<span class="text-[#10B981] flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-[#10B981]"></span> Live</span>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-md text-[12px] text-on-surface shadow-xs">
+            “Location confirmed po. Bringing the 1.5HP condenser valve.”
+          </div>
+</div>
+</div>
+<!-- Bento 4: Large Span 8-col (Gov't KYC & Verification Standard) -->
+<div class="md:col-span-8 bg-surface-container-lowest p-space-lg rounded-lg shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+<div class="flex flex-col gap-space-xs max-w-xl">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#ECFDF5] text-[#065F46] font-label-md w-fit">
+<span class="material-symbols-outlined text-[16px] text-[#10B981]">security</span>
+<span>Institutional Trust Pipeline</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface tracking-tight">
+            PhilSys, UMID, NBI &amp; 3D Facial Liveness
+          </h3>
+<p class="font-body-md text-on-surface-variant">
+            Every technician entering your home is vetted through our 4-point verification matrix before their account receives job dispatches.
+          </p>
+</div>
+<!-- 4-Step Verification Matrix Graphic -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-space-xs mt-space-md">
+<div class="p-3 rounded-DEFAULT bg-surface-container-low flex flex-col gap-1 items-start">
+<div class="w-7 h-7 rounded-full bg-[#10B981]/20 text-[#065F46] flex items-center justify-center font-bold text-xs">
+<span class="material-symbols-outlined text-[16px]">id_card</span>
+</div>
+<span class="font-label-md text-on-surface pt-1">1. Gov't ID</span>
+<span class="text-[11px] text-on-surface-variant leading-tight">PhilSys / UMID / Driver's License</span>
+</div>
+<div class="p-3 rounded-DEFAULT bg-surface-container-low flex flex-col gap-1 items-start">
+<div class="w-7 h-7 rounded-full bg-[#10B981]/20 text-[#065F46] flex items-center justify-center font-bold text-xs">
+<span class="material-symbols-outlined text-[16px]">face</span>
+</div>
+<span class="font-label-md text-on-surface pt-1">2. 3D Liveness</span>
+<span class="text-[11px] text-on-surface-variant leading-tight">Biometric anti-spoof selfie match</span>
+</div>
+<div class="p-3 rounded-DEFAULT bg-surface-container-low flex flex-col gap-1 items-start">
+<div class="w-7 h-7 rounded-full bg-[#10B981]/20 text-[#065F46] flex items-center justify-center font-bold text-xs">
+<span class="material-symbols-outlined text-[16px]">policy</span>
+</div>
+<span class="font-label-md text-on-surface pt-1">3. NBI Clearance</span>
+<span class="text-[11px] text-on-surface-variant leading-tight">Criminal registry background clearance</span>
+</div>
+<div class="p-3 rounded-DEFAULT bg-surface-container-low flex flex-col gap-1 items-start">
+<div class="w-7 h-7 rounded-full bg-[#10B981]/20 text-[#065F46] flex items-center justify-center font-bold text-xs">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+</div>
+<span class="font-label-md text-on-surface pt-1">4. Skill Cert</span>
+<span class="text-[11px] text-on-surface-variant leading-tight">TESDA NC-II or trade references</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================== -->
+<!-- 3. SERVICE CATEGORIES HORIZONTAL SHOWCASE -->
+<!-- ========================================== -->
+<section class="w-full max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-xl">
+<div class="flex flex-col gap-space-xs mb-space-lg">
+<span class="font-label-md text-primary font-bold uppercase tracking-wider">Everyday &amp; Emergency Services</span>
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-sm">
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface tracking-tight">
+          Everything your home or business needs.
+        </h2>
+<span class="font-body-md text-on-surface-variant">Average technician arrival: under 24 minutes</span>
+</div>
+</div>
+<!-- 5 Category Cards Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-space-md">
+<!-- Card 1: Locksmith -->
+<div class="group bg-surface-container-lowest p-space-md rounded-lg shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="w-12 h-12 rounded-full bg-[#EE8B60]/15 text-[#853a15] flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">key</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-[#EE8B60]/20 text-[#853a15] font-label-md font-bold text-[11px]">
+              Emergency
+            </span>
+</div>
+<div class="flex flex-col gap-1">
+<h4 class="font-headline-sm text-on-surface group-hover:text-primary transition-colors">Locksmith Services</h4>
+<p class="font-body-sm text-on-surface-variant">Lockouts, master duplicate keys, smart digital lock installation.</p>
+</div>
+</div>
+<div class="pt-space-md mt-space-md flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-on-surface-variant">From</span>
+<span class="font-label-numeric text-primary text-base">₱800</span>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">timer</span> &lt; 20 mins</span>
+<span class="font-bold text-primary flex items-center gap-0.5 group-hover:translate-x-1 transition-transform">
+              Book <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</span>
+</div>
+</div>
+</div>
+<!-- Card 2: Plumbing -->
+<div class="group bg-surface-container-lowest p-space-md rounded-lg shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="w-12 h-12 rounded-full bg-primary-container/15 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">plumbing</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-md text-[11px]">
+              Fast Dispatch
+            </span>
+</div>
+<div class="flex flex-col gap-1">
+<h4 class="font-headline-sm text-on-surface group-hover:text-primary transition-colors">Plumbing &amp; Leaks</h4>
+<p class="font-body-sm text-on-surface-variant">Burst pipes, clogged drains, toilet seals, and water heater repairs.</p>
+</div>
+</div>
+<div class="pt-space-md mt-space-md flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-on-surface-variant">From</span>
+<span class="font-label-numeric text-primary text-base">₱350</span>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">timer</span> &lt; 25 mins</span>
+<span class="font-bold text-primary flex items-center gap-0.5 group-hover:translate-x-1 transition-transform">
+              Book <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</span>
+</div>
+</div>
+</div>
+<!-- Card 3: Electrical -->
+<div class="group bg-surface-container-lowest p-space-md rounded-lg shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="w-12 h-12 rounded-full bg-secondary-container/15 text-secondary flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">bolt</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-secondary-container/10 text-secondary font-label-md text-[11px]">
+              Certified
+            </span>
+</div>
+<div class="flex flex-col gap-1">
+<h4 class="font-headline-sm text-on-surface group-hover:text-primary transition-colors">Electrical Repairs</h4>
+<p class="font-body-sm text-on-surface-variant">Breaker trips, fixture rewiring, ceiling fan mounts, diagnostics.</p>
+</div>
+</div>
+<div class="pt-space-md mt-space-md flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-on-surface-variant">From</span>
+<span class="font-label-numeric text-primary text-base">₱400</span>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">timer</span> &lt; 30 mins</span>
+<span class="font-bold text-primary flex items-center gap-0.5 group-hover:translate-x-1 transition-transform">
+              Book <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</span>
+</div>
+</div>
+</div>
+<!-- Card 4: Aircon & Appliances -->
+<div class="group bg-surface-container-lowest p-space-md rounded-lg shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="w-12 h-12 rounded-full bg-[#10B981]/15 text-[#065F46] flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">mode_fan</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-[#10B981]/20 text-[#065F46] font-label-md font-bold text-[11px]">
+              Popular
+            </span>
+</div>
+<div class="flex flex-col gap-1">
+<h4 class="font-headline-sm text-on-surface group-hover:text-primary transition-colors">Aircon Cleaning</h4>
+<p class="font-body-sm text-on-surface-variant">Inverter deep chemical wash, Freon recharge, leak troubleshooting.</p>
+</div>
+</div>
+<div class="pt-space-md mt-space-md flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-on-surface-variant">From</span>
+<span class="font-label-numeric text-primary text-base">₱550</span>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">timer</span> Same Day</span>
+<span class="font-bold text-primary flex items-center gap-0.5 group-hover:translate-x-1 transition-transform">
+              Book <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</span>
+</div>
+</div>
+</div>
+<!-- Card 5: House Cleaning -->
+<div class="group bg-surface-container-lowest p-space-md rounded-lg shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="w-12 h-12 rounded-full bg-primary-container/15 text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">cleaning_services</span>
+</div>
+<span class="px-2.5 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-md text-[11px]">
+              Top Rated
+            </span>
+</div>
+<div class="flex flex-col gap-1">
+<h4 class="font-headline-sm text-on-surface group-hover:text-primary transition-colors">Deep Cleaning</h4>
+<p class="font-body-sm text-on-surface-variant">Post-construction, condo turnover disinfection, upholstery steam.</p>
+</div>
+</div>
+<div class="pt-space-md mt-space-md flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-on-surface-variant">From</span>
+<span class="font-label-numeric text-primary text-base">₱300</span>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-variant">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">timer</span> &lt; 45 mins</span>
+<span class="font-bold text-primary flex items-center gap-0.5 group-hover:translate-x-1 transition-transform">
+              Book <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================== -->
+<!-- 4. DRAMATIC DARK MODE SECTION (Fintech & Escrow) -->
+<!-- ========================================== -->
+<section class="w-full bg-[#0F172A] text-white py-space-xl mt-space-lg">
+<div class="max-w-7xl mx-auto px-margin-mobile md:px-margin flex flex-col gap-space-xl">
+<!-- Section Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-space-md">
+<div class="flex flex-col gap-space-xs max-w-2xl">
+<span class="font-label-md text-primary-fixed-dim font-bold uppercase tracking-wider">Automated Philippine Escrow Rails</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg tracking-tight text-white">
+            Zero Surprise Charges. Escrow Protected.
+          </h2>
+<p class="font-body-lg text-slate-300">
+            Funds are never sent directly to technician pockets in advance. Your deposit is safeguarded in escrow and disbursed only after your 100% digital sign-off.
+          </p>
+</div>
+<div class="p-space-sm bg-[#1E293B] rounded-DEFAULT flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+<span class="material-symbols-outlined text-[22px]">verified_user</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-white">100% Serbify Guarantee</span>
+<span class="text-[11px] text-slate-400">₱10,000 Property Protection Included</span>
+</div>
+</div>
+</div>
+<!-- 3-Step Interactive Timeline -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Step 1 -->
+<div class="bg-[#1E293B] p-space-lg rounded-lg flex flex-col justify-between gap-space-md hover:bg-[#25334d] transition-all">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-headline-lg text-[#0660e4] font-extrabold">01</span>
+<span class="material-symbols-outlined text-slate-400 text-[24px]">location_on</span>
+</div>
+<h4 class="font-headline-sm text-white">Pin PSGC &amp; Scope Need</h4>
+<p class="font-body-sm text-slate-300">
+              Select your exact Barangay. State whether you require emergency immediate dispatch or a future scheduled appointment.
+            </p>
+</div>
+<div class="text-[11px] text-slate-400 bg-[#0F172A] p-2.5 rounded-DEFAULT font-mono">
+            &gt; PSGC: 137404000 (Pasig) Verified
+          </div>
+</div>
+<!-- Step 2 -->
+<div class="bg-[#1E293B] p-space-lg rounded-lg flex flex-col justify-between gap-space-md hover:bg-[#25334d] transition-all">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-headline-lg text-[#7C5CFC] font-extrabold">02</span>
+<span class="material-symbols-outlined text-slate-400 text-[24px]">receipt_long</span>
+</div>
+<h4 class="font-headline-sm text-white">Review Upfront Quotes</h4>
+<p class="font-body-sm text-slate-300">
+              Clear itemized pricing matrices prevent on-site haggling. Compare technician badges, past job ratings, and verified reviews.
+            </p>
+</div>
+<div class="text-[11px] text-slate-400 bg-[#0F172A] p-2.5 rounded-DEFAULT font-mono">
+            &gt; Locked Quote: ₱450.00 Fixed
+          </div>
+</div>
+<!-- Step 3 -->
+<div class="bg-[#1E293B] p-space-lg rounded-lg flex flex-col justify-between gap-space-md hover:bg-[#25334d] transition-all">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<span class="font-headline-lg text-emerald-400 font-extrabold">03</span>
+<span class="material-symbols-outlined text-slate-400 text-[24px]">lock_clock</span>
+</div>
+<h4 class="font-headline-sm text-white">Inspect, Approve &amp; Release</h4>
+<p class="font-body-sm text-slate-300">
+              Technician arrives via live GPS. Inspect the completed repair, snap a before-and-after photo, and tap to disburse escrow.
+            </p>
+</div>
+<div class="text-[11px] text-emerald-400 bg-[#0F172A] p-2.5 rounded-DEFAULT font-mono flex items-center justify-between">
+<span>&gt; Escrow Auto-Release: Approved</span>
+<span class="material-symbols-outlined text-[14px]">check</span>
+</div>
+</div>
+</div>
+<!-- Payment Ecosystem Rails Strip -->
+<div class="bg-[#1E293B] p-space-lg rounded-lg flex flex-col lg:flex-row items-center justify-between gap-space-md">
+<div class="flex flex-col gap-1">
+<span class="text-xs uppercase tracking-wider text-slate-400 font-bold">Authorized Native Philippine Rails</span>
+<span class="font-body-sm text-slate-200">Zero surcharge fees on QR Ph, e-wallets, or cards.</span>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="px-4 py-2 bg-[#0F172A] rounded-full text-xs font-bold text-white flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-blue-500"></span> GCash
+          </div>
+<div class="px-4 py-2 bg-[#0F172A] rounded-full text-xs font-bold text-white flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span> Maya
+          </div>
+<div class="px-4 py-2 bg-[#0F172A] rounded-full text-xs font-bold text-white flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-purple-400"></span> PayMongo
+          </div>
+<div class="px-4 py-2 bg-[#0F172A] rounded-full text-xs font-bold text-white flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-yellow-400"></span> QR Ph
+          </div>
+<div class="px-4 py-2 bg-[#0F172A] rounded-full text-xs font-bold text-white flex items-center gap-1.5 shadow-sm">
+<span class="w-2 h-2 rounded-full bg-slate-300"></span> Cash on Completion
+          </div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================== -->
+<!-- 5. SERVICE AREAS & PHILIPPINES RADAR -->
+<!-- ========================================== -->
+<section class="w-full max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center">
+<!-- Left Column: Hub Lists -->
+<div class="lg:col-span-6 flex flex-col gap-space-md">
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-md text-primary font-bold uppercase tracking-wider">Coverage Map</span>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface tracking-tight">
+            Available in your Barangay.
+          </h2>
+<p class="font-body-lg text-on-surface-variant">
+            From condominiums in BGC and Ortigas to residential subdivisions across Calabarzon, our real-time matching network guarantees sub-30 minute dispatch.
+          </p>
+</div>
+<!-- Active Hubs Group -->
+<div class="flex flex-col gap-space-xs">
+<span class="font-label-md text-on-surface font-bold">Active Metro Manila Hubs (Live Now)</span>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface font-label-md flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-[#10B981]"></span> Manila City
+            </span>
+<span class="px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface font-label-md flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-[#10B981]"></span> Quezon City
+            </span>
+<span class="px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface font-label-md flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-[#10B981]"></span> Makati (Poblacion &amp; CBD)
+            </span>
+<span class="px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface font-label-md flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-[#10B981]"></span> Taguig (BGC)
+            </span>
+<span class="px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface font-label-md flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-[#10B981]"></span> Pasig (Kapitolyo &amp; Ortigas)
+            </span>
+<span class="px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface font-label-md flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-[#10B981]"></span> Mandaluyong
+            </span>
+<span class="px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface font-label-md flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-[#10B981]"></span> San Juan
+            </span>
+<span class="px-3 py-1.5 rounded-full bg-surface-container-low text-on-surface font-label-md flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-[#10B981]"></span> Parañaque &amp; Alabang
+            </span>
+</div>
+</div>
+<!-- Upcoming Hubs -->
+<div class="flex flex-col gap-space-xs pt-space-xs">
+<span class="font-label-md text-on-surface font-bold">Expansion Radar Q3/Q4</span>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1.5 rounded-full bg-amber-50 text-amber-800 font-label-md flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-amber-500"></span> Metro Cebu (IT Park &amp; Mandaue)
+            </span>
+<span class="px-3 py-1.5 rounded-full bg-amber-50 text-amber-800 font-label-md flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-amber-500"></span> Metro Davao
+            </span>
+<span class="px-3 py-1.5 rounded-full bg-amber-50 text-amber-800 font-label-md flex items-center gap-1.5">
+<span class="h-2 w-2 rounded-full bg-amber-500"></span> Clark-Angeles Corridor
+            </span>
+</div>
+</div>
+</div>
+<!-- Right Column: Stylized Radar Graphic of Archipelago -->
+<div class="lg:col-span-6">
+<div class="relative w-full h-[420px] bg-surface-container-lowest rounded-lg p-space-md shadow-md flex flex-col justify-between overflow-hidden">
+<div class="flex items-center justify-between z-10">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary-container text-white flex items-center justify-center font-bold text-xs">
+<span class="material-symbols-outlined text-[18px]">satellite_alt</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-md text-on-surface font-bold">Philippine National Dispatch Grid</span>
+<span class="text-[10px] text-on-surface-variant">Real-time WebSocket Pro Telemetry</span>
+</div>
+</div>
+<span class="px-2.5 py-1 rounded-full bg-emerald-50 text-[#065F46] text-xs font-bold flex items-center gap-1">
+<span class="h-2 w-2 rounded-full bg-[#10B981] animate-ping"></span> 99.8% Online
+            </span>
+</div>
+<!-- Stylized Map Vector with Pulse Points -->
+<div class="relative w-full h-[280px] flex items-center justify-center">
+<svg class="w-full h-full text-surface-container-high" fill="none" viewbox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+<!-- Stylized Simplified Island Outlines (Luzon, Visayas, Mindanao) -->
+<!-- Luzon -->
+<path d="M170 30 C190 20, 220 50, 230 80 C240 110, 220 130, 200 140 C180 150, 160 120, 150 90 Z" fill="currentColor" opacity="0.6"></path>
+<!-- Palawan -->
+<path d="M110 140 C100 160, 80 200, 70 230 C80 235, 95 210, 120 160 Z" fill="currentColor" opacity="0.4"></path>
+<!-- Visayas -->
+<circle cx="230" cy="180" fill="currentColor" opacity="0.5" r="18"></circle>
+<circle cx="255" cy="170" fill="currentColor" opacity="0.5" r="12"></circle>
+<circle cx="210" cy="190" fill="currentColor" opacity="0.5" r="10"></circle>
+<!-- Mindanao -->
+<path d="M220 220 C260 210, 280 240, 270 270 C240 290, 200 270, 210 240 Z" fill="currentColor" opacity="0.6"></path>
+</svg>
+<!-- Luzon / NCR Major Node (Pulse) -->
+<div class="absolute top-[85px] left-[195px] flex flex-col items-center">
+<span class="relative flex h-5 w-5 items-center justify-center">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3.5 w-3.5 bg-primary-container"></span>
+</span>
+<span class="mt-1 px-2 py-0.5 rounded-full bg-surface-container-lowest text-[10px] font-bold shadow-md text-primary">NCR Hub (Avg 18m)</span>
+</div>
+<!-- Cebu Node -->
+<div class="absolute top-[170px] left-[232px] flex flex-col items-center">
+<span class="relative flex h-4 w-4 items-center justify-center">
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary-container"></span>
+</span>
+<span class="mt-1 px-1.5 py-0.5 rounded-full bg-surface-container-lowest text-[9px] font-semibold shadow-xs text-secondary">Cebu (Expanding)</span>
+</div>
+<!-- Davao Node -->
+<div class="absolute top-[235px] left-[240px] flex flex-col items-center">
+<span class="relative flex h-4 w-4 items-center justify-center">
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
+</span>
+<span class="mt-1 px-1.5 py-0.5 rounded-full bg-surface-container-lowest text-[9px] font-semibold shadow-xs text-amber-700">Davao (Expanding)</span>
+</div>
+</div>
+<!-- Bottom Telemetry Strip inside map -->
+<div class="flex items-center justify-between text-xs text-on-surface-variant pt-2 border-t border-slate-100">
+<span>Active Pros Online: <strong class="text-on-surface">1,482</strong></span>
+<span>Median Dispatch Speed: <strong class="text-primary">&lt; 22 mins</strong></span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================== -->
+<!-- 6. HIGH-CONVERSION APP DOWNLOAD BANNER -->
+<!-- ========================================== -->
+<section class="w-full max-w-7xl mx-auto px-margin-mobile md:px-margin py-space-xl">
+<div class="relative w-full bg-primary-container rounded-xl p-space-lg md:p-space-xl text-on-primary overflow-hidden shadow-2xl flex flex-col lg:flex-row items-center justify-between gap-space-lg">
+<!-- Decorative radial shine -->
+<div class="absolute -right-20 -bottom-20 w-96 h-96 bg-white/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="flex flex-col gap-space-sm max-w-xl z-10 text-center lg:text-left items-center lg:items-start">
+<div class="flex items-center gap-2">
+<img alt="Serbify Logo" class="w-7 h-7 object-contain rounded-full bg-white p-0.5" src="https://lh3.googleusercontent.com/aida/ALJJyrAODQXWXbLpUcy1oV6-S6q9yfYdH6-6GiHmIiAni0WJd5LnoolLqdYf1mJ7yPIOKNPPppVUV3A2I3GKy11GmGdos7TpVBwcZgc1OafwJgXFv3djf8jYhgxzZCrx3g54gN_ZLCoOHQ7-1VJH316XjCg3csE5q-AQZjTjUHSMeAP5Hhk1YAJrG9afiM2nVxhGRT0xDrM0bzZNaYYnj2fmDwAazPg-Bajm64XSAGTspXP1"/>
+<span class="font-label-md uppercase tracking-wider text-primary-fixed font-bold">Get Serbify on iOS &amp; Android</span>
+</div>
+<h2 class="font-display-hero text-headline-lg-mobile md:text-headline-lg tracking-tight text-white leading-tight">
+          Ready to fix your home or grow your trade?
+        </h2>
+<p class="font-body-md text-primary-fixed">
+          Join over 25,000 satisfied homeowners across Metro Manila and hundreds of vetted tradesmen booking verified service on demand.
+        </p>
+<!-- App Store CTA Buttons -->
+<div class="flex flex-wrap items-center justify-center lg:justify-start gap-space-sm pt-space-xs">
+<!-- iOS Button -->
+<a class="px-5 py-3 rounded-full bg-white text-on-surface hover:bg-surface-container-low transition-all shadow-md flex items-center gap-2.5" href="#">
+<span class="material-symbols-outlined text-[24px] text-on-surface">phone_iphone</span>
+<div class="flex flex-col text-left">
+<span class="text-[9px] uppercase tracking-wide text-on-surface-variant font-semibold">Download on the</span>
+<span class="text-xs font-bold leading-none">Apple App Store</span>
+</div>
+</a>
+<!-- Google Play Button -->
+<a class="px-5 py-3 rounded-full bg-white text-on-surface hover:bg-surface-container-low transition-all shadow-md flex items-center gap-2.5" href="#">
+<span class="material-symbols-outlined text-[24px] text-[#0660e4]">play_arrow</span>
+<div class="flex flex-col text-left">
+<span class="text-[9px] uppercase tracking-wide text-on-surface-variant font-semibold">Get it on</span>
+<span class="text-xs font-bold leading-none">Google Play Store</span>
+</div>
+</a>
+</div>
+</div>
+<!-- QR Code Quick-Scan Module -->
+<div class="z-10 bg-white/10 backdrop-blur-md p-space-md rounded-lg flex flex-col items-center gap-space-xs text-center shrink-0">
+<!-- SVG Generated QR Code Pattern -->
+<div class="w-32 h-32 bg-white p-2 rounded-DEFAULT shadow-md flex items-center justify-center">
+<svg class="w-full h-full text-slate-900 fill-current" viewbox="0 0 100 100">
+<!-- Corner Square 1 -->
+<path d="M0,0 h30 v30 h-30 z M5,5 h20 v20 h-20 z M10,10 h10 v10 h-10 z"></path>
+<!-- Corner Square 2 -->
+<path d="M70,0 h30 v30 h-30 z M75,5 h20 v20 h-20 z M80,10 h10 v10 h-10 z"></path>
+<!-- Corner Square 3 -->
+<path d="M0,70 h30 v30 h-30 z M5,75 h20 v20 h-20 z M10,80 h10 v10 h-10 z"></path>
+<!-- Matrix Data Simulation -->
+<rect height="8" width="8" x="40" y="5"></rect>
+<rect height="8" width="8" x="52" y="10"></rect>
+<rect height="6" width="16" x="40" y="20"></rect>
+<rect height="15" width="10" x="15" y="40"></rect>
+<rect height="12" width="12" x="35" y="40"></rect>
+<rect height="20" width="10" x="60" y="38"></rect>
+<rect height="8" width="12" x="80" y="45"></rect>
+<rect height="10" width="18" x="40" y="65"></rect>
+<rect height="22" width="8" x="70" y="68"></rect>
+<rect height="15" width="10" x="85" y="75"></rect>
+<rect height="8" width="15" x="45" y="85"></rect>
+</svg>
+</div>
+<span class="font-label-md text-white font-bold">Scan to Install Mobile App</span>
+<span class="text-[11px] text-primary-fixed">Instant Philippine camera preview</span>
+</div>
+</div>
+</section>
+<!-- Interactive Script for Dual-Persona Switcher -->
+<script>
+    function switchPersona(persona) {
+      const btnClient = document.getElementById('tab-client');
+      const btnPro = document.getElementById('tab-pro');
+      const b1Tag = document.getElementById('bento-1-tag');
+      const b1Title = document.getElementById('bento-1-title');
+      const b1Desc = document.getElementById('bento-1-desc');
+      const b2Tag = document.getElementById('bento-2-tag');
+      const b2Title = document.getElementById('bento-2-title');
+      const b2Desc = document.getElementById('bento-2-desc');
+
+      if (persona === 'pro') {
+        // Toggle Buttons
+        btnPro.className = 'px-space-md py-2 rounded-full font-label-md transition-all duration-200 bg-surface-container-lowest text-on-surface shadow-sm font-bold';
+        btnClient.className = 'px-space-md py-2 rounded-full font-label-md transition-all duration-200 text-on-surface-variant hover:text-on-surface';
+
+        // Update Card 1
+        b1Tag.textContent = 'Guaranteed Instant Daily Payouts';
+        b1Title.textContent = 'Keep 100% of Your Hard-Earned Tips & Fair Rates';
+        b1Desc.textContent = 'Receive automated payouts via GCash or Maya within minutes after job completion. No delayed 30-day corporate payment cycles.';
+
+        // Update Card 2
+        b2Tag.textContent = 'Smart Project Dispatch Radar';
+        b2Title.textContent = 'High-Value Leads in Your Purok';
+        b2Desc.textContent = 'Bid on pre-funded repairs within 5km of your location. Accept contracts that match your exact schedule and trade specialization.';
+      } else {
+        // Client View
+        btnClient.className = 'px-space-md py-2 rounded-full font-label-md transition-all duration-200 bg-surface-container-lowest text-on-surface shadow-sm font-bold';
+        btnPro.className = 'px-space-md py-2 rounded-full font-label-md transition-all duration-200 text-on-surface-variant hover:text-on-surface';
+
+        b1Tag.textContent = 'PSGC Philippine Standard Pinning';
+        b1Title.textContent = 'Micro-Accurate Barangay Geolocation';
+        b1Desc.textContent = 'No more typing confusing compound landmarks. Pin directly through PSA Philippine Standard Geographic Codes down to Barangay Puroks, matched with instant live GPS tracking.';
+
+        b2Tag.textContent = 'Transparent Custom Bids';
+        b2Title.textContent = 'Fair Market Bidding';
+        b2Desc.textContent = 'For complex multi-day projects, receive itemized proposals from 3+ licensed tradesmen. No hidden fees.';
+      }
+    }
+  </script>
+</div></main><footer class="w-full bg-surface-container-lowest mt-space-xl"><div class="max-w-7xl mx-auto px-margin py-space-xl flex flex-col gap-space-xl"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-space-xl"><div class="lg:col-span-2 flex flex-col gap-space-md"><div class="flex items-center gap-space-xs text-primary font-headline-md font-bold tracking-tight"><span class="material-symbols-outlined text-primary text-[28px]">verified_user</span><span>Serbify</span></div><p class="font-body-md text-on-surface-variant max-w-sm">The verified on-demand service infrastructure of the Philippines. Empowering Filipino professionals and providing institutional-grade trust for every booking.</p><div class="flex items-center gap-space-sm pt-space-xs"><span class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-low text-primary font-label-md"><span class="material-symbols-outlined text-[16px]">shield</span>Government ID Verified</span><span class="inline-flex items-center gap-space-xs px-space-md py-space-xs rounded-full bg-surface-container-low text-primary font-label-md"><span class="material-symbols-outlined text-[16px]">lock</span>Escrow Protected</span></div></div><div class="flex flex-col gap-space-sm"><span class="font-label-lg text-on-surface font-bold uppercase tracking-wider">Service Hubs</span><ul class="flex flex-col gap-space-xs font-body-sm text-on-surface-variant"><li class="hover:text-on-surface transition-colors cursor-pointer">Metro Manila (NCR)</li><li class="hover:text-on-surface transition-colors cursor-pointer">Metro Cebu (Central Visayas)</li><li class="hover:text-on-surface transition-colors cursor-pointer">Metro Davao (Mindanao)</li><li class="hover:text-on-surface transition-colors cursor-pointer">Pampanga (Clark-Angeles)</li><li class="hover:text-on-surface transition-colors cursor-pointer">Iloilo City</li><li class="hover:text-on-surface transition-colors cursor-pointer">Cavite &amp; Laguna Corridor</li></ul></div><div class="flex flex-col gap-space-sm"><span class="font-label-lg text-on-surface font-bold uppercase tracking-wider">Categories</span><ul class="flex flex-col gap-space-xs font-body-sm text-on-surface-variant"><li class="hover:text-on-surface transition-colors cursor-pointer">Aircon Cleaning &amp; Repair</li><li class="hover:text-on-surface transition-colors cursor-pointer">Deep Home Sanitation</li><li class="hover:text-on-surface transition-colors cursor-pointer">Master Electricians</li><li class="hover:text-on-surface transition-colors cursor-pointer">Certified Plumbing</li><li class="hover:text-on-surface transition-colors cursor-pointer">Carpentry &amp; Masonry</li><li class="hover:text-on-surface transition-colors cursor-pointer">On-Demand Movers &amp; Hauling</li></ul></div><div class="flex flex-col gap-space-sm"><span class="font-label-lg text-on-surface font-bold uppercase tracking-wider">Safety &amp; KYC</span><ul class="flex flex-col gap-space-xs font-body-sm text-on-surface-variant"><li class="hover:text-on-surface transition-colors cursor-pointer">NBI Clearance Audit</li><li class="hover:text-on-surface transition-colors cursor-pointer">Serbify Guarantee ($10k Cover)</li><li class="hover:text-on-surface transition-colors cursor-pointer">Pro Verification Standard</li><li class="hover:text-on-surface transition-colors cursor-pointer">Client Safety Code</li><li class="hover:text-on-surface transition-colors cursor-pointer">Dispute Arbitration Protocol</li><li class="hover:text-on-surface transition-colors cursor-pointer">Privacy &amp; Data Security</li></ul></div></div><div class="p-space-lg bg-surface-container-low rounded-lg flex flex-col md:flex-row items-center justify-between gap-space-md"><div class="flex flex-col gap-space-xs"><span class="font-label-md text-on-surface-variant uppercase tracking-wider">Authorized Philippine Payment Partners</span><span class="font-body-sm text-on-surface-variant">Secured via real-time automated escrow disbursement rails</span></div><div class="flex flex-wrap items-center gap-space-md font-label-numeric text-on-surface"><span class="px-space-md py-space-xs rounded-full bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]">GCash</span><span class="px-space-md py-space-xs rounded-full bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]">Maya</span><span class="px-space-md py-space-xs rounded-full bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]">PayMongo</span><span class="px-space-md py-space-xs rounded-full bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]">QR Ph</span><span class="px-space-md py-space-xs rounded-full bg-surface-container-lowest shadow-[0_1px_8px_rgba(0,0,0,0.04)]">BPI Direct</span></div></div><div class="flex flex-col sm:flex-row items-center justify-between gap-space-md pt-space-md font-body-sm text-on-surface-variant"><p>© 2025 Serbify Technologies Inc. Republic of the Philippines. All rights reserved.</p><div class="flex items-center gap-space-lg font-label-md"><a class="hover:text-on-surface transition-colors" href="#">Terms of Service</a><a class="hover:text-on-surface transition-colors" href="#">Privacy Policy</a><a class="hover:text-on-surface transition-colors" href="#">Safety Guidelines</a><a class="hover:text-on-surface transition-colors" href="#">Help Center</a></div></div></div></footer></body></html>

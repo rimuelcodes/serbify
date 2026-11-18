@@ -1,0 +1,186 @@
+{
+  "title": "Choose the visual direction for Serbify",
+  "question": "The roll assigned Manila Price-Tag & Counter Board. Keep it, take Impeccable's Pick, take the category standard, or re-roll.",
+  "options": [
+    {
+      "id": "assigned",
+      "kind": "assigned",
+      "label": "Manila Price-Tag & Counter Board",
+      "kicker": "THE ROLL",
+      "lineage": "Filipino neighborhood hardware counter & printed price-tag boards",
+      "thesis": "Upfront home-service pricing and verified pros presented like a crisp neighborhood service counter—warm, plain-spoken, and impossible to misread.",
+      "palette": [
+        "#FAF7F2",
+        "#111827",
+        "#0660E4",
+        "#D95D24",
+        "#0D9468"
+      ],
+      "materials": [
+        "warm bond paper",
+        "price-tag cardstock",
+        "inked verification stamps"
+      ],
+      "viewport": "Warm paper canvas with bold plain-English headline, an interactive service & price-check bar (Locksmith, Plumbing, Electrical, Aircon from ₱80), and a verified pro arrival preview.",
+      "risk": "Can feel cluttered if price tags and checklist rows are not given generous breathing room.",
+      "raised": [
+        {
+          "from": "challenger-darkroom",
+          "raise": "Booking journey moves through fixed, unmistakable linear stations in order."
+        },
+        {
+          "from": "challenger-onebit",
+          "raise": "Selected services and completed steps invert decisively with zero ambiguity."
+        },
+        {
+          "from": "challenger-orizuru",
+          "raise": "Step numbers and checklists sit in a strict, aligned margin column."
+        },
+        {
+          "from": "challenger-film",
+          "raise": "Job-done proof photos appear as an honest, inspectable frame strip."
+        },
+        {
+          "from": "challenger-polish",
+          "raise": "One dominant focal anchor per screen instead of competing cards."
+        },
+        {
+          "from": "challenger-emigre",
+          "raise": "Strict typographic hierarchy from display headline down to tabular peso numerals."
+        }
+      ],
+      "comp": ".impeccable/mocks/decision/assigned.png"
+    },
+    {
+      "id": "model-pick",
+      "kind": "pick",
+      "label": "Barangay Service Directory",
+      "kicker": "IMPECCABLE’S PICK",
+      "lineage": "Printed barangay service directory & condo lobby reception board",
+      "thesis": "A calm, editorial service directory built around clear rate tables, ID-verified pro profiles, and step-by-step arrival tracking.",
+      "palette": [
+        "#F8F6F1",
+        "#0F172A",
+        "#0660E4",
+        "#0D9468"
+      ],
+      "materials": [
+        "stone paper",
+        "ruled rate tables",
+        "verified ID badges"
+      ],
+      "viewport": "Editorial split opening with plain-spoken headline, live service rate selector, and a clean verified-pro booking card.",
+      "risk": "Closer to familiar service directories; also where most runs in this category land.",
+      "comp": ".impeccable/mocks/decision/model-pick.png"
+    },
+    {
+      "id": "challenger-darkroom",
+      "kind": "challenger",
+      "catalogId": "signals-instruments-darkroom-safelight-bay",
+      "label": "Darkroom Safelight Bay",
+      "verdict": "declined",
+      "lineage": "Printing darkroom under amber safelight",
+      "palette": ["#1a1208", "#d97706", "#f5e6c8"],
+      "materials": ["amber safelight", "enamel trays"],
+      "viewport": "Step-by-step darkroom stations.",
+      "risk": "Too dark and mysterious for letting a repair pro into your home.",
+      "case": "Fuses poorly: homeowners want bright clarity and trust, not darkroom mood.",
+      "kept": "Fixed, linear station-by-station progression.",
+      "hero": "https://impeccable.style/worlds/cards/signals-instruments-darkroom-safelight-bay-hero.webp"
+    },
+    {
+      "id": "challenger-onebit",
+      "kind": "challenger",
+      "catalogId": "medium-native-one-bit-desktop",
+      "label": "One-Bit Desktop",
+      "verdict": "declined",
+      "lineage": "Early 1-bit pixel desktop",
+      "palette": ["#ffffff", "#000000"],
+      "materials": ["stipple dither", "1px chrome"],
+      "viewport": "Overlapping 1-bit desktop windows.",
+      "risk": "Reads as retro tech nostalgia rather than everyday home help.",
+      "case": "Fuses poorly: alienates non-technical homeowners.",
+      "kept": "Decisive active/selected state inversion.",
+      "hero": "https://impeccable.style/worlds/cards/medium-native-one-bit-desktop-hero.webp"
+    },
+    {
+      "id": "challenger-orizuru",
+      "kind": "challenger",
+      "catalogId": "paper-folds-pleats-deployable-orizuru-crane-sequence",
+      "label": "Orizuru Crane Sequence",
+      "verdict": "declined",
+      "lineage": "32-fold vermilion washi sequence",
+      "palette": ["#d9381e", "#f7f2ea", "#1c1917"],
+      "materials": ["kozo fiber paper", "fold lines"],
+      "viewport": "Numbered fold sequence in strict margin.",
+      "risk": "Origami motif has no natural link to Filipino home repairs.",
+      "case": "Fuses poorly: wrong cultural and functional metaphor.",
+      "kept": "Strict numbered margin column for steps.",
+      "hero": "https://impeccable.style/worlds/cards/paper-folds-pleats-deployable-orizuru-crane-sequence-hero.webp"
+    },
+    {
+      "id": "challenger-film",
+      "kind": "challenger",
+      "catalogId": "cinema-cinematography-editing-hand-processed-film-bloom",
+      "label": "Hand-Processed 16mm Film",
+      "verdict": "declined",
+      "lineage": "16mm emulsion strip with light leaks",
+      "palette": ["#141414", "#e87a24", "#d4d4d4"],
+      "materials": ["silver emulsion", "sprocket strip"],
+      "viewport": "Frame-by-frame film strip.",
+      "risk": "Scratches and grain feel damaged instead of reliable.",
+      "case": "Fuses poorly: home repair needs clean proof, not distressed film.",
+      "kept": "Frame-by-frame photo proof strip.",
+      "hero": "https://impeccable.style/worlds/cards/cinema-cinematography-editing-hand-processed-film-bloom-hero.webp"
+    },
+    {
+      "id": "challenger-polish",
+      "kind": "challenger",
+      "catalogId": "posters-covers-sleeves-polish-film-poster",
+      "label": "Polish Film Poster",
+      "verdict": "declined",
+      "lineage": "Painted surreal gouache film poster",
+      "palette": ["#c89b3c", "#8c1d18", "#2d1e2f"],
+      "materials": ["gouache", "hand-lettering"],
+      "viewport": "Full-bleed surreal painting with bent title.",
+      "risk": "Sacrifices legibility and practical trust.",
+      "case": "Fuses poorly: homeowners need clear prices and IDs, not surrealism.",
+      "kept": "Single dominant focal anchor per screen.",
+      "hero": "https://impeccable.style/worlds/cards/posters-covers-sleeves-polish-film-poster-hero.webp"
+    },
+    {
+      "id": "challenger-emigre",
+      "kind": "challenger",
+      "catalogId": "emigre-bitmap-specimen",
+      "label": "Emigre Bitmap Specimen",
+      "verdict": "declined",
+      "lineage": "Coarse pixel type specimen",
+      "palette": ["#f5f5f0", "#111111", "#0055ff"],
+      "materials": ["newsprint", "bitmap type"],
+      "viewport": "Poster-scale pixel headlines over dense columns.",
+      "risk": "Low-res bitmap type hurts price and safety legibility.",
+      "case": "Fuses poorly: feels like a design zine rather than a consumer app.",
+      "kept": "Strict typographic hierarchy across size steps.",
+      "hero": "https://impeccable.style/worlds/cards/emigre-bitmap-specimen-hero.webp"
+    }
+  ],
+  "reroll": {
+    "registers": ["safer", "bolder"]
+  },
+  "buildPath": {
+    "value": "comp",
+    "toggle": true
+  },
+  "canon": true,
+  "canonCard": {
+    "kind": "canon",
+    "label": "The category standard",
+    "thesis": "Clean white-and-blue app showcase with centered headline, phone mockup, and feature cards.",
+    "palette": ["#ffffff", "#0B1C30", "#0660E4"],
+    "materials": ["clean grid", "app screens"],
+    "viewport": "Standard consumer app hero with phone frame and store badges.",
+    "risk": "Looks like most other on-demand service landing pages.",
+    "comp": ".impeccable/mocks/decision/canon.png"
+  },
+  "steer": true
+}
