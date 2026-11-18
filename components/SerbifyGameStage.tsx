@@ -747,11 +747,11 @@ export function SerbifyGameStage({
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       style={{
-        backgroundColor: "#F7F6F2",
+        backgroundColor: "#F7F5F0",
         backgroundImage: `
-          radial-gradient(60% 55% at 52% 48%, rgba(229, 152, 36, 0.14) 0%, rgba(229, 152, 36, 0) 68%),
-          radial-gradient(50% 45% at 20% 25%, rgba(6, 96, 228, 0.05) 0%, rgba(6, 96, 228, 0) 70%),
-          radial-gradient(65% 60% at 85% 75%, #ECEEF5 0%, rgba(236, 238, 245, 0) 75%)
+          radial-gradient(60% 55% at 52% 48%, rgba(229, 152, 36, 0.12) 0%, rgba(229, 152, 36, 0) 68%),
+          radial-gradient(50% 45% at 20% 25%, rgba(6, 96, 228, 0.04) 0%, rgba(6, 96, 228, 0) 70%),
+          radial-gradient(65% 60% at 85% 75%, #EFECE6 0%, rgba(239, 236, 230, 0) 75%)
         `,
       }}
       className="relative w-full min-h-[100dvh] lg:h-[100dvh] overflow-x-clip overflow-y-visible lg:overflow-hidden text-[#121726] flex flex-col justify-between"

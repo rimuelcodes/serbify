@@ -53,7 +53,7 @@ export default function HomePage() {
   }, [lenis]);
 
   return (
-    <div className="min-h-screen bg-[#F7F6F2] text-[#121726]">
+    <div className="min-h-screen bg-[#F7F5F0] text-[#121726]">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-full focus:bg-[#0660E4] focus:text-white focus:text-xs focus:font-bold focus:shadow-lg"
@@ -96,9 +96,11 @@ export default function HomePage() {
             exit={{ opacity: 0, y: 14, scale: 0.92 }}
             transition={{ duration: 0.25 }}
             onClick={handleReplayDemo}
-            className="fixed bottom-5 right-5 z-40 inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#0660E4] hover:bg-[#004AB4] text-white text-xs font-bold shadow-[0_12px_28px_rgba(6,96,228,0.34)] active:scale-95 transition-all cursor-pointer"
+            className="fixed bottom-5 right-5 z-40 inline-flex items-center gap-2.5 pl-2.5 pr-4 py-2 rounded-full bg-[#121726] hover:bg-[#1E2538] text-[#F7F5F0] text-xs font-bold border border-white/10 shadow-[0_14px_32px_rgba(28,25,23,0.22)] active:scale-95 transition-all cursor-pointer"
           >
-            <Gamepad2 className="w-4 h-4" />
+            <span className="w-6 h-6 rounded-full bg-[#0660E4] text-white flex items-center justify-center shrink-0">
+              <Gamepad2 className="w-3.5 h-3.5" />
+            </span>
             <span>Play Interactive Demo</span>
           </motion.button>
         )}

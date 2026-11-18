@@ -8,7 +8,7 @@ import { LenisProvider } from "@/components/LenisProvider";
 import "./globals.css";
 
 export const viewport: Viewport = {
-  themeColor: "#F7F6F2",
+  themeColor: "#F7F5F0",
   width: "device-width",
   initialScale: 1,
 };
@@ -43,7 +43,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="font-[family-name:var(--font-plus-jakarta)] bg-[#F7F6F2] text-[#121726] selection:bg-[#0660E4] selection:text-white">
+      <body className="font-[family-name:var(--font-plus-jakarta)] bg-[#F7F5F0] text-[#121726] selection:bg-[#0660E4] selection:text-white">
         <LenisProvider>{children}</LenisProvider>
       </body>
     </html>
