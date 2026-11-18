@@ -100,6 +100,8 @@ interface StoryStepMeta {
   title: string;
   instruction: string;
   badge: string;
+  telemetryTitle: string;
+  telemetryValue: string;
 }
 
 const STORY_STEPS: StoryStepMeta[] = [
@@ -110,14 +112,18 @@ const STORY_STEPS: StoryStepMeta[] = [
     instruction:
       "Tap Plumber, Electrician, or Locksmith inside the phone—or choose a trade below to begin.",
     badge: "Upfront Rates",
+    telemetryTitle: "Upfront Metro Manila Rates",
+    telemetryValue: "From ₱80 • Zero Hidden Fees",
   },
   {
     level: 2,
-    shortLabel: "2. AI Match",
+    shortLabel: "2. Smart Match",
     title: "Smart Barangay Radar",
     instruction:
-      "Serbify scans verified pros near your pinned Metro Manila street and locks in the best match.",
+      "Serbify scans verified pros near your pinned street and locks in the closest match.",
     badge: "Live Matching",
+    telemetryTitle: "Barangay Dispatch Scan",
+    telemetryValue: "Checking 9 Verified Pros",
   },
   {
     level: 3,
@@ -126,6 +132,8 @@ const STORY_STEPS: StoryStepMeta[] = [
     instruction:
       "Review Kuya Marco's government ID, NBI clearance, and upfront quote before he heads out.",
     badge: "99.4% Match Rate",
+    telemetryTitle: "NBI & Gov ID Verified",
+    telemetryValue: "99.4% Match Rate",
   },
   {
     level: 4,
@@ -134,6 +142,8 @@ const STORY_STEPS: StoryStepMeta[] = [
     instruction:
       "Follow your pro's live route across Metro Manila—from jeepney to doorstep—with 2x speed.",
     badge: "Real-Time ETA",
+    telemetryTitle: "Shaw Blvd Corridor",
+    telemetryValue: "1.8 km away • Live GPS",
   },
   {
     level: 5,
@@ -142,6 +152,8 @@ const STORY_STEPS: StoryStepMeta[] = [
     instruction:
       "Watch the repair wrap up cleanly. Inspect before releasing payment from safe escrow.",
     badge: "Scope Locked",
+    telemetryTitle: "Photo & Checklist Sign-Off",
+    telemetryValue: "Escrow Protected",
   },
   {
     level: 6,
@@ -150,6 +162,8 @@ const STORY_STEPS: StoryStepMeta[] = [
     instruction:
       "Settle with GCash, Maya, card, or cash only once you confirm the job is done.",
     badge: "Zero Hidden Fees",
+    telemetryTitle: "PH Payment Rails",
+    telemetryValue: "GCash • Maya • Card • Cash",
   },
 ];
 
@@ -177,12 +191,6 @@ const TRANSIT_STAGES: TransitStage[] = [
 ];
 
 const SMOOTH_EASE = [0.16, 1, 0.3, 1] as const;
-const DAMPED_SPRING = {
-  type: "spring" as const,
-  stiffness: 320,
-  damping: 32,
-  mass: 0.9,
-};
 
 function JeepneyBadge({ className = "w-5 h-5" }: { className?: string }) {
   return (
@@ -232,6 +240,8 @@ export function SerbifyGameStage({
   );
   const [hoveredStep, setHoveredStep] = useState<GameLevel | null>(null);
   const [rewardPulseKey, setRewardPulseKey] = useState(0);
+  const [ctaHovered, setCtaHovered] = useState(false);
+  const [tappedService, setTappedService] = useState<ServiceKey | null>(null);
 
   // Level 2/3 radar state
   const [radarMatched, setRadarMatched] = useState(false);
@@ -251,14 +261,22 @@ export function SerbifyGameStage({
     "ready" | "sending" | "sent"
   >("ready");
 
-  // Pointer-reactive 3D tilt (±4deg max) + sheen coordinates
-  const [tilt, setTilt] = useState({ rotateX: 2, rotateY: -3 });
-  const [sheenPos, setSheenPos] = useState({ x: 35, y: 25 });
-
+  // Stage & Hardware Refs
   const stageRef = useRef<HTMLElement>(null);
-  const phoneRef = useRef<HTMLDivElement>(null);
+  const phoneEntranceRef = useRef<HTMLDivElement>(null);
+  const phoneLevitationRef = useRef<HTMLDivElement>(null);
+  const phoneTiltRef = useRef<HTMLDivElement>(null);
+  const phoneRecoilRef = useRef<HTMLDivElement>(null);
   const phoneScreenRef = useRef<HTMLDivElement>(null);
+  const sheenRef = useRef<HTMLDivElement>(null);
   const mascotRef = useRef<HTMLDivElement>(null);
+
+  // quickTo setters for smooth 60fps pointer-reactive 3D tilt
+  const quickTiltX = useRef<gsap.QuickToFunc | null>(null);
+  const quickTiltY = useRef<gsap.QuickToFunc | null>(null);
+  const quickSheenX = useRef<gsap.QuickToFunc | null>(null);
+
+  // Level-specific refs
   const transitVehicleRef = useRef<HTMLDivElement>(null);
   const transitPathRef = useRef<SVGPathElement>(null);
   const transitVideoRef = useRef<HTMLVideoElement>(null);
@@ -269,17 +287,80 @@ export function SerbifyGameStage({
     onLevelChange?.(level);
   }, [level, onLevelChange]);
 
-  // Initial Stage Reveal GSAP Timeline (0.0s–0.6s)
+  // Master GSAP Stage Entrance, Levitation, Mascot Wave & quickTo Setup
   useEffect(() => {
-    if (prefersReducedMotion) return;
     const ctx = gsap.context(() => {
-      if (phoneRef.current) {
+      if (phoneTiltRef.current) {
+        gsap.set(phoneTiltRef.current, {
+          rotateY: -6,
+          rotateX: 3,
+          scale: 1,
+        });
+        quickTiltX.current = gsap.quickTo(phoneTiltRef.current, "rotateX", {
+          duration: 0.45,
+          ease: "power3.out",
+        });
+        quickTiltY.current = gsap.quickTo(phoneTiltRef.current, "rotateY", {
+          duration: 0.45,
+          ease: "power3.out",
+        });
+      }
+
+      if (sheenRef.current) {
+        quickSheenX.current = gsap.quickTo(sheenRef.current, "xPercent", {
+          duration: 0.5,
+          ease: "power3.out",
+        });
+      }
+
+      if (prefersReducedMotion) return;
+
+      // 1. Phone Entrance (0.0s - 0.8s)
+      if (phoneEntranceRef.current) {
         gsap.fromTo(
-          phoneRef.current,
-          { y: 24, opacity: 0.92 },
-          { y: 0, opacity: 1, duration: 0.6, ease: "expo.out", clearProps: "y" }
+          phoneEntranceRef.current,
+          { y: 36, opacity: 0, scale: 0.94 },
+          {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 0.8,
+            ease: "expo.out",
+            clearProps: "transform",
+          }
         );
       }
+
+      // 2. Stagger-reveal inner phone cards with 0.06s cascade
+      const innerCards = stageRef.current?.querySelectorAll("[data-phone-card]");
+      if (innerCards && innerCards.length > 0) {
+        gsap.fromTo(
+          innerCards,
+          { y: 14, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.45,
+            stagger: 0.06,
+            delay: 0.35,
+            ease: "power3.out",
+            clearProps: "transform",
+          }
+        );
+      }
+
+      // 3. Continuous Idle Levitation on separate inner wrapper
+      if (phoneLevitationRef.current) {
+        gsap.to(phoneLevitationRef.current, {
+          y: -6,
+          duration: 3.2,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+        });
+      }
+
+      // 4. Mascot friendly 8deg wave on mount
       if (mascotRef.current) {
         gsap.fromTo(
           mascotRef.current,
@@ -303,16 +384,58 @@ export function SerbifyGameStage({
         );
       }
     }, stageRef);
-    return () => ctx.revert();
+
+    return () => {
+      quickTiltX.current = null;
+      quickTiltY.current = null;
+      quickSheenX.current = null;
+      ctx.revert();
+    };
   }, [prefersReducedMotion]);
 
-  const triggerStepReward = useCallback(() => {
+  // Cross-Component Magnetic CTA Coupling: straighten phone on Start CTA hover
+  useEffect(() => {
+    if (prefersReducedMotion || !phoneTiltRef.current) return;
+    if (ctaHovered) {
+      gsap.to(phoneTiltRef.current, {
+        rotateY: 0,
+        rotateX: 0,
+        scale: 1.025,
+        duration: 0.45,
+        ease: "power3.out",
+      });
+    } else {
+      gsap.to(phoneTiltRef.current, {
+        rotateY: -6,
+        rotateX: 3,
+        scale: 1,
+        duration: 0.5,
+        ease: "power3.out",
+      });
+    }
+  }, [ctaHovered, prefersReducedMotion]);
+
+  // Hardware Haptic Micro-Recoil on level completion / transition
+  const triggerHapticAndReward = useCallback(() => {
     setRewardPulseKey((k) => k + 1);
-  }, []);
+    if (prefersReducedMotion || !phoneRecoilRef.current) return;
+    gsap.fromTo(
+      phoneRecoilRef.current,
+      { y: -4, rotateZ: 0.8 },
+      {
+        y: 0,
+        rotateZ: 0,
+        duration: 0.35,
+        ease: "power3.out",
+        clearProps: "transform",
+      }
+    );
+  }, [prefersReducedMotion]);
 
   const resetGame = useCallback(() => {
     setDemoStarted(false);
     setLevel(1);
+    setTappedService(null);
     setRadarMatched(false);
     setTransitStageIdx(0);
     setTransitProgress(0);
@@ -329,36 +452,39 @@ export function SerbifyGameStage({
     }
   }, [resetSignal, resetGame]);
 
-  // Subtle pointer-reactive 3D tilt (±4deg max)
+  // Pointer-reactive 3D tilt (±5deg around resting angle) + diagonal glass sheen
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLElement>) => {
-      if (e.pointerType !== "mouse" || prefersReducedMotion || !stageRef.current)
+      if (
+        e.pointerType !== "mouse" ||
+        prefersReducedMotion ||
+        ctaHovered ||
+        !stageRef.current
+      )
         return;
       const rect = stageRef.current.getBoundingClientRect();
       const nx = (e.clientX - rect.left) / rect.width - 0.5;
       const ny = (e.clientY - rect.top) / rect.height - 0.5;
-      setTilt({
-        rotateX: Math.max(-4, Math.min(4, -ny * 8)),
-        rotateY: Math.max(-4, Math.min(4, nx * 8)),
-      });
-      setSheenPos({
-        x: Math.round((nx + 0.5) * 100),
-        y: Math.round((ny + 0.5) * 100),
-      });
+      quickTiltX.current?.(3 + Math.max(-5, Math.min(5, -ny * 10)));
+      quickTiltY.current?.(-6 + Math.max(-5, Math.min(5, nx * 10)));
+      quickSheenX.current?.(nx * 32);
     },
-    [prefersReducedMotion]
+    [ctaHovered, prefersReducedMotion]
   );
 
   const handlePointerLeave = useCallback(() => {
-    setTilt({ rotateX: 2, rotateY: -3 });
-    setSheenPos({ x: 35, y: 25 });
-  }, []);
+    if (prefersReducedMotion || ctaHovered) return;
+    quickTiltX.current?.(3);
+    quickTiltY.current?.(-6);
+    quickSheenX.current?.(0);
+  }, [ctaHovered, prefersReducedMotion]);
 
-  // Start Demo trigger: cross-fade left block & scale phone screen 0.97 -> 1.0
+  // Start Demo trigger
   const handleStartDemo = useCallback(() => {
     setDemoStarted(true);
     setLevel(1);
-    triggerStepReward();
+    setCtaHovered(false);
+    triggerHapticAndReward();
     if (!prefersReducedMotion && phoneScreenRef.current) {
       gsap.fromTo(
         phoneScreenRef.current,
@@ -366,13 +492,13 @@ export function SerbifyGameStage({
         { scale: 1, duration: 0.45, ease: "expo.out", clearProps: "transform" }
       );
     }
-  }, [prefersReducedMotion, triggerStepReward]);
+  }, [prefersReducedMotion, triggerHapticAndReward]);
 
   const jumpToLevel = useCallback(
     (target: GameLevel) => {
       setDemoStarted(true);
       setLevel(target);
-      triggerStepReward();
+      triggerHapticAndReward();
       if (target === 2) {
         setRadarMatched(false);
       } else if (target === 3) {
@@ -381,18 +507,24 @@ export function SerbifyGameStage({
         setPaymentPhase("ready");
       }
     },
-    [triggerStepReward]
+    [triggerHapticAndReward]
   );
 
+  // Tactile tap ripple on service selection inside phone -> Level 2
   const handleSelectService = useCallback(
     (service: ServiceOption) => {
+      if (tappedService) return;
       setSelectedService(service);
-      setDemoStarted(true);
-      setRadarMatched(false);
-      setLevel(2);
-      triggerStepReward();
+      setTappedService(service.key);
+      setTimeout(() => {
+        setTappedService(null);
+        setDemoStarted(true);
+        setRadarMatched(false);
+        setLevel(2);
+        triggerHapticAndReward();
+      }, 160);
     },
-    [triggerStepReward]
+    [tappedService, triggerHapticAndReward]
   );
 
   // Level 2 -> Level 3: 1.6s live radar matching -> ID & NBI Check
@@ -402,10 +534,10 @@ export function SerbifyGameStage({
     const timer = setTimeout(() => {
       setRadarMatched(true);
       setLevel(3);
-      triggerStepReward();
+      triggerHapticAndReward();
     }, 1600);
     return () => clearTimeout(timer);
-  }, [demoStarted, level, triggerStepReward]);
+  }, [demoStarted, level, triggerHapticAndReward]);
 
   // Level 4: 12s (6 x 2s) Zigzag Highway Transit with GSAP MotionPathPlugin
   useEffect(() => {
@@ -430,7 +562,7 @@ export function SerbifyGameStage({
           setTransitProgress(1);
           setTransitStageIdx(5);
           setTransitArrived(true);
-          triggerStepReward();
+          triggerHapticAndReward();
         },
       });
 
@@ -492,7 +624,7 @@ export function SerbifyGameStage({
     const handleEnded = () => {
       setJobProgress(1);
       setJobFinished(true);
-      triggerStepReward();
+      triggerHapticAndReward();
     };
 
     video.addEventListener("loadedmetadata", handleLoadedMetadata);
@@ -514,16 +646,16 @@ export function SerbifyGameStage({
       video.removeEventListener("ended", handleEnded);
       clearTimeout(fallbackTimer);
     };
-  }, [level, selectedService, triggerStepReward]);
+  }, [level, selectedService, triggerHapticAndReward]);
 
   const handleSendPayment = useCallback(() => {
     if (paymentPhase !== "ready") return;
     setPaymentPhase("sending");
     setTimeout(() => {
       setPaymentPhase("sent");
-      triggerStepReward();
+      triggerHapticAndReward();
     }, 1250);
-  }, [paymentPhase, triggerStepReward]);
+  }, [paymentPhase, triggerHapticAndReward]);
 
   // Advance / Step Back logic (for Space / ArrowRight / ArrowLeft)
   const advanceLevel = useCallback(() => {
@@ -624,22 +756,20 @@ export function SerbifyGameStage({
       }}
       className="relative w-full min-h-[100dvh] lg:h-[100dvh] overflow-x-clip overflow-y-visible lg:overflow-hidden text-[#121726] flex flex-col justify-between"
     >
-      {/* UNIFIED FLOATING GLASS HEADER & 6-LEVEL STORY SCRUBBER */}
+      {/* SPLIT FLOATING HEADER: Left Brand Pill • Center Glass Scrubber • Right Actions */}
       <header className="relative z-30 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pt-4 sm:pt-5">
-        <div
-          style={{
-            backgroundColor: "rgba(255, 255, 255, 0.72)",
-            backdropFilter: "blur(16px)",
-            WebkitBackdropFilter: "blur(16px)",
-            borderColor: "rgba(18, 23, 38, 0.06)",
-          }}
-          className="w-full rounded-full border px-3 sm:px-4 py-2 shadow-[0_8px_28px_rgba(18,23,38,0.05)] flex items-center justify-between gap-3"
-        >
-          {/* Left: Brand */}
+        <div className="w-full flex items-center justify-between gap-3">
+          {/* 1. Left: Compact Serbify + Puppy Mascot Pill */}
           <button
             type="button"
             onClick={resetGame}
-            className="flex items-center gap-2 pl-1 pr-2 py-1 rounded-full hover:bg-[#121726]/[0.04] transition-colors cursor-pointer shrink-0"
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.78)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+              borderColor: "rgba(18, 23, 38, 0.07)",
+            }}
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full border shadow-[0_4px_16px_rgba(18,23,38,0.05)] hover:border-[#0660E4]/35 transition-colors cursor-pointer shrink-0"
             title="Restart interactive demo"
           >
             <img
@@ -647,15 +777,21 @@ export function SerbifyGameStage({
               alt="Serbify"
               className="w-6 h-6 object-contain"
             />
-            <span className="font-bold text-sm sm:text-base tracking-[-0.02em] text-[#121726]">
+            <span className="font-bold text-sm tracking-[-0.02em] text-[#121726]">
               Serbify
             </span>
           </button>
 
-          {/* Center: 6 Interactive Story Scrubber Segments */}
+          {/* 2. Center: Sleek Compact Floating Glass Scrubber Pill */}
           <nav
             aria-label="Interactive walkthrough steps"
-            className="hidden md:flex items-center gap-1.5 flex-1 max-w-md mx-2"
+            style={{
+              backgroundColor: "rgba(255, 255, 255, 0.75)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+              borderColor: "rgba(18, 23, 38, 0.07)",
+            }}
+            className="hidden md:flex items-center gap-1.5 w-full max-w-sm px-3.5 py-1.5 rounded-full border shadow-[0_6px_22px_rgba(18,23,38,0.05)]"
           >
             {STORY_STEPS.map((step) => {
               const isCompleted = demoStarted && step.level < level;
@@ -673,7 +809,7 @@ export function SerbifyGameStage({
                     onBlur={() => setHoveredStep(null)}
                     aria-label={step.shortLabel}
                     aria-current={isActive ? "step" : undefined}
-                    className="w-full py-2.5 px-0.5 flex items-center cursor-pointer focus-visible:outline-none"
+                    className="w-full py-2 px-0.5 flex items-center cursor-pointer focus-visible:outline-none"
                   >
                     <span
                       className={`relative block w-full h-1.5 rounded-full overflow-hidden transition-colors duration-300 ${
@@ -681,13 +817,13 @@ export function SerbifyGameStage({
                           ? "bg-[#0660E4]"
                           : isCompleted
                             ? "bg-[#117A58]"
-                            : "bg-[#121726]/12 group-hover:bg-[#121726]/25"
+                            : "bg-[#121726]/12 group-hover:bg-[#121726]/28"
                       }`}
                     >
                       {isActive && (
                         <motion.span
                           key={`ripple-${level}-${rewardPulseKey}`}
-                          initial={{ scaleX: 0.2, opacity: 0.9 }}
+                          initial={{ scaleX: 0.15, opacity: 0.95 }}
                           animate={{ scaleX: 1, opacity: 0 }}
                           transition={{ duration: 0.7, ease: SMOOTH_EASE }}
                           style={{ originX: 0 }}
@@ -697,7 +833,6 @@ export function SerbifyGameStage({
                     </span>
                   </button>
 
-                  {/* Crisp Hover/Focus Tooltip */}
                   <AnimatePresence>
                     {isHovered && (
                       <motion.div
@@ -705,7 +840,7 @@ export function SerbifyGameStage({
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 2 }}
                         transition={{ duration: 0.14 }}
-                        className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 mt-1.5 px-2.5 py-1 rounded-lg bg-[#121726] text-[#F7F6F2] text-[11px] font-semibold whitespace-nowrap shadow-md z-40"
+                        className="pointer-events-none absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2.5 py-1 rounded-lg bg-[#121726] text-[#F7F6F2] text-[11px] font-semibold whitespace-nowrap shadow-md z-40"
                       >
                         {step.shortLabel}
                       </motion.div>
@@ -716,16 +851,16 @@ export function SerbifyGameStage({
             })}
           </nav>
 
-          {/* Right: Skip to Full Site + 40px Menu Circle */}
-          <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+          {/* 3. Right: Borderless Skip Link + 40px Menu Circle */}
+          <div className="flex items-center gap-3 shrink-0">
             <button
               type="button"
               onClick={onSkipToSite}
-              className="group relative inline-flex items-center gap-1 px-2 py-1.5 text-xs font-semibold text-[#4B5565] hover:text-[#121726] transition-colors cursor-pointer"
+              className="group relative inline-flex items-center gap-1 px-1.5 py-1.5 text-xs font-semibold text-[#4B5565] hover:text-[#121726] transition-colors cursor-pointer"
             >
               <span>Skip to Full Site</span>
               <ArrowDown className="w-3.5 h-3.5 transition-transform duration-200 group-hover:translate-y-0.5" />
-              <span className="pointer-events-none absolute left-2 right-2 bottom-1 h-[1.5px] bg-[#0660E4] scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
+              <span className="pointer-events-none absolute left-1.5 right-1.5 bottom-1 h-[1.5px] bg-[#0660E4] scale-x-0 group-hover:scale-x-100 transition-transform duration-200 origin-left" />
             </button>
 
             <button
@@ -733,7 +868,7 @@ export function SerbifyGameStage({
               onClick={() => setDrawerOpen(true)}
               aria-label="Open navigation menu"
               aria-expanded={drawerOpen}
-              className="w-10 h-10 rounded-full bg-white/90 border border-[#121726]/10 shadow-[0_2px_10px_rgba(18,23,38,0.06)] flex flex-col items-center justify-center gap-[5px] text-[#121726] hover:border-[#0660E4]/40 hover:text-[#0660E4] active:scale-95 transition-all cursor-pointer shrink-0"
+              className="w-10 h-10 rounded-full bg-white/85 border border-[#121726]/10 shadow-[0_4px_14px_rgba(18,23,38,0.06)] flex flex-col items-center justify-center gap-[5px] text-[#121726] hover:border-[#0660E4]/40 hover:text-[#0660E4] active:scale-95 transition-all cursor-pointer shrink-0"
             >
               <span
                 className={`block w-4 h-[1.75px] rounded-full bg-current transition-transform duration-200 ${
@@ -780,14 +915,17 @@ export function SerbifyGameStage({
       {/* 12-COLUMN ASYMMETRICAL EDITORIAL STAGE */}
       <div className="relative z-20 flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 py-6 lg:py-4 flex items-center">
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
-          {/* LEFT STAGE (Cols 1-5): Editorial Narrative <-> Active Coachmark */}
+          {/* LEFT STAGE (Cols 1-5): Step Eyebrow + Editorial Narrative / Coachmark */}
           <div className="lg:col-span-5 flex flex-col items-start text-left order-2 lg:order-1">
-            {/* Mascot Badge + Soft Mascot Gold Ambient Glow */}
+            {/* Golden Puppy Mascot + Clean Step Eyebrow Pill (No Duplicate Copy) */}
             <div className="relative mb-5">
               <motion.div
                 key={`glow-${rewardPulseKey}`}
                 initial={{ opacity: 0.45, scale: 0.92 }}
-                animate={{ opacity: [0.45, 0.85, 0.5], scale: [0.95, 1.12, 1] }}
+                animate={{
+                  opacity: [0.45, 0.85, 0.55],
+                  scale: [0.95, 1.12, 1],
+                }}
                 transition={{ duration: 0.9, ease: SMOOTH_EASE }}
                 aria-hidden="true"
                 className="absolute -inset-3 rounded-full bg-[#E59824]/25 blur-xl pointer-events-none"
@@ -799,10 +937,13 @@ export function SerbifyGameStage({
                 <img
                   src="/assets/serbify-mascot.png"
                   alt="Serbify mascot"
-                  className="w-7 h-7 object-contain"
+                  className="w-6 h-6 object-contain"
                 />
-                <span className="text-xs font-bold tracking-tight text-[#8A5609]">
-                  Metro Manila Home Pros
+                <span
+                  style={{ fontFamily: "var(--font-ui)" }}
+                  className="text-[11px] font-bold tracking-[0.06em] uppercase text-[#8A5609] tabular-nums"
+                >
+                  0{level} / 06 • 30-SEC INTERACTIVE DEMO
                 </span>
               </div>
             </div>
@@ -826,7 +967,11 @@ export function SerbifyGameStage({
                     arrive, and send payment safely.
                   </p>
 
-                  <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <div
+                    onMouseEnter={() => setCtaHovered(true)}
+                    onMouseLeave={() => setCtaHovered(false)}
+                    className="pt-1"
+                  >
                     <MagneticButton
                       onClick={handleStartDemo}
                       className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-[#0660E4] hover:bg-[#044BB5] text-white text-sm sm:text-base font-bold shadow-[0_14px_30px_rgba(6,96,228,0.24)] transition-colors cursor-pointer"
@@ -856,7 +1001,7 @@ export function SerbifyGameStage({
                       style={{ fontFamily: "var(--font-ui)" }}
                       className="text-xs font-bold text-[#0660E4] tabular-nums tracking-wide"
                     >
-                      0{level} / 06
+                      Step 0{level}
                     </span>
                     <span className="px-2.5 py-1 rounded-full bg-[#E6F4EF] text-[#117A58] text-[11px] font-bold">
                       {currentStep.badge}
@@ -872,7 +1017,6 @@ export function SerbifyGameStage({
                     </p>
                   </div>
 
-                  {/* Quick contextual actions inside Coachmark */}
                   {level === 1 && (
                     <div className="flex flex-wrap gap-2 pt-1">
                       {SERVICES.map((svc) => {
@@ -922,691 +1066,783 @@ export function SerbifyGameStage({
             </AnimatePresence>
           </div>
 
-          {/* CENTER STAGE (Cols 6-9): Brushed Dark-Titanium Phone Centerpiece */}
+          {/* CENTER STAGE (Cols 6-9): 3D Perspective + Levitation + Tilt + Recoil Phone Chassis */}
           <div
             style={{ perspective: "1200px" }}
             className="lg:col-span-4 flex items-center justify-center order-1 lg:order-2"
           >
-            <motion.div
-              ref={phoneRef}
-              animate={{
-                rotateX: tilt.rotateX,
-                rotateY: tilt.rotateY,
-              }}
-              transition={DAMPED_SPRING}
-              style={{
-                transformStyle: "preserve-3d",
-                boxShadow: "0 30px 60px -15px rgba(18, 23, 38, 0.14)",
-              }}
-              className="relative w-[294px] sm:w-[318px] h-[565px] sm:h-[595px] rounded-[46px] bg-[#181C26] p-[11px] border border-white/15"
-            >
-              {/* 1px inner specular rim */}
-              <div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-[2px] rounded-[44px] border border-white/[0.18]"
-              />
-
-              {/* Diagonal soft glass sheen */}
-              <div
-                aria-hidden="true"
-                style={{
-                  background: `linear-gradient(125deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.03) ${sheenPos.x}%, transparent 62%)`,
-                }}
-                className="pointer-events-none absolute inset-0 rounded-[46px] z-30 transition-opacity duration-300"
-              />
-
-              {/* Hardware Side Buttons */}
-              <div
-                aria-hidden="true"
-                className="absolute -left-[3px] top-28 w-[3px] h-10 rounded-l bg-[#272D3D]"
-              />
-              <div
-                aria-hidden="true"
-                className="absolute -left-[3px] top-42 w-[3px] h-10 rounded-l bg-[#272D3D]"
-              />
-              <div
-                aria-hidden="true"
-                className="absolute -right-[3px] top-32 w-[3px] h-14 rounded-r bg-[#272D3D]"
-              />
-
-              {/* Inner Screen */}
-              <div
-                ref={phoneScreenRef}
-                className="relative w-full h-full rounded-[35px] bg-[#F7F6F2] overflow-hidden flex flex-col"
-              >
-                {/* Dynamic Island + Status Bar */}
-                <div className="relative z-20 px-5 pt-3 pb-2 flex items-center justify-between text-[11px] font-bold text-[#121726] bg-white/90 backdrop-blur-md border-b border-[#121726]/8">
-                  <span
-                    style={{ fontFamily: "var(--font-ui)" }}
-                    className="tabular-nums"
+            <div ref={phoneEntranceRef}>
+              <div ref={phoneLevitationRef}>
+                <div
+                  ref={phoneTiltRef}
+                  style={{
+                    transformStyle: "preserve-3d",
+                    boxShadow: "0 32px 64px -16px rgba(18, 23, 38, 0.16)",
+                  }}
+                  className="rounded-[46px]"
+                >
+                  <div
+                    ref={phoneRecoilRef}
+                    className="relative w-[294px] sm:w-[318px] h-[565px] sm:h-[595px] rounded-[46px] bg-[#181C26] p-[11px] border border-white/15"
                   >
-                    9:41
-                  </span>
-                  <div className="w-22 h-5 rounded-full bg-[#121726] shadow-inner flex items-center justify-between px-2">
-                    <span className="w-2 h-2 rounded-full bg-[#242B3D]" />
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#117A58]" />
-                  </div>
-                  <span className="text-[10px] font-bold text-[#4B5565]">
-                    5G
-                  </span>
-                </div>
+                    {/* 1px inner specular rim */}
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-[2px] rounded-[44px] border border-white/[0.18]"
+                    />
 
-                {/* SCREEN BODY BY LEVEL */}
-                <div className="relative flex-1 flex flex-col justify-between p-4 overflow-hidden">
-                  {/* LEVEL 1: HOME HELP, READY & INTERACTIVE SERVICE PICKER */}
-                  {level === 1 && (
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <p className="text-[11px] font-semibold text-[#4B5565]">
-                              Metro Manila
-                            </p>
-                            <h2 className="text-base font-bold text-[#121726] tracking-[-0.02em]">
-                              Home Help, Ready
-                            </h2>
-                          </div>
-                          <span className="w-9 h-9 rounded-full bg-[#FDF4E3] border border-[#E59824]/30 flex items-center justify-center">
-                            <img
-                              src="/assets/serbify-mascot.png"
-                              alt="Serbify"
-                              className="w-6 h-6 object-contain"
-                            />
+                    {/* Diagonal soft glass specular sheen */}
+                    <div
+                      aria-hidden="true"
+                      className="pointer-events-none absolute inset-0 rounded-[46px] overflow-hidden z-30"
+                    >
+                      <div
+                        ref={sheenRef}
+                        style={{
+                          background:
+                            "linear-gradient(125deg, rgba(255,255,255,0.20) 0%, rgba(255,255,255,0.04) 42%, transparent 62%)",
+                        }}
+                        className="absolute -inset-8"
+                      />
+                    </div>
+
+                    {/* Hardware Side Buttons */}
+                    <div
+                      aria-hidden="true"
+                      className="absolute -left-[3px] top-28 w-[3px] h-10 rounded-l bg-[#272D3D]"
+                    />
+                    <div
+                      aria-hidden="true"
+                      className="absolute -left-[3px] top-42 w-[3px] h-10 rounded-l bg-[#272D3D]"
+                    />
+                    <div
+                      aria-hidden="true"
+                      className="absolute -right-[3px] top-32 w-[3px] h-14 rounded-r bg-[#272D3D]"
+                    />
+
+                    {/* Inner Screen */}
+                    <div
+                      ref={phoneScreenRef}
+                      className="relative w-full h-full rounded-[35px] bg-[#F7F6F2] overflow-hidden flex flex-col"
+                    >
+                      {/* Dynamic Island + Status Bar */}
+                      <div className="relative z-20 px-5 pt-3 pb-2 flex items-center justify-between text-[11px] font-bold text-[#121726] bg-white/90 backdrop-blur-md border-b border-[#121726]/8">
+                        <span
+                          style={{ fontFamily: "var(--font-ui)" }}
+                          className="tabular-nums"
+                        >
+                          9:41
+                        </span>
+                        <div className="w-22 h-5 rounded-full bg-[#121726] shadow-inner flex items-center justify-between px-2">
+                          <span className="w-2 h-2 rounded-full bg-[#242B3D]" />
+                          <span className="relative flex h-2 w-2 items-center justify-center">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#117A58] opacity-60" />
+                            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#117A58]" />
                           </span>
                         </div>
+                        <span className="text-[10px] font-bold text-[#4B5565]">
+                          5G
+                        </span>
+                      </div>
 
-                        <div className="rounded-[18px] bg-white border border-[#121726]/8 p-3.5 shadow-[0_6px_18px_rgba(18,23,38,0.04)]">
-                          <div className="flex items-center gap-2 text-xs font-bold text-[#0660E4]">
-                            <ShieldCheck className="w-4 h-4 text-[#117A58]" />
-                            <span>ID &amp; NBI-Verified Local Pros</span>
-                          </div>
-                          <p className="mt-1.5 text-xs text-[#4B5565] leading-relaxed">
-                            Upfront prices, live arrival map, and safe in-app
-                            payments.
-                          </p>
-                        </div>
+                      {/* SCREEN BODY BY LEVEL */}
+                      <div className="relative flex-1 flex flex-col justify-between p-4 overflow-hidden">
+                        {/* LEVEL 1: IMMEDIATELY INTERACTIVE SERVICE PICKER */}
+                        {level === 1 && (
+                          <div className="flex-1 flex flex-col justify-between">
+                            <div className="space-y-3">
+                              <div className="flex items-center justify-between">
+                                <div>
+                                  <p className="text-[11px] font-semibold text-[#4B5565]">
+                                    Metro Manila
+                                  </p>
+                                  <h2 className="text-base font-bold text-[#121726] tracking-[-0.02em]">
+                                    Home Help, Ready
+                                  </h2>
+                                </div>
+                                <span className="w-9 h-9 rounded-full bg-[#FDF4E3] border border-[#E59824]/30 flex items-center justify-center">
+                                  <img
+                                    src="/assets/serbify-mascot.png"
+                                    alt="Serbify"
+                                    className="w-6 h-6 object-contain"
+                                  />
+                                </span>
+                              </div>
 
-                        {/* Interactive Service Cards inside Phone */}
-                        <div className="space-y-2 pt-0.5">
-                          {SERVICES.map((item) => {
-                            const Icon = item.Icon;
-                            return (
-                              <button
-                                key={item.key}
-                                type="button"
-                                onClick={() => handleSelectService(item)}
-                                className="w-full flex items-center justify-between px-3 py-2.5 rounded-2xl bg-white border border-[#121726]/8 hover:border-[#0660E4]/50 hover:shadow-[0_6px_16px_rgba(6,96,228,0.08)] active:scale-[0.98] transition-all cursor-pointer text-left"
+                              <div
+                                data-phone-card
+                                className="rounded-[18px] bg-white border border-[#121726]/8 p-3.5 shadow-[0_6px_18px_rgba(18,23,38,0.04)]"
                               >
-                                <div className="flex items-center gap-2.5">
-                                  <span
-                                    style={{
-                                      backgroundColor: item.softBg,
-                                      color: item.accent,
+                                <div className="flex items-center gap-2 text-xs font-bold text-[#0660E4]">
+                                  <ShieldCheck className="w-4 h-4 text-[#117A58]" />
+                                  <span>ID &amp; NBI-Verified Local Pros</span>
+                                </div>
+                                <p className="mt-1.5 text-xs text-[#4B5565] leading-relaxed">
+                                  Upfront prices, live arrival map, and safe
+                                  in-app payments.
+                                </p>
+                              </div>
+
+                              {/* Interactive Service Rows (No Duplicate Bottom Button) */}
+                              <div className="space-y-2.5 pt-0.5">
+                                {SERVICES.map((item, idx) => {
+                                  const Icon = item.Icon;
+                                  const isTapped = tappedService === item.key;
+                                  const isCoupledHighlight =
+                                    ctaHovered && idx === 0;
+                                  return (
+                                    <button
+                                      key={item.key}
+                                      data-phone-card
+                                      type="button"
+                                      onClick={() => handleSelectService(item)}
+                                      style={{
+                                        transform: isTapped
+                                          ? "scale(0.97)"
+                                          : isCoupledHighlight
+                                            ? "translateY(-1px)"
+                                            : undefined,
+                                      }}
+                                      className={`relative w-full overflow-hidden flex items-center justify-between px-3.5 py-3 rounded-2xl bg-white border transition-all duration-150 cursor-pointer text-left ${
+                                        isCoupledHighlight
+                                          ? "border-[#0660E4] shadow-[0_8px_22px_rgba(6,96,228,0.16)] ring-2 ring-[#0660E4]/15"
+                                          : "border-[#121726]/8 hover:border-[#0660E4]/50 hover:shadow-[0_6px_16px_rgba(6,96,228,0.08)]"
+                                      }`}
+                                    >
+                                      {isTapped && (
+                                        <motion.span
+                                          initial={{ scale: 0.2, opacity: 0.45 }}
+                                          animate={{ scale: 2.2, opacity: 0 }}
+                                          transition={{
+                                            duration: 0.3,
+                                            ease: SMOOTH_EASE,
+                                          }}
+                                          className="pointer-events-none absolute inset-0 rounded-2xl bg-[#0660E4]/20"
+                                        />
+                                      )}
+                                      <div className="flex items-center gap-2.5">
+                                        <span
+                                          style={{
+                                            backgroundColor: item.softBg,
+                                            color: item.accent,
+                                          }}
+                                          className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                                        >
+                                          <Icon className="w-4 h-4" />
+                                        </span>
+                                        <div>
+                                          <div className="text-xs font-bold text-[#121726]">
+                                            {item.label}
+                                          </div>
+                                          <div className="text-[11px] text-[#4B5565]">
+                                            {item.taskSummary}
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <span
+                                        style={{ fontFamily: "var(--font-ui)" }}
+                                        className="text-[11px] font-bold text-[#121726] tabular-nums"
+                                      >
+                                        {item.price}
+                                      </span>
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            </div>
+
+                            <div className="text-center text-[11px] font-medium text-[#4B5565] pb-1">
+                              Tap any trade above to book
+                            </div>
+                          </div>
+                        )}
+
+                        {/* LEVEL 2: AI PRO MATCHING (EXPANDING RADAR RINGS) */}
+                        {level === 2 && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 12 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.35, ease: SMOOTH_EASE }}
+                            className="flex-1 flex flex-col justify-between"
+                          >
+                            <div>
+                              <div className="flex items-center justify-between mb-2.5">
+                                <span className="text-xs font-bold text-[#121726]">
+                                  Finding {selectedService.label}
+                                </span>
+                                <span className="px-2.5 py-0.5 rounded-full bg-[#EAF1FD] text-[#0660E4] text-[11px] font-bold">
+                                  Scanning
+                                </span>
+                              </div>
+
+                              <div className="relative h-64 rounded-[22px] bg-[#ECEEF5] border border-[#121726]/8 overflow-hidden flex items-center justify-center">
+                                <div
+                                  aria-hidden="true"
+                                  className="absolute inset-0 opacity-45"
+                                  style={{
+                                    backgroundImage:
+                                      "linear-gradient(to right, #CBD5E1 1px, transparent 1px), linear-gradient(to bottom, #CBD5E1 1px, transparent 1px)",
+                                    backgroundSize: "26px 26px",
+                                  }}
+                                />
+                                {[1, 2, 3].map((ring) => (
+                                  <motion.div
+                                    key={ring}
+                                    initial={{ scale: 0.35, opacity: 0.75 }}
+                                    animate={{ scale: 1.55, opacity: 0 }}
+                                    transition={{
+                                      duration: 1.6,
+                                      repeat: Infinity,
+                                      delay: ring * 0.4,
+                                      ease: "easeOut",
                                     }}
-                                    className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0"
-                                  >
-                                    <Icon className="w-4 h-4" />
-                                  </span>
-                                  <div>
-                                    <div className="text-xs font-bold text-[#121726]">
-                                      {item.label}
+                                    className="absolute w-36 h-36 rounded-full border-2 border-[#0660E4]/45 bg-[#0660E4]/10"
+                                  />
+                                ))}
+                                <div className="relative z-10 w-10 h-10 rounded-full bg-[#0660E4] text-white shadow-lg flex items-center justify-center">
+                                  <MapPin className="w-5 h-5" />
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="rounded-2xl bg-white border border-[#121726]/8 px-3.5 py-3 text-center text-xs font-semibold text-[#4B5565]">
+                              Checking nearby verified{" "}
+                              {selectedService.label.toLowerCase()}s...
+                            </div>
+                          </motion.div>
+                        )}
+
+                        {/* LEVEL 3: 3D BADGE FLIP FOR NBI & GOV ID VERIFICATION */}
+                        {level === 3 && (
+                          <div className="flex-1 flex flex-col justify-between">
+                            <div>
+                              <div className="flex items-center justify-between mb-2.5">
+                                <span className="text-xs font-bold text-[#121726]">
+                                  Matched {selectedService.label}
+                                </span>
+                                <span className="px-2.5 py-0.5 rounded-full bg-[#E6F4EF] text-[#117A58] text-[11px] font-bold">
+                                  Verified
+                                </span>
+                              </div>
+
+                              <div className="relative h-48 rounded-[22px] bg-[#ECEEF5] border border-[#121726]/8 overflow-hidden flex items-center justify-center">
+                                <div
+                                  aria-hidden="true"
+                                  className="absolute inset-0 opacity-45"
+                                  style={{
+                                    backgroundImage:
+                                      "linear-gradient(to right, #CBD5E1 1px, transparent 1px), linear-gradient(to bottom, #CBD5E1 1px, transparent 1px)",
+                                    backgroundSize: "26px 26px",
+                                  }}
+                                />
+                                <div className="relative z-10 w-10 h-10 rounded-full bg-[#0660E4] text-white shadow-md flex items-center justify-center">
+                                  <MapPin className="w-5 h-5" />
+                                </div>
+                                <motion.div
+                                  initial={{ scale: 0.75, opacity: 0 }}
+                                  animate={{ scale: 1, opacity: 1 }}
+                                  transition={{
+                                    duration: 0.35,
+                                    ease: SMOOTH_EASE,
+                                  }}
+                                  className="absolute top-6 right-6 z-10 px-2.5 py-1 rounded-full bg-[#117A58] text-white text-[11px] font-bold shadow-md flex items-center gap-1"
+                                >
+                                  <ShieldCheck className="w-3.5 h-3.5" />
+                                  <span>Kuya Marco</span>
+                                </motion.div>
+                              </div>
+                            </div>
+
+                            <div className="space-y-2.5">
+                              <motion.div
+                                initial={{ rotateY: -90, opacity: 0 }}
+                                animate={{ rotateY: 0, opacity: 1 }}
+                                transition={{
+                                  duration: 0.48,
+                                  ease: SMOOTH_EASE,
+                                }}
+                                style={{ transformPerspective: 800 }}
+                                className="rounded-[20px] bg-white border border-[#117A58]/30 p-3.5 shadow-[0_8px_22px_rgba(17,122,88,0.1)]"
+                              >
+                                <div className="flex items-start gap-2.5">
+                                  <div className="w-10 h-10 rounded-2xl bg-[#E6F4EF] text-[#117A58] flex items-center justify-center shrink-0">
+                                    <ShieldCheck className="w-5 h-5" />
+                                  </div>
+                                  <div className="min-w-0">
+                                    <div className="text-xs font-bold text-[#121726] leading-snug">
+                                      Kuya Marco • {selectedService.label} • 4.9★
                                     </div>
-                                    <div className="text-[11px] text-[#4B5565]">
-                                      {item.taskSummary}
+                                    <div className="mt-1 text-[11px] text-[#4B5565] tabular-nums">
+                                      Gov&apos;t ID &amp; NBI checked •{" "}
+                                      {selectedService.samplePrice}
                                     </div>
                                   </div>
                                 </div>
-                                <span
-                                  style={{ fontFamily: "var(--font-ui)" }}
-                                  className="text-[11px] font-bold text-[#121726] tabular-nums"
-                                >
-                                  {item.price}
-                                </span>
+                              </motion.div>
+
+                              <button
+                                type="button"
+                                onClick={() => jumpToLevel(4)}
+                                className="w-full py-3 rounded-2xl bg-[#0660E4] hover:bg-[#044BB5] text-white text-sm font-bold shadow-[0_8px_20px_rgba(6,96,228,0.24)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                              >
+                                <span>Track Arrival</span>
+                                <ArrowRight className="w-4 h-4" />
                               </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      <button
-                        type="button"
-                        onClick={
-                          demoStarted
-                            ? () => handleSelectService(selectedService)
-                            : handleStartDemo
-                        }
-                        className="w-full rounded-2xl bg-[#ECEEF5] hover:bg-[#0660E4] text-[#0660E4] hover:text-white border border-[#0660E4]/15 px-3 py-2.5 text-center text-xs font-bold transition-colors cursor-pointer"
-                      >
-                        {demoStarted
-                          ? "Tap a service above to book"
-                          : "Press Start to play"}
-                      </button>
-                    </div>
-                  )}
-
-                  {/* LEVEL 2: AI MATCH (RADAR SCANNING) */}
-                  {level === 2 && (
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between mb-2.5">
-                          <span className="text-xs font-bold text-[#121726]">
-                            Finding {selectedService.label}
-                          </span>
-                          <span className="px-2.5 py-0.5 rounded-full bg-[#EAF1FD] text-[#0660E4] text-[11px] font-bold">
-                            Scanning
-                          </span>
-                        </div>
-
-                        <div className="relative h-64 rounded-[22px] bg-[#ECEEF5] border border-[#121726]/8 overflow-hidden flex items-center justify-center">
-                          <div
-                            aria-hidden="true"
-                            className="absolute inset-0 opacity-45"
-                            style={{
-                              backgroundImage:
-                                "linear-gradient(to right, #CBD5E1 1px, transparent 1px), linear-gradient(to bottom, #CBD5E1 1px, transparent 1px)",
-                              backgroundSize: "26px 26px",
-                            }}
-                          />
-                          {[1, 2, 3].map((ring) => (
-                            <motion.div
-                              key={ring}
-                              initial={{ scale: 0.35, opacity: 0.7 }}
-                              animate={{ scale: 1.5, opacity: 0 }}
-                              transition={{
-                                duration: 1.6,
-                                repeat: Infinity,
-                                delay: ring * 0.4,
-                                ease: "easeOut",
-                              }}
-                              className="absolute w-36 h-36 rounded-full border-2 border-[#0660E4]/45 bg-[#0660E4]/10"
-                            />
-                          ))}
-                          <div className="relative z-10 w-10 h-10 rounded-full bg-[#0660E4] text-white shadow-lg flex items-center justify-center">
-                            <MapPin className="w-5 h-5" />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="rounded-2xl bg-white border border-[#121726]/8 px-3.5 py-3 text-center text-xs font-semibold text-[#4B5565]">
-                        Checking nearby verified{" "}
-                        {selectedService.label.toLowerCase()}s...
-                      </div>
-                    </div>
-                  )}
-
-                  {/* LEVEL 3: ID & NBI VERIFIED PRO MATCHED */}
-                  {level === 3 && (
-                    <div className="flex-1 flex flex-col justify-between">
-                      <div>
-                        <div className="flex items-center justify-between mb-2.5">
-                          <span className="text-xs font-bold text-[#121726]">
-                            Matched {selectedService.label}
-                          </span>
-                          <span className="px-2.5 py-0.5 rounded-full bg-[#E6F4EF] text-[#117A58] text-[11px] font-bold">
-                            Verified
-                          </span>
-                        </div>
-
-                        <div className="relative h-48 rounded-[22px] bg-[#ECEEF5] border border-[#121726]/8 overflow-hidden flex items-center justify-center">
-                          <div
-                            aria-hidden="true"
-                            className="absolute inset-0 opacity-45"
-                            style={{
-                              backgroundImage:
-                                "linear-gradient(to right, #CBD5E1 1px, transparent 1px), linear-gradient(to bottom, #CBD5E1 1px, transparent 1px)",
-                              backgroundSize: "26px 26px",
-                            }}
-                          />
-                          <div className="relative z-10 w-10 h-10 rounded-full bg-[#0660E4] text-white shadow-md flex items-center justify-center">
-                            <MapPin className="w-5 h-5" />
-                          </div>
-                          <motion.div
-                            initial={{ scale: 0.7, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 0.35, ease: SMOOTH_EASE }}
-                            className="absolute top-6 right-6 z-10 px-2.5 py-1 rounded-full bg-[#117A58] text-white text-[11px] font-bold shadow-md flex items-center gap-1"
-                          >
-                            <ShieldCheck className="w-3.5 h-3.5" />
-                            <span>Kuya Marco</span>
-                          </motion.div>
-                        </div>
-                      </div>
-
-                      <div className="space-y-2.5">
-                        <div className="rounded-[20px] bg-white border border-[#117A58]/30 p-3.5 shadow-[0_8px_22px_rgba(17,122,88,0.1)]">
-                          <div className="flex items-start gap-2.5">
-                            <div className="w-10 h-10 rounded-2xl bg-[#E6F4EF] text-[#117A58] flex items-center justify-center shrink-0">
-                              <ShieldCheck className="w-5 h-5" />
-                            </div>
-                            <div className="min-w-0">
-                              <div className="text-xs font-bold text-[#121726] leading-snug">
-                                Kuya Marco • {selectedService.label} • 4.9★
-                              </div>
-                              <div className="mt-1 text-[11px] text-[#4B5565] tabular-nums">
-                                Gov&apos;t ID &amp; NBI checked •{" "}
-                                {selectedService.samplePrice}
-                              </div>
                             </div>
                           </div>
-                        </div>
+                        )}
 
-                        <button
-                          type="button"
-                          onClick={() => jumpToLevel(4)}
-                          className="w-full py-3 rounded-2xl bg-[#0660E4] hover:bg-[#044BB5] text-white text-sm font-bold shadow-[0_8px_20px_rgba(6,96,228,0.24)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
-                        >
-                          <span>Track Arrival</span>
-                          <ArrowRight className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* LEVEL 4: LIVE ARRIVAL (ZIGZAG HIGHWAY TRANSIT) */}
-                  {level === 4 && (
-                    <div className="flex-1 flex flex-col justify-between gap-2.5">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="text-xs font-bold text-[#121726]">
-                            Kuya Marco is on the way
-                          </div>
-                          <div className="text-[11px] text-[#4B5565]">
-                            Point A → Your House
-                          </div>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => setDoubleSpeed((s) => !s)}
-                          className={`px-2.5 py-1 rounded-full text-[11px] font-bold border transition-colors cursor-pointer ${
-                            doubleSpeed
-                              ? "bg-[#0660E4] text-white border-[#0660E4]"
-                              : "bg-white text-[#4B5565] border-[#121726]/12 hover:border-[#0660E4]"
-                          }`}
-                        >
-                          2x Speed
-                        </button>
-                      </div>
-
-                      <div className="relative rounded-[20px] bg-[#121726] border border-[#121726]/15 overflow-hidden shadow-inner">
-                        <video
-                          ref={transitVideoRef}
-                          src="/animations/transit-zigzag.mp4"
-                          muted
-                          playsInline
-                          autoPlay
-                          loop
-                          className="w-full h-24 object-cover opacity-55"
-                        />
-
-                        <div className="relative h-30 bg-[#181C26] border-t border-white/10 px-2 py-1">
-                          <svg
-                            viewBox="0 0 260 110"
-                            className="w-full h-full overflow-visible"
-                            aria-label="Zigzag highway route from Point A to your house"
-                          >
-                            <path
-                              d="M 22 92 L 90 92 L 70 55 L 185 55 L 155 20 L 236 20"
-                              fill="none"
-                              stroke="#334155"
-                              strokeWidth="18"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <path
-                              ref={transitPathRef}
-                              d="M 22 92 L 90 92 L 70 55 L 185 55 L 155 20 L 236 20"
-                              fill="none"
-                              stroke="#FFFFFF"
-                              strokeWidth="2"
-                              strokeDasharray="6 6"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                            <circle cx="22" cy="92" r="7" fill="#0660E4" />
-                            <text
-                              x="22"
-                              y="108"
-                              textAnchor="middle"
-                              fill="#CBD5E1"
-                              fontSize="8"
-                              fontWeight="700"
-                            >
-                              Point A
-                            </text>
-                            <circle cx="236" cy="20" r="8" fill="#117A58" />
-                            <text
-                              x="236"
-                              y="37"
-                              textAnchor="middle"
-                              fill="#A7F3D0"
-                              fontSize="8"
-                              fontWeight="700"
-                            >
-                              House
-                            </text>
-                          </svg>
-
-                          <div
-                            ref={transitVehicleRef}
-                            className="absolute top-0 left-0 w-8 h-8 rounded-full bg-white shadow-[0_4px_14px_rgba(0,0,0,0.35)] border-2 border-[#0660E4] flex items-center justify-center pointer-events-none"
-                          >
-                            {activeTransit.isJeepney ? (
-                              <JeepneyBadge className="w-5 h-4" />
-                            ) : (
-                              <ActiveTransitIcon className="w-4 h-4 text-[#0660E4]" />
-                            )}
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="rounded-2xl bg-white border border-[#121726]/8 p-3">
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-2 min-w-0">
-                            <span className="w-8 h-8 rounded-xl bg-[#EAF1FD] flex items-center justify-center shrink-0">
-                              {activeTransit.isJeepney ? (
-                                <JeepneyBadge className="w-5 h-4" />
-                              ) : (
-                                <ActiveTransitIcon className="w-4 h-4 text-[#0660E4]" />
-                              )}
-                            </span>
-                            <div className="min-w-0">
-                              <div className="text-xs font-bold text-[#121726] truncate">
-                                {activeTransit.label}
-                              </div>
-                              <div className="text-[10px] font-semibold text-[#4B5565] tabular-nums">
-                                Stage {transitStageIdx + 1} of 6 •{" "}
-                                {activeTransit.mode}
-                              </div>
-                            </div>
-                          </div>
-                          <span className="text-[11px] font-bold text-[#0660E4] tabular-nums">
-                            {Math.round(transitProgress * 100)}%
-                          </span>
-                        </div>
-                        <div className="mt-2 h-1.5 w-full rounded-full bg-[#ECEEF5] overflow-hidden">
-                          <div
-                            style={{ width: `${transitProgress * 100}%` }}
-                            className="h-full rounded-full bg-[#0660E4] transition-all duration-100"
-                          />
-                        </div>
-                      </div>
-
-                      {transitArrived ? (
-                        <button
-                          type="button"
-                          onClick={() => jumpToLevel(5)}
-                          className="w-full py-3 rounded-2xl bg-[#0660E4] hover:bg-[#044BB5] text-white text-sm font-bold shadow-[0_8px_20px_rgba(6,96,228,0.24)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
-                        >
-                          <span>Start Repair</span>
-                          <ArrowRight className="w-4 h-4" />
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => jumpToLevel(5)}
-                          className="w-full py-2.5 rounded-2xl bg-[#ECEEF5] hover:bg-[#E2E6F0] text-[#4B5565] text-xs font-bold transition-colors cursor-pointer"
-                        >
-                          Skip to Job Complete →
-                        </button>
-                      )}
-                    </div>
-                  )}
-
-                  {/* LEVEL 5: JOB COMPLETE (3D VIDEO PLAYBACK) */}
-                  {level === 5 && (
-                    <div className="flex-1 flex flex-col justify-between gap-3">
-                      <div>
-                        <div className="flex items-center justify-between mb-2">
-                          <div>
-                            <div className="text-xs font-bold text-[#121726]">
-                              {selectedService.label} at Work
-                            </div>
-                            <div className="text-[11px] text-[#4B5565]">
-                              {selectedService.taskSummary}
-                            </div>
-                          </div>
-                          <span className="px-2.5 py-0.5 rounded-full bg-[#FDF4E3] text-[#8A5609] text-[11px] font-bold">
-                            {jobFinished ? "Done" : "In Progress"}
-                          </span>
-                        </div>
-
-                        <div className="relative rounded-[20px] bg-[#F7F6F2] border border-[#121726]/8 overflow-hidden shadow-[0_8px_22px_rgba(18,23,38,0.05)]">
-                          <video
-                            ref={jobVideoRef}
-                            key={selectedService.videoSrc}
-                            src={selectedService.videoSrc}
-                            muted
-                            playsInline
-                            autoPlay
-                            className="w-full h-52 object-cover bg-[#F7F6F2]"
-                          />
-                          <div className="px-3.5 py-2.5 bg-white border-t border-[#121726]/8">
-                            <div className="flex items-center justify-between text-[11px] font-bold text-[#4B5565] mb-1.5">
-                              <span>Repair Progress</span>
-                              <span className="tabular-nums text-[#0660E4]">
-                                {Math.round(jobProgress * 100)}%
-                              </span>
-                            </div>
-                            <div className="h-1.5 w-full rounded-full bg-[#ECEEF5] overflow-hidden">
-                              <div
-                                style={{ width: `${jobProgress * 100}%` }}
-                                className="h-full rounded-full bg-[#117A58] transition-all duration-150"
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {jobFinished ? (
-                        <button
-                          type="button"
-                          onClick={() => jumpToLevel(6)}
-                          className="w-full py-3 rounded-2xl bg-[#0660E4] hover:bg-[#044BB5] text-white text-sm font-bold shadow-[0_8px_20px_rgba(6,96,228,0.24)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
-                        >
-                          <span>Pay the {selectedService.label}</span>
-                          <ArrowRight className="w-4 h-4" />
-                        </button>
-                      ) : (
-                        <button
-                          type="button"
-                          onClick={() => jumpToLevel(6)}
-                          className="w-full py-2.5 rounded-2xl bg-white border border-[#121726]/10 text-[#4B5565] hover:text-[#121726] text-xs font-bold transition-colors cursor-pointer"
-                        >
-                          Proceed to Safe Payment →
-                        </button>
-                      )}
-                    </div>
-                  )}
-
-                  {/* LEVEL 6: SAFE PAYMENT */}
-                  {level === 6 && (
-                    <div className="flex-1 flex flex-col justify-between gap-3">
-                      <div>
-                        <div className="text-xs font-bold text-[#121726]">
-                          Safe In-App Payment
-                        </div>
-                        <div className="text-[11px] text-[#4B5565]">
-                          Release funds now that you&apos;ve checked the work
-                        </div>
-
-                        <div className="mt-3 rounded-[22px] bg-white border border-[#121726]/8 p-4 shadow-[0_8px_22px_rgba(18,23,38,0.05)] space-y-4">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="w-9 h-9 rounded-xl bg-[#EAF1FD] text-[#0660E4] flex items-center justify-center">
-                                <CreditCard className="w-4 h-4" />
-                              </span>
+                        {/* LEVEL 4: LIVE ARRIVAL (ANIMATED ROUTE PATH + PIN) */}
+                        {level === 4 && (
+                          <div className="flex-1 flex flex-col justify-between gap-2.5">
+                            <div className="flex items-center justify-between">
                               <div>
                                 <div className="text-xs font-bold text-[#121726]">
-                                  GCash / Maya / Cash
+                                  Kuya Marco is on the way
                                 </div>
-                                <div className="text-[10px] text-[#4B5565]">
-                                  Your Account
+                                <div className="text-[11px] text-[#4B5565]">
+                                  Point A → Your House
+                                </div>
+                              </div>
+                              <button
+                                type="button"
+                                onClick={() => setDoubleSpeed((s) => !s)}
+                                className={`px-2.5 py-1 rounded-full text-[11px] font-bold border transition-colors cursor-pointer ${
+                                  doubleSpeed
+                                    ? "bg-[#0660E4] text-white border-[#0660E4]"
+                                    : "bg-white text-[#4B5565] border-[#121726]/12 hover:border-[#0660E4]"
+                                }`}
+                              >
+                                2x Speed
+                              </button>
+                            </div>
+
+                            <div className="relative rounded-[20px] bg-[#121726] border border-[#121726]/15 overflow-hidden shadow-inner">
+                              <video
+                                ref={transitVideoRef}
+                                src="/animations/transit-zigzag.mp4"
+                                muted
+                                playsInline
+                                autoPlay
+                                loop
+                                className="w-full h-24 object-cover opacity-55"
+                              />
+
+                              <div className="relative h-30 bg-[#181C26] border-t border-white/10 px-2 py-1">
+                                <svg
+                                  viewBox="0 0 260 110"
+                                  className="w-full h-full overflow-visible"
+                                  aria-label="Zigzag highway route from Point A to your house"
+                                >
+                                  <path
+                                    d="M 22 92 L 90 92 L 70 55 L 185 55 L 155 20 L 236 20"
+                                    fill="none"
+                                    stroke="#334155"
+                                    strokeWidth="18"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                  <path
+                                    ref={transitPathRef}
+                                    d="M 22 92 L 90 92 L 70 55 L 185 55 L 155 20 L 236 20"
+                                    fill="none"
+                                    stroke="#FFFFFF"
+                                    strokeWidth="2"
+                                    strokeDasharray="6 6"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                  />
+                                  <circle cx="22" cy="92" r="7" fill="#0660E4" />
+                                  <text
+                                    x="22"
+                                    y="108"
+                                    textAnchor="middle"
+                                    fill="#CBD5E1"
+                                    fontSize="8"
+                                    fontWeight="700"
+                                  >
+                                    Point A
+                                  </text>
+                                  <circle cx="236" cy="20" r="8" fill="#117A58" />
+                                  <text
+                                    x="236"
+                                    y="37"
+                                    textAnchor="middle"
+                                    fill="#A7F3D0"
+                                    fontSize="8"
+                                    fontWeight="700"
+                                  >
+                                    House
+                                  </text>
+                                </svg>
+
+                                <div
+                                  ref={transitVehicleRef}
+                                  className="absolute top-0 left-0 w-8 h-8 rounded-full bg-white shadow-[0_4px_14px_rgba(0,0,0,0.35)] border-2 border-[#0660E4] flex items-center justify-center pointer-events-none"
+                                >
+                                  {activeTransit.isJeepney ? (
+                                    <JeepneyBadge className="w-5 h-4" />
+                                  ) : (
+                                    <ActiveTransitIcon className="w-4 h-4 text-[#0660E4]" />
+                                  )}
                                 </div>
                               </div>
                             </div>
-                            <span className="text-sm font-bold text-[#121726] tabular-nums">
-                              {selectedService.samplePrice}
-                            </span>
-                          </div>
 
-                          <div className="relative h-8 flex items-center justify-center">
-                            <div className="w-full h-0.5 bg-[#ECEEF5] rounded-full" />
-                            {paymentPhase === "sending" && (
-                              <motion.div
-                                initial={{ x: -85, opacity: 0, scale: 0.85 }}
-                                animate={{
-                                  x: 85,
-                                  opacity: [0, 1, 1, 0],
-                                  scale: 1.08,
-                                }}
-                                transition={{ duration: 1.1, ease: "easeInOut" }}
-                                className="absolute px-2.5 py-1 rounded-full bg-[#0660E4] text-white text-[10px] font-bold shadow-md tabular-nums"
+                            <div className="rounded-2xl bg-white border border-[#121726]/8 p-3">
+                              <div className="flex items-center justify-between gap-2">
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <span className="w-8 h-8 rounded-xl bg-[#EAF1FD] flex items-center justify-center shrink-0">
+                                    {activeTransit.isJeepney ? (
+                                      <JeepneyBadge className="w-5 h-4" />
+                                    ) : (
+                                      <ActiveTransitIcon className="w-4 h-4 text-[#0660E4]" />
+                                    )}
+                                  </span>
+                                  <div className="min-w-0">
+                                    <div className="text-xs font-bold text-[#121726] truncate">
+                                      {activeTransit.label}
+                                    </div>
+                                    <div className="text-[10px] font-semibold text-[#4B5565] tabular-nums">
+                                      Stage {transitStageIdx + 1} of 6 •{" "}
+                                      {activeTransit.mode}
+                                    </div>
+                                  </div>
+                                </div>
+                                <span className="text-[11px] font-bold text-[#0660E4] tabular-nums">
+                                  {Math.round(transitProgress * 100)}%
+                                </span>
+                              </div>
+                              <div className="mt-2 h-1.5 w-full rounded-full bg-[#ECEEF5] overflow-hidden">
+                                <div
+                                  style={{ width: `${transitProgress * 100}%` }}
+                                  className="h-full rounded-full bg-[#0660E4] transition-all duration-100"
+                                />
+                              </div>
+                            </div>
+
+                            {transitArrived ? (
+                              <button
+                                type="button"
+                                onClick={() => jumpToLevel(5)}
+                                className="w-full py-3 rounded-2xl bg-[#0660E4] hover:bg-[#044BB5] text-white text-sm font-bold shadow-[0_8px_20px_rgba(6,96,228,0.24)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                               >
-                                Sending {selectedService.samplePrice}
-                              </motion.div>
+                                <span>Start Repair</span>
+                                <ArrowRight className="w-4 h-4" />
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => jumpToLevel(5)}
+                                className="w-full py-2.5 rounded-2xl bg-[#ECEEF5] hover:bg-[#E2E6F0] text-[#4B5565] text-xs font-bold transition-colors cursor-pointer"
+                              >
+                                Skip to Job Complete →
+                              </button>
                             )}
+                          </div>
+                        )}
+
+                        {/* LEVEL 5: JOB COMPLETE (BOTANICAL JADE CHECKMARK DRAW) */}
+                        {level === 5 && (
+                          <div className="flex-1 flex flex-col justify-between gap-3">
+                            <div>
+                              <div className="flex items-center justify-between mb-2">
+                                <div>
+                                  <div className="text-xs font-bold text-[#121726]">
+                                    {selectedService.label} at Work
+                                  </div>
+                                  <div className="text-[11px] text-[#4B5565]">
+                                    {selectedService.taskSummary}
+                                  </div>
+                                </div>
+                                <span className="px-2.5 py-0.5 rounded-full bg-[#FDF4E3] text-[#8A5609] text-[11px] font-bold">
+                                  {jobFinished ? "Done" : "In Progress"}
+                                </span>
+                              </div>
+
+                              <div className="relative rounded-[20px] bg-[#F7F6F2] border border-[#121726]/8 overflow-hidden shadow-[0_8px_22px_rgba(18,23,38,0.05)]">
+                                <video
+                                  ref={jobVideoRef}
+                                  key={selectedService.videoSrc}
+                                  src={selectedService.videoSrc}
+                                  muted
+                                  playsInline
+                                  autoPlay
+                                  className="w-full h-52 object-cover bg-[#F7F6F2]"
+                                />
+                                {jobFinished && (
+                                  <div className="absolute top-3 right-3 w-9 h-9 rounded-full bg-[#E6F4EF] border border-[#117A58]/30 flex items-center justify-center shadow-sm">
+                                    <svg
+                                      viewBox="0 0 24 24"
+                                      className="w-5 h-5 text-[#117A58]"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2.5"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    >
+                                      <motion.path
+                                        d="M5 13l4 4L19 7"
+                                        initial={{ pathLength: 0 }}
+                                        animate={{ pathLength: 1 }}
+                                        transition={{
+                                          duration: 0.45,
+                                          ease: SMOOTH_EASE,
+                                        }}
+                                      />
+                                    </svg>
+                                  </div>
+                                )}
+                                <div className="px-3.5 py-2.5 bg-white border-t border-[#121726]/8">
+                                  <div className="flex items-center justify-between text-[11px] font-bold text-[#4B5565] mb-1.5">
+                                    <span>Repair Progress</span>
+                                    <span className="tabular-nums text-[#0660E4]">
+                                      {Math.round(jobProgress * 100)}%
+                                    </span>
+                                  </div>
+                                  <div className="h-1.5 w-full rounded-full bg-[#ECEEF5] overflow-hidden">
+                                    <div
+                                      style={{ width: `${jobProgress * 100}%` }}
+                                      className="h-full rounded-full bg-[#117A58] transition-all duration-150"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+                            {jobFinished ? (
+                              <button
+                                type="button"
+                                onClick={() => jumpToLevel(6)}
+                                className="w-full py-3 rounded-2xl bg-[#0660E4] hover:bg-[#044BB5] text-white text-sm font-bold shadow-[0_8px_20px_rgba(6,96,228,0.24)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                              >
+                                <span>Pay the {selectedService.label}</span>
+                                <ArrowRight className="w-4 h-4" />
+                              </button>
+                            ) : (
+                              <button
+                                type="button"
+                                onClick={() => jumpToLevel(6)}
+                                className="w-full py-2.5 rounded-2xl bg-white border border-[#121726]/10 text-[#4B5565] hover:text-[#121726] text-xs font-bold transition-colors cursor-pointer"
+                              >
+                                Proceed to Safe Payment →
+                              </button>
+                            )}
+                          </div>
+                        )}
+
+                        {/* LEVEL 6: SAFE PAYMENT (BOTTOM-SHEET SLIDE-UP) */}
+                        {level === 6 && (
+                          <motion.div
+                            initial={{ y: 28, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ duration: 0.38, ease: SMOOTH_EASE }}
+                            className="flex-1 flex flex-col justify-between gap-3"
+                          >
+                            <div>
+                              <div className="text-xs font-bold text-[#121726]">
+                                Safe In-App Payment
+                              </div>
+                              <div className="text-[11px] text-[#4B5565]">
+                                Release funds now that you&apos;ve checked the
+                                work
+                              </div>
+
+                              <div className="mt-3 rounded-[22px] bg-white border border-[#121726]/8 p-4 shadow-[0_8px_22px_rgba(18,23,38,0.05)] space-y-4">
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                    <span className="w-9 h-9 rounded-xl bg-[#EAF1FD] text-[#0660E4] flex items-center justify-center">
+                                      <CreditCard className="w-4 h-4" />
+                                    </span>
+                                    <div>
+                                      <div className="text-xs font-bold text-[#121726]">
+                                        GCash / Maya / Cash
+                                      </div>
+                                      <div className="text-[10px] text-[#4B5565]">
+                                        Your Account
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <span className="text-sm font-bold text-[#121726] tabular-nums">
+                                    {selectedService.samplePrice}
+                                  </span>
+                                </div>
+
+                                <div className="relative h-8 flex items-center justify-center">
+                                  <div className="w-full h-0.5 bg-[#ECEEF5] rounded-full" />
+                                  {paymentPhase === "sending" && (
+                                    <motion.div
+                                      initial={{
+                                        x: -85,
+                                        opacity: 0,
+                                        scale: 0.85,
+                                      }}
+                                      animate={{
+                                        x: 85,
+                                        opacity: [0, 1, 1, 0],
+                                        scale: 1.08,
+                                      }}
+                                      transition={{
+                                        duration: 1.1,
+                                        ease: "easeInOut",
+                                      }}
+                                      className="absolute px-2.5 py-1 rounded-full bg-[#0660E4] text-white text-[10px] font-bold shadow-md tabular-nums"
+                                    >
+                                      Sending {selectedService.samplePrice}
+                                    </motion.div>
+                                  )}
+                                  {paymentPhase === "sent" && (
+                                    <motion.div
+                                      initial={{ scale: 0.8, opacity: 0 }}
+                                      animate={{ scale: 1, opacity: 1 }}
+                                      transition={{
+                                        duration: 0.28,
+                                        ease: SMOOTH_EASE,
+                                      }}
+                                      className="absolute px-2.5 py-1 rounded-full bg-[#117A58] text-white text-[10px] font-bold shadow-sm flex items-center gap-1"
+                                    >
+                                      <Check className="w-3 h-3" />
+                                      <span>Transferred</span>
+                                    </motion.div>
+                                  )}
+                                </div>
+
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center gap-2">
+                                    <span className="w-9 h-9 rounded-xl bg-[#E6F4EF] text-[#117A58] flex items-center justify-center">
+                                      <Wallet className="w-4 h-4" />
+                                    </span>
+                                    <div>
+                                      <div className="text-xs font-bold text-[#121726]">
+                                        Kuya Marco&apos;s Wallet
+                                      </div>
+                                      <div className="text-[10px] text-[#4B5565]">
+                                        Verified {selectedService.label}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <ActiveServiceIcon className="w-4 h-4 text-[#4B5565]" />
+                                </div>
+                              </div>
+                            </div>
+
+                            {paymentPhase === "ready" && (
+                              <button
+                                type="button"
+                                onClick={handleSendPayment}
+                                className="w-full py-3.5 rounded-2xl bg-[#0660E4] hover:bg-[#044BB5] text-white text-sm font-bold shadow-[0_8px_20px_rgba(6,96,228,0.24)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                              >
+                                <span>Pay the {selectedService.label}</span>
+                                <ArrowRight className="w-4 h-4" />
+                              </button>
+                            )}
+
+                            {paymentPhase === "sending" && (
+                              <div className="w-full py-3.5 rounded-2xl bg-[#EAF1FD] text-[#0660E4] text-sm font-bold text-center">
+                                Sending payment safely...
+                              </div>
+                            )}
+
                             {paymentPhase === "sent" && (
                               <motion.div
-                                initial={{ scale: 0.8, opacity: 0 }}
-                                animate={{ scale: 1, opacity: 1 }}
-                                transition={{ duration: 0.28, ease: SMOOTH_EASE }}
-                                className="absolute px-2.5 py-1 rounded-full bg-[#117A58] text-white text-[10px] font-bold shadow-sm flex items-center gap-1"
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                  duration: 0.35,
+                                  ease: SMOOTH_EASE,
+                                }}
+                                className="space-y-2.5"
                               >
-                                <Check className="w-3 h-3" />
-                                <span>Transferred</span>
+                                <div className="rounded-[20px] bg-[#E6F4EF] border border-[#117A58]/30 p-3 text-center">
+                                  <div className="text-xs font-bold text-[#117A58]">
+                                    Payment Sent to Your {selectedService.label}
+                                    !
+                                  </div>
+                                  <div className="mt-1.5 flex items-center justify-center gap-1">
+                                    {[0, 1, 2, 3, 4].map((starIdx) => (
+                                      <Star
+                                        key={starIdx}
+                                        className="w-4 h-4 fill-[#E59824] text-[#E59824]"
+                                      />
+                                    ))}
+                                  </div>
+                                </div>
+
+                                <button
+                                  type="button"
+                                  onClick={onSkipToSite}
+                                  className="w-full py-3 rounded-2xl bg-[#0660E4] hover:bg-[#044BB5] text-white text-sm font-bold shadow-[0_10px_24px_rgba(6,96,228,0.28)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
+                                >
+                                  <Home className="w-4 h-4" />
+                                  <span>Explore Full Site</span>
+                                </button>
                               </motion.div>
                             )}
-                          </div>
-
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <span className="w-9 h-9 rounded-xl bg-[#E6F4EF] text-[#117A58] flex items-center justify-center">
-                                <Wallet className="w-4 h-4" />
-                              </span>
-                              <div>
-                                <div className="text-xs font-bold text-[#121726]">
-                                  Kuya Marco&apos;s Wallet
-                                </div>
-                                <div className="text-[10px] text-[#4B5565]">
-                                  Verified {selectedService.label}
-                                </div>
-                              </div>
-                            </div>
-                            <ActiveServiceIcon className="w-4 h-4 text-[#4B5565]" />
-                          </div>
-                        </div>
+                          </motion.div>
+                        )}
                       </div>
-
-                      {paymentPhase === "ready" && (
-                        <button
-                          type="button"
-                          onClick={handleSendPayment}
-                          className="w-full py-3.5 rounded-2xl bg-[#0660E4] hover:bg-[#044BB5] text-white text-sm font-bold shadow-[0_8px_20px_rgba(6,96,228,0.24)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
-                        >
-                          <span>Pay the {selectedService.label}</span>
-                          <ArrowRight className="w-4 h-4" />
-                        </button>
-                      )}
-
-                      {paymentPhase === "sending" && (
-                        <div className="w-full py-3.5 rounded-2xl bg-[#EAF1FD] text-[#0660E4] text-sm font-bold text-center">
-                          Sending payment safely...
-                        </div>
-                      )}
-
-                      {paymentPhase === "sent" && (
-                        <motion.div
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.35, ease: SMOOTH_EASE }}
-                          className="space-y-2.5"
-                        >
-                          <div className="rounded-[20px] bg-[#E6F4EF] border border-[#117A58]/30 p-3 text-center">
-                            <div className="text-xs font-bold text-[#117A58]">
-                              Payment Sent to Your {selectedService.label}!
-                            </div>
-                            <div className="mt-1.5 flex items-center justify-center gap-1">
-                              {[0, 1, 2, 3, 4].map((starIdx) => (
-                                <Star
-                                  key={starIdx}
-                                  className="w-4 h-4 fill-[#E59824] text-[#E59824]"
-                                />
-                              ))}
-                            </div>
-                          </div>
-
-                          <button
-                            type="button"
-                            onClick={onSkipToSite}
-                            className="w-full py-3 rounded-2xl bg-[#0660E4] hover:bg-[#044BB5] text-white text-sm font-bold shadow-[0_10px_24px_rgba(6,96,228,0.28)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
-                          >
-                            <Home className="w-4 h-4" />
-                            <span>Explore Full Site</span>
-                          </button>
-                        </motion.div>
-                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
 
-          {/* RIGHT STAGE (Cols 10-12): Staggered Contextual Orbiting Telemetry */}
+          {/* RIGHT STAGE (Cols 10-12): Calm Initial State; Contextual Telemetry Only in Levels 2-6 */}
           <div className="lg:col-span-3 flex flex-col justify-between gap-4 lg:h-[480px] order-3">
-            {/* 1. Top-Right Metro Manila Trust Pill */}
-            <div
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.72)",
-                backdropFilter: "blur(16px)",
-                WebkitBackdropFilter: "blur(16px)",
-                borderColor: "rgba(18, 23, 38, 0.06)",
-              }}
-              className="rounded-2xl border p-4 shadow-[0_12px_32px_rgba(18,23,38,0.06)] flex items-start gap-3"
-            >
-              <span className="relative flex h-2.5 w-2.5 mt-1 shrink-0">
-                {(level === 2 || level === 3) && (
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#117A58] opacity-75" />
+            <div className="min-h-[72px]">
+              <AnimatePresence mode="wait">
+                {demoStarted && level >= 2 && (
+                  <motion.div
+                    key={`telemetry-${level}`}
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.28, ease: SMOOTH_EASE }}
+                    style={{
+                      backgroundColor: "rgba(255, 255, 255, 0.72)",
+                      backdropFilter: "blur(16px)",
+                      WebkitBackdropFilter: "blur(16px)",
+                      borderColor: "rgba(18, 23, 38, 0.06)",
+                    }}
+                    className="rounded-2xl border p-4 shadow-[0_12px_32px_rgba(18,23,38,0.06)] flex items-start gap-3"
+                  >
+                    <span className="relative flex h-2.5 w-2.5 mt-1 shrink-0">
+                      {(level === 2 || level === 3) && (
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#117A58] opacity-75" />
+                      )}
+                      <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#117A58]" />
+                    </span>
+                    <div>
+                      <p className="text-xs font-bold text-[#121726] leading-snug">
+                        {currentStep.telemetryTitle}
+                      </p>
+                      <p
+                        style={{ fontFamily: "var(--font-ui)" }}
+                        className="mt-0.5 text-[11px] font-semibold text-[#117A58] tabular-nums"
+                      >
+                        {currentStep.telemetryValue}
+                      </p>
+                    </div>
+                  </motion.div>
                 )}
-                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#117A58]" />
-              </span>
-              <div>
-                <p className="text-xs font-bold text-[#121726] leading-snug">
-                  NBI &amp; Gov ID Verified
-                </p>
-                <p
-                  style={{ fontFamily: "var(--font-ui)" }}
-                  className="mt-0.5 text-[11px] font-semibold text-[#117A58] tabular-nums"
-                >
-                  99.4% Match Rate
-                </p>
-              </div>
+              </AnimatePresence>
             </div>
 
-            {/* 2. Bottom-Right Interactive Keyboard/Click Hint */}
+            {/* Minimal Borderless Keyboard Shortcut Cue */}
             <button
               type="button"
               onClick={advanceLevel}
-              style={{
-                backgroundColor: "rgba(255, 255, 255, 0.72)",
-                backdropFilter: "blur(16px)",
-                WebkitBackdropFilter: "blur(16px)",
-                borderColor: "rgba(18, 23, 38, 0.06)",
-              }}
-              className="group rounded-2xl border p-4 shadow-[0_12px_32px_rgba(18,23,38,0.06)] hover:border-[#0660E4]/35 text-left transition-colors cursor-pointer flex items-center justify-between gap-3"
+              className="group self-start lg:self-end inline-flex items-center gap-2 py-1.5 text-xs font-medium text-[#4B5565] hover:text-[#121726] transition-colors cursor-pointer"
             >
-              <div>
-                <p className="text-xs font-bold text-[#121726]">
-                  Click inside phone or press{" "}
-                  <kbd className="px-1.5 py-0.5 rounded bg-[#ECEEF5] border border-[#121726]/10 text-[10px] font-bold">
-                    Space
-                  </kbd>
-                </p>
-                <p className="mt-0.5 text-[11px] text-[#4B5565]">
-                  Advance walkthrough
-                </p>
-              </div>
-              <ArrowRight className="w-4 h-4 text-[#0660E4] transition-transform duration-200 group-hover:translate-x-1 shrink-0" />
+              <span>
+                Press{" "}
+                <kbd className="px-1.5 py-0.5 rounded-md bg-white/80 border border-[#121726]/12 text-[11px] font-bold text-[#121726] shadow-[0_1px_0_rgba(18,23,38,0.08)]">
+                  Space
+                </kbd>{" "}
+                to advance
+              </span>
+              <ArrowRight className="w-3.5 h-3.5 text-[#0660E4] transition-transform duration-200 group-hover:translate-x-1" />
             </button>
           </div>
         </div>
