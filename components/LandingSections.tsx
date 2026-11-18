@@ -1,7 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useSpring, useTransform } from "framer-motion";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { QRCodeSVG } from "qrcode.react";
 import {
   BadgeCheck,
@@ -28,6 +30,11 @@ import {
   X,
   Zap,
 } from "lucide-react";
+import { useLenis } from "./LenisProvider";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 import {
   CounterRollUp,
   KineticHeadline,
@@ -179,11 +186,41 @@ export function LandingSections({
   setPersona,
 }: LandingSectionsProps) {
   const t = COPY.en;
+  const bentoSectionRef = useRef<HTMLElement>(null);
+  const { prefersReducedMotion } = useLenis();
   const [selectedServiceId, setSelectedServiceId] = useState(
     SERVICE_CATEGORIES[0].id
   );
   const [activeHubId, setActiveHubId] = useState<string>("pasig");
   const [modalTopic, setModalTopic] = useState<ModalTopic>(null);
+
+  useEffect(() => {
+    if (prefersReducedMotion) return;
+    const ctx = gsap.context(() => {
+      const cards = bentoSectionRef.current?.querySelectorAll("[data-pro-bento]");
+      if (!cards || cards.length === 0) return;
+
+      gsap.fromTo(
+        cards,
+        { y: 24, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          duration: 0.68,
+          stagger: 0.08,
+          ease: "power3.out",
+          clearProps: "transform",
+          scrollTrigger: {
+            trigger: bentoSectionRef.current,
+            start: "top 78%",
+            once: true,
+          },
+        }
+      );
+    }, bentoSectionRef);
+
+    return () => ctx.revert();
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
     if (!modalTopic) return;
@@ -198,259 +235,331 @@ export function LandingSections({
     SERVICE_CATEGORIES.find((s) => s.id === selectedServiceId) ??
     SERVICE_CATEGORIES[0];
 
+  const isPro = persona === "pro";
+
   return (
     <>
       {/* 2. DUAL-PERSONA INTERACTIVE BENTO GRID */}
       <section
         id="verified-pros"
+        ref={bentoSectionRef}
         className="w-full bg-[#F7F5F0]"
       >
-        <div className="w-full max-w-7xl mx-auto px-5 md:px-10 py-24 md:py-32">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div className="flex flex-col gap-2">
-            <span className="text-xs font-bold uppercase tracking-wider text-[#0660E4]">
-              {t.bento.eyebrow}
-            </span>
-            <KineticHeadline
-              as="h2"
-              className="text-3xl md:text-[36px] md:leading-[44px] font-bold tracking-[-0.03em] text-[#0F172A]"
-              lines={[
-                { text: t.bento.headingTop },
-                { text: t.bento.headingBottom },
-              ]}
-            />
-          </div>
-
-          {/* Spring-animated Segmented Persona Switcher */}
-          <div className="inline-flex p-1.5 bg-[#F1F5F9] border border-[#E2E8F0] rounded-full self-start md:self-auto">
-            {(["client", "pro"] as const).map((item) => {
-              const active = persona === item;
-              return (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => setPersona(item)}
-                  className={`relative px-4 py-2 rounded-full text-xs font-bold transition-colors cursor-pointer ${
-                    active
-                      ? "text-[#0B1C30]"
-                      : "text-[#64748B] hover:text-[#0B1C30]"
-                  }`}
-                >
-                  {active && (
-                    <motion.span
-                      layoutId="bento-persona-pill"
-                      transition={SPRING_TACTILE}
-                      className="absolute inset-0 bg-white rounded-full shadow-xs border border-[#E2E8F0]"
-                    />
-                  )}
-                  <span className="relative z-10">
-                    {item === "client" ? t.bento.clientTab : t.bento.proTab}
-                  </span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
-          {/* Bento 1: 8-col */}
-          <SpotlightCard
-            accent="cobalt"
-            className="md:col-span-8 bg-[#EFF6FF]/65 rounded-[24px] border border-[#BFDBFE]/70 p-7 md:p-8 flex flex-col justify-between gap-8"
-          >
-            <div className="flex flex-col gap-3 max-w-xl">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0660E4]/10 text-[#0660E4] text-xs font-bold w-fit">
-                <MapPin className="w-3.5 h-3.5" />
-                <span>
-                  {persona === "client"
-                    ? "Exact Gate & Barangay Pinning"
-                    : "Fast Daily Payouts"}
-                </span>
-              </div>
-              <h3 className="text-2xl font-bold tracking-[-0.02em] text-[#0F172A]">
-                {persona === "client"
-                  ? "Pin Your Exact Address & Barangay"
-                  : "Keep 100% of Your Tips & Fair Job Rates"}
-              </h3>
-              <p className="text-sm md:text-base text-[#475569] leading-relaxed">
-                {persona === "client"
-                  ? "Drop a pin right at your gate so your pro finds you with zero confusion—no more long landmark directions."
-                  : "Get paid straight to your GCash or Maya wallet right after the job is approved—no 30-day waiting."}
-              </p>
-            </div>
-
-            <div className="p-4 rounded-2xl bg-white border border-[#E2E8F0] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-center gap-3">
-                <div className="w-11 h-11 rounded-full bg-[#0660E4] text-white flex items-center justify-center shrink-0">
-                  <Navigation className="w-5 h-5" />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-[#0F172A]">
-                    Barangay Kapitolyo, Pasig City
-                  </p>
-                  <p className="text-xs text-[#64748B] tabular-nums">
-                    Metro Manila • Arriving in 14 mins
-                  </p>
-                </div>
-              </div>
-              <span className="px-3.5 py-1.5 rounded-full bg-[#10B981]/15 text-[#065F46] text-xs font-bold flex items-center gap-1.5">
-                <Radar className="w-3.5 h-3.5" /> Pros Nearby
-              </span>
-            </div>
-          </SpotlightCard>
-
-          {/* Bento 2: 4-col (Violet Competitive Bids) */}
-          <SpotlightCard
-            accent="cobalt"
-            className="md:col-span-4 bg-[#F1F5F9]/80 rounded-[24px] border border-[#E2E8F0] p-7 md:p-8 flex flex-col justify-between gap-6"
-          >
-            <div className="flex flex-col gap-3">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#7C5CFC]/10 text-[#7C5CFC] text-xs font-bold w-fit">
-                <Gavel className="w-3.5 h-3.5" />
-                <span>
-                  {persona === "client"
-                    ? "Compare Offers"
-                    : "Nearby Job Alerts"}
-                </span>
-              </div>
-              <h3 className="text-xl font-bold tracking-[-0.02em] text-[#0F172A]">
-                {persona === "client"
-                  ? "Compare Quotes for Bigger Jobs"
-                  : "Steady Jobs Near Your Barangay"}
-              </h3>
-              <p className="text-sm text-[#475569] leading-relaxed">
-                {persona === "client"
-                  ? "Post a renovation or big repair and pick the best offer from trusted pros. Zero hidden fees."
-                  : "Send quotes on local repairs within 5km of your location and choose jobs that fit your schedule."}
-              </p>
-            </div>
-
+        <div className="w-full max-w-7xl mx-auto px-5 md:px-10 pt-28 md:pt-32 pb-24 md:pb-28">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
             <div className="flex flex-col gap-2">
-              <div className="p-3 rounded-2xl bg-white border border-[#E2E8F0] flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-[#7C5CFC] text-white text-[10px] font-bold flex items-center justify-center">
-                    JB
-                  </div>
-                  <span className="text-xs font-bold text-[#0F172A]">
-                    Jun B. (Electrician)
-                  </span>
-                </div>
-                <span className="text-xs font-bold text-[#0660E4] tabular-nums">
-                  ₱1,200
-                </span>
-              </div>
-              <div className="p-3 rounded-2xl bg-[#EFF6FF] border border-[#7C5CFC]/30 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 rounded-full bg-[#0660E4] text-white text-[10px] font-bold flex items-center justify-center">
-                    RC
-                  </div>
-                  <span className="text-xs font-bold text-[#0F172A]">
-                    Ramil C. (Master Pro)
-                  </span>
-                </div>
-                <span className="text-xs font-bold text-[#7C5CFC] tabular-nums">
-                  ₱1,450 (Top)
-                </span>
-              </div>
-            </div>
-          </SpotlightCard>
-
-          {/* Bento 3: 4-col (Safe In-App Chat & Free Calls) */}
-          <SpotlightCard
-            accent="cobalt"
-            className="md:col-span-4 bg-[#F1F5F9]/80 rounded-[24px] border border-[#E2E8F0] p-7 md:p-8 flex flex-col justify-between gap-6"
-          >
-            <div className="flex flex-col gap-3">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#0660E4]/10 text-[#0660E4] text-xs font-bold w-fit">
-                <Lock className="w-3.5 h-3.5" />
-                <span>Private Number</span>
-              </div>
-              <h3 className="text-xl font-bold tracking-[-0.02em] text-[#0F172A]">
-                Safe In-App Chat &amp; Free Calls
-              </h3>
-              <p className="text-sm text-[#475569] leading-relaxed">
-                Message or call your pro inside the app without sharing your
-                personal mobile number.
-              </p>
+              <span className="text-xs font-bold uppercase tracking-wider text-[#0660E4]">
+                {t.bento.eyebrow}
+              </span>
+              <KineticHeadline
+                as="h2"
+                className="text-3xl md:text-[38px] md:leading-[44px] font-bold tracking-[-0.03em] text-[#121726]"
+                lines={[
+                  { text: t.bento.headingTop },
+                  { text: t.bento.headingBottom },
+                ]}
+              />
             </div>
 
-            <div className="p-3.5 bg-white border border-[#E2E8F0] rounded-2xl flex flex-col gap-2">
-              <div className="flex items-center justify-between text-xs font-semibold text-[#64748B]">
-                <span className="tabular-nums">Private In-App Chat</span>
-                <span className="text-[#10B981] flex items-center gap-1 font-bold">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
-                  Live
-                </span>
-              </div>
-              <div className="bg-[#F8FAFC] border border-[#E2E8F0] p-2.5 rounded-xl text-xs text-[#0F172A]">
-                “On my way po! Bringing the replacement valve now.”
-              </div>
-            </div>
-          </SpotlightCard>
-
-          {/* Bento 4: 8-col (Verified ID & Selfie Check) */}
-          <SpotlightCard
-            accent="emerald"
-            className="md:col-span-8 bg-[#EFF6FF]/65 rounded-[24px] border border-[#BFDBFE]/70 p-7 md:p-8 flex flex-col justify-between gap-6"
-          >
-            <div className="flex flex-col gap-3 max-w-xl">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#10B981]/15 text-[#065F46] text-xs font-bold w-fit">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#10B981]" />
-                <span>4-Step Background Check</span>
-              </div>
-              <h3 className="text-2xl font-bold tracking-[-0.02em] text-[#0F172A]">
-                Verified ID &amp; Selfie Check
-              </h3>
-              <p className="text-sm md:text-base text-[#475569] leading-relaxed">
-                Every pro passes a government ID and live selfie check, plus NBI
-                clearance, before taking a single job.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {[
-                {
-                  title: "1. Gov't ID",
-                  desc: "National ID, UMID, or Driver's License",
-                  icon: IdCard,
-                },
-                {
-                  title: "2. Selfie Check",
-                  desc: "Live photo match to confirm identity",
-                  icon: Fingerprint,
-                },
-                {
-                  title: "3. NBI Clearance",
-                  desc: "Verified clean background record",
-                  icon: UserCheck,
-                },
-                {
-                  title: "4. Skill Check",
-                  desc: "TESDA certificate or trade references",
-                  icon: BadgeCheck,
-                },
-              ].map((item) => {
-                const Icon = item.icon;
+            {/* Single Source of Truth Audience Switcher */}
+            <div
+              role="tablist"
+              aria-label="Choose Homeowners or Local Pros"
+              className="inline-flex flex-wrap sm:flex-nowrap p-1.5 bg-[#EFECE6] border border-[#18181B]/[0.07] rounded-full self-start lg:self-auto"
+            >
+              {(
+                [
+                  {
+                    id: "client" as const,
+                    label: "For Homeowners — Book in Seconds",
+                  },
+                  {
+                    id: "pro" as const,
+                    label: "For Local Pros — Earn Daily",
+                  },
+                ] as const
+              ).map((item) => {
+                const active = persona === item.id;
                 return (
-                  <div
-                    key={item.title}
-                    className="p-3.5 rounded-2xl bg-white border border-[#E2E8F0] flex flex-col gap-1.5"
+                  <button
+                    key={item.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={active}
+                    onClick={() => setPersona(item.id)}
+                    className={`relative px-4 py-2 rounded-full text-xs font-bold transition-colors cursor-pointer whitespace-nowrap ${
+                      active
+                        ? "text-[#121726]"
+                        : "text-[#4B5565] hover:text-[#121726]"
+                    }`}
                   >
-                    <div className="w-8 h-8 rounded-full bg-[#10B981]/15 text-[#065F46] flex items-center justify-center">
-                      <Icon className="w-4 h-4" />
-                    </div>
-                    <span className="text-xs font-bold text-[#0F172A] pt-1">
-                      {item.title}
-                    </span>
-                    <span className="text-[11px] text-[#64748B] leading-snug">
-                      {item.desc}
-                    </span>
-                  </div>
+                    {active && (
+                      <motion.span
+                        layoutId="bento-persona-pill"
+                        transition={SPRING_TACTILE}
+                        className="absolute inset-0 bg-white rounded-full shadow-xs border border-[#18181B]/[0.08]"
+                      />
+                    )}
+                    <span className="relative z-10">{item.label}</span>
+                  </button>
                 );
               })}
             </div>
-          </SpotlightCard>
-        </div>
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={persona}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+              className="grid grid-cols-1 md:grid-cols-12 gap-6"
+            >
+              {/* Card 1 (Top-Left, 7 Cols): Pin Your Exact Address & Barangay / Instant Job Alerts */}
+              <article
+                data-pro-bento
+                className="md:col-span-7 bg-white rounded-[24px] border border-[#121726]/[0.07] p-7 md:p-8 shadow-[0_18px_40px_-14px_rgba(28,25,23,0.06)] hover:-translate-y-[3px] transition-transform duration-300 flex flex-col justify-between gap-7"
+              >
+                <div className="flex flex-col gap-3 max-w-xl">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EEF4FF] text-[#0660E4] text-xs font-bold w-fit">
+                    <MapPin className="w-3.5 h-3.5" />
+                    <span>
+                      {isPro
+                        ? "Instant Barangay Job Alerts"
+                        : "Exact Gate & Barangay Pinning"}
+                    </span>
+                  </div>
+                  <h3 className="text-2xl font-bold tracking-[-0.02em] text-[#121726]">
+                    {isPro
+                      ? "Instant Barangay Job Alerts Near You"
+                      : "Pin Your Exact Address & Barangay"}
+                  </h3>
+                  <p className="text-sm md:text-base text-[#4B5565] leading-relaxed">
+                    {isPro
+                      ? "Receive real-time homeowner requests within 5km of your barangay with clear scopes and upfront pricing."
+                      : "Drop a pin right at your gate so your pro finds you with zero confusion—no more long landmark directions."}
+                  </p>
+                </div>
+
+                <div className="p-4 rounded-2xl bg-[#F4F2EC] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className="relative w-11 h-11 rounded-full bg-[#0660E4] text-white flex items-center justify-center shrink-0">
+                      <span className="animate-ping absolute inset-0 rounded-full bg-[#0660E4] opacity-25" />
+                      <Navigation className="relative w-5 h-5" />
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-[#121726]">
+                        Barangay Kapitolyo, Pasig City
+                      </p>
+                      <p className="text-xs text-[#4B5565] tabular-nums">
+                        {isPro
+                          ? "New Leak Repair • 1.2 km away"
+                          : "Metro Manila • Arriving in 14 mins"}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="px-3.5 py-1.5 rounded-full bg-[#E6F4EF] text-[#117A58] text-xs font-bold flex items-center gap-2 tabular-nums shrink-0">
+                    <span className="w-2 h-2 rounded-full bg-[#117A58]" />
+                    <span>{isPro ? "₱450 Est." : "9 Pros Nearby"}</span>
+                  </span>
+                </div>
+              </article>
+
+              {/* Card 2 (Top-Right, 5 Cols): Compare Quotes / Transparent Quotes & Zero Hidden Cuts */}
+              <article
+                data-pro-bento
+                className="md:col-span-5 bg-white rounded-[24px] border border-[#121726]/[0.07] p-7 md:p-8 shadow-[0_18px_40px_-14px_rgba(28,25,23,0.06)] hover:-translate-y-[3px] transition-transform duration-300 flex flex-col justify-between gap-6"
+              >
+                <div className="flex flex-col gap-3">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FDF4E3] text-[#B4690E] text-xs font-bold w-fit">
+                    <Gavel className="w-3.5 h-3.5 text-[#E59824]" />
+                    <span>
+                      {isPro
+                        ? "Zero Hidden Cuts"
+                        : "Compare Offers"}
+                    </span>
+                  </div>
+                  <h3 className="text-xl font-bold tracking-[-0.02em] text-[#121726]">
+                    {isPro
+                      ? "Transparent Quotes & Zero Hidden Cuts"
+                      : "Compare Quotes for Bigger Jobs"}
+                  </h3>
+                  <p className="text-sm text-[#4B5565] leading-relaxed">
+                    {isPro
+                      ? "Send clear quotes on local repairs and keep 100% of your tips—no surprise deductions."
+                      : "Post a renovation or big repair and pick the best offer from trusted pros. Zero hidden fees."}
+                  </p>
+                </div>
+
+                <div className="flex flex-col gap-3">
+                  <div className="p-3.5 rounded-2xl bg-[#F9F8F5] hover:bg-[#F4F2EC] transition-colors flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-8 h-8 rounded-full bg-[#0660E4] text-white text-xs font-bold flex items-center justify-center shrink-0">
+                        JB
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold text-[#121726] truncate">
+                          {isPro ? "Jun B. • Breaker Check" : "Jun B. (Electrician)"}
+                        </p>
+                        <p className="text-[11px] text-[#4B5565] truncate">
+                          {isPro ? "Pasig • 2.1 km away" : "Licensed Electrician"}
+                        </p>
+                      </div>
+                    </div>
+                    <span className="text-xs font-bold text-[#0660E4] tabular-nums shrink-0">
+                      ₱1,200
+                    </span>
+                  </div>
+
+                  <div className="p-3.5 rounded-2xl bg-[#F9F8F5] border border-[#E59824]/35 hover:bg-[#FDF4E3]/45 transition-colors flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-8 h-8 rounded-full bg-[#E59824] text-white text-xs font-bold flex items-center justify-center shrink-0">
+                        RC
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold text-[#121726] truncate">
+                          {isPro ? "Ramil C. • Master Pro" : "Ramil C. (Master Pro)"}
+                        </p>
+                        <p className="text-[11px] text-[#4B5565] truncate tabular-nums">
+                          {isPro ? "0% Tip Cut • Verified" : "Master Pro ★ 4.9"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="px-2 py-0.5 rounded-full bg-[#FDF4E3] text-[#B4690E] text-[10px] font-bold">
+                        Top Rated
+                      </span>
+                      <span className="text-xs font-bold text-[#121726] tabular-nums">
+                        ₱1,450
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              {/* Card 3 (Bottom-Left, 5 Cols): Safe In-App Chat & Free Calls */}
+              <article
+                data-pro-bento
+                className="md:col-span-5 bg-white rounded-[24px] border border-[#121726]/[0.07] p-7 md:p-8 shadow-[0_18px_40px_-14px_rgba(28,25,23,0.06)] hover:-translate-y-[3px] transition-transform duration-300 flex flex-col justify-between gap-6"
+              >
+                <div className="flex flex-col gap-3">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EEF4FF] text-[#0660E4] text-xs font-bold w-fit">
+                    <Lock className="w-3.5 h-3.5" />
+                    <span>Private Number</span>
+                  </div>
+                  <h3 className="text-xl font-bold tracking-[-0.02em] text-[#121726]">
+                    {isPro
+                      ? "Direct In-App Client Chat"
+                      : "Safe In-App Chat & Free Calls"}
+                  </h3>
+                  <p className="text-sm text-[#4B5565] leading-relaxed">
+                    {isPro
+                      ? "Confirm gate access, parts needed, and arrival updates with homeowners without exposing your personal SIM."
+                      : "Message or call your pro inside the app without sharing your personal mobile number."}
+                  </p>
+                </div>
+
+                {/* Organic iOS/Messenger-style Chat Inset */}
+                <div className="p-4 bg-[#F4F2EC] rounded-2xl flex flex-col gap-3">
+                  <div className="flex items-center justify-between text-[11px] font-semibold text-[#4B5565]">
+                    <span>Private Number Protected</span>
+                    <span className="text-[#117A58] flex items-center gap-1.5 font-bold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#117A58]" />
+                      Live
+                    </span>
+                  </div>
+                  <div className="flex items-end gap-2.5">
+                    <div className="w-7 h-7 rounded-full bg-[#0660E4] text-white text-[10px] font-bold flex items-center justify-center shrink-0">
+                      KA
+                    </div>
+                    <div className="bg-white rounded-2xl rounded-bl-sm px-3.5 py-2.5 shadow-[0_6px_18px_rgba(28,25,23,0.06)] flex flex-col gap-1">
+                      <p className="text-xs font-medium text-[#121726] leading-snug">
+                        “On my way po! Bringing the replacement valve now.”
+                      </p>
+                      <span className="text-[10px] text-[#64748B] self-end">
+                        Just now
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              {/* Card 4 (Bottom-Right, 7 Cols): Verified ID & Selfie Check / Verified Pro Badge & Payouts */}
+              <article
+                data-pro-bento
+                className="md:col-span-7 bg-white rounded-[24px] border border-[#121726]/[0.07] p-7 md:p-8 shadow-[0_18px_40px_-14px_rgba(28,25,23,0.06)] hover:-translate-y-[3px] transition-transform duration-300 flex flex-col justify-between gap-6"
+              >
+                <div className="flex flex-col gap-3 max-w-xl">
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E6F4EF] text-[#117A58] text-xs font-bold w-fit">
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#117A58]" />
+                    <span>
+                      {isPro
+                        ? "Verified Pro Badge & Fast Payouts"
+                        : "4-Step Background Check"}
+                    </span>
+                  </div>
+                  <h3 className="text-2xl font-bold tracking-[-0.02em] text-[#121726]">
+                    {isPro
+                      ? "Verified Pro Badge & Same-Day GCash/Maya Payouts"
+                      : "Verified ID & Selfie Check"}
+                  </h3>
+                  <p className="text-sm md:text-base text-[#4B5565] leading-relaxed">
+                    {isPro
+                      ? "Earn homeowner trust faster with your verified badge and withdraw earnings straight to GCash or Maya the same day."
+                      : "Every pro passes a government ID and live selfie check, plus NBI clearance, before taking a single job."}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {[
+                    {
+                      num: "01",
+                      title: "Gov't ID",
+                      desc: "National ID, UMID, or Driver's License",
+                    },
+                    {
+                      num: "02",
+                      title: "Selfie Check",
+                      desc: "Live biometric photo match",
+                    },
+                    {
+                      num: "03",
+                      title: "NBI Clearance",
+                      desc: "Verified clean background record",
+                    },
+                    {
+                      num: "04",
+                      title: isPro ? "Same-Day Payout" : "Skill Check",
+                      desc: isPro
+                        ? "Direct GCash or Maya wallet transfer"
+                        : "TESDA certificate or trade references",
+                    },
+                  ].map((item) => (
+                    <div
+                      key={item.num}
+                      className="p-3.5 rounded-2xl bg-[#F4F2EC] flex items-start gap-3"
+                    >
+                      <span className="w-7 h-7 rounded-xl bg-[#E6F4EF] text-[#117A58] flex items-center justify-center shrink-0 mt-0.5">
+                        <Check className="w-4 h-4" />
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-[#121726] leading-snug">
+                          <span className="text-[#117A58] tabular-nums mr-1.5">
+                            {item.num}
+                          </span>
+                          {item.title}
+                        </p>
+                        <p className="mt-0.5 text-[13px] text-[#4B5565] leading-snug">
+                          {item.desc}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </article>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </section>
 

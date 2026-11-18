@@ -68,7 +68,7 @@ export default function HomePage() {
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
           >
-            <FloatingNavbar persona={persona} setPersona={setPersona} />
+            <FloatingNavbar />
           </motion.div>
         )}
       </AnimatePresence>
