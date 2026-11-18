@@ -79,7 +79,7 @@ export default function HomePage() {
           resetSignal={resetSignal}
         />
 
-        <div id="landing-experience">
+        <div id="landing-experience" className="flex flex-col gap-8 md:gap-12 pt-8 md:pt-12">
           <HeroSection persona={persona} />
           <FourActJourneyStage onOpenDemo={handleReplayDemo} />
           <LandingSections persona={persona} setPersona={setPersona} />

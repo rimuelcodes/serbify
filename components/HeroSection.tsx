@@ -136,36 +136,41 @@ export function HeroSection({ persona }: HeroSectionProps) {
   return (
     <section
       ref={heroRef}
-      style={{
-        backgroundColor: "#F7F5F0",
-        backgroundImage: `
-          radial-gradient(58% 52% at 74% 48%, rgba(229, 152, 36, 0.07) 0%, rgba(229, 152, 36, 0) 70%),
-          radial-gradient(65% 60% at 15% 85%, #EFECE6 0%, rgba(239, 236, 230, 0) 72%)
-        `,
-      }}
-      className="relative w-full overflow-x-clip"
+      className="relative w-full px-4 sm:px-6 lg:px-8 pt-20 md:pt-24"
     >
-      {/* Whisper-quiet warm architectural grid fading toward edges */}
       <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 overflow-hidden"
+        style={{
+          backgroundColor: "#FAF9F6",
+          backgroundImage: `
+            radial-gradient(58% 52% at 74% 48%, rgba(229, 152, 36, 0.07) 0%, rgba(229, 152, 36, 0) 70%),
+            radial-gradient(65% 60% at 15% 85%, #F3F0E8 0%, rgba(243, 240, 232, 0) 72%)
+          `,
+          boxShadow:
+            "inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 18px 44px -16px rgba(18, 23, 38, 0.06)",
+        }}
+        className="relative w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] border border-[#DDD7CB] p-8 md:p-12 lg:p-14 overflow-hidden"
       >
+        {/* Whisper-quiet warm architectural grid fading toward edges */}
         <div
-          className="w-full h-full"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, rgba(24, 24, 27, 0.032) 1px, transparent 1px), linear-gradient(to bottom, rgba(24, 24, 27, 0.032) 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
-            maskImage:
-              "radial-gradient(ellipse 75% 68% at 62% 46%, black 15%, transparent 80%)",
-            WebkitMaskImage:
-              "radial-gradient(ellipse 75% 68% at 62% 46%, black 15%, transparent 80%)",
-          }}
-        />
-      </div>
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 overflow-hidden"
+        >
+          <div
+            className="w-full h-full"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, rgba(24, 24, 27, 0.032) 1px, transparent 1px), linear-gradient(to bottom, rgba(24, 24, 27, 0.032) 1px, transparent 1px)",
+              backgroundSize: "48px 48px",
+              maskImage:
+                "radial-gradient(ellipse 75% 68% at 62% 46%, black 15%, transparent 80%)",
+              WebkitMaskImage:
+                "radial-gradient(ellipse 75% 68% at 62% 46%, black 15%, transparent 80%)",
+            }}
+          />
+        </div>
 
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-5 md:px-10 pt-32 md:pt-36 pb-20 md:pb-28">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
+        <div className="relative z-10 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-14 items-center">
           {/* Left Column: Editorial & Value Prop on Calm Uninterrupted Canvas */}
           <div className="lg:col-span-7 flex flex-col gap-6 z-10">
             {/* Live Pill */}
@@ -604,6 +609,7 @@ export function HeroSection({ persona }: HeroSectionProps) {
               </InteractivePhoneChassis>
             </div>
           </motion.div>
+          </div>
         </div>
       </div>
     </section>

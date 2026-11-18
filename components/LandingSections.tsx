@@ -187,6 +187,7 @@ export function LandingSections({
 }: LandingSectionsProps) {
   const t = COPY.en;
   const bentoSectionRef = useRef<HTMLElement>(null);
+  const bentoShellRef = useRef<HTMLDivElement>(null);
   const { prefersReducedMotion } = useLenis();
   const [selectedServiceId, setSelectedServiceId] = useState(
     SERVICE_CATEGORIES[0].id
@@ -197,17 +198,37 @@ export function LandingSections({
   useEffect(() => {
     if (prefersReducedMotion) return;
     const ctx = gsap.context(() => {
+      if (bentoShellRef.current) {
+        gsap.fromTo(
+          bentoShellRef.current,
+          { y: 16, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.55,
+            ease: "power3.out",
+            clearProps: "transform",
+            scrollTrigger: {
+              trigger: bentoSectionRef.current,
+              start: "top 82%",
+              once: true,
+            },
+          }
+        );
+      }
+
       const cards = bentoSectionRef.current?.querySelectorAll("[data-pro-bento]");
       if (!cards || cards.length === 0) return;
 
       gsap.fromTo(
         cards,
-        { y: 24, opacity: 0 },
+        { y: 20, opacity: 0 },
         {
           y: 0,
           opacity: 1,
-          duration: 0.68,
-          stagger: 0.08,
+          duration: 0.6,
+          stagger: 0.07,
+          delay: 0.1,
           ease: "power3.out",
           clearProps: "transform",
           scrollTrigger: {
@@ -243,10 +264,17 @@ export function LandingSections({
       <section
         id="verified-pros"
         ref={bentoSectionRef}
-        className="w-full bg-[#F7F5F0]"
+        className="w-full px-4 sm:px-6 lg:px-8"
       >
-        <div className="w-full max-w-7xl mx-auto px-5 md:px-10 pt-28 md:pt-32 pb-24 md:pb-28">
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+        <div
+          ref={bentoShellRef}
+          style={{
+            boxShadow:
+              "inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 18px 44px -16px rgba(18, 23, 38, 0.06)",
+          }}
+          className="w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#FAF9F6] border border-[#DDD7CB] p-8 md:p-12 lg:p-14"
+        >
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 mb-8 border-b border-[#121726]/[0.08]">
             <div className="flex flex-col gap-2">
               <span className="text-xs font-bold uppercase tracking-wider text-[#0660E4]">
                 {t.bento.eyebrow}
@@ -265,7 +293,7 @@ export function LandingSections({
             <div
               role="tablist"
               aria-label="Choose Homeowners or Local Pros"
-              className="inline-flex flex-wrap sm:flex-nowrap p-1.5 bg-[#EFECE6] border border-[#18181B]/[0.07] rounded-full self-start lg:self-auto"
+              className="inline-flex flex-wrap sm:flex-nowrap p-1.5 bg-[#EFECE4] border border-[#DCD6CA] rounded-full self-start lg:self-auto"
             >
               {(
                 [
@@ -297,7 +325,7 @@ export function LandingSections({
                       <motion.span
                         layoutId="bento-persona-pill"
                         transition={SPRING_TACTILE}
-                        className="absolute inset-0 bg-white rounded-full shadow-xs border border-[#18181B]/[0.08]"
+                        className="absolute inset-0 bg-white rounded-full shadow-xs border border-[#121726]/10"
                       />
                     )}
                     <span className="relative z-10">{item.label}</span>
@@ -319,7 +347,7 @@ export function LandingSections({
               {/* Card 1 (Top-Left, 7 Cols): Pin Your Exact Address & Barangay / Instant Job Alerts */}
               <article
                 data-pro-bento
-                className="md:col-span-7 bg-white rounded-[24px] border border-[#121726]/[0.07] p-7 md:p-8 shadow-[0_18px_40px_-14px_rgba(28,25,23,0.06)] hover:-translate-y-[3px] transition-transform duration-300 flex flex-col justify-between gap-7"
+                className="md:col-span-7 bg-white rounded-[22px] border border-[#DFD9CE] hover:border-[#0660E4]/[0.36] p-7 md:p-8 shadow-[0_10px_28px_-10px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-7"
               >
                 <div className="flex flex-col gap-3 max-w-xl">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EEF4FF] text-[#0660E4] text-xs font-bold w-fit">
@@ -342,7 +370,7 @@ export function LandingSections({
                   </p>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-[#F4F2EC] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                <div className="p-4 rounded-[14px] bg-[#F7F5F0] border border-[#E3DDD2] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div className="flex items-center gap-3">
                     <div className="relative w-11 h-11 rounded-full bg-[#0660E4] text-white flex items-center justify-center shrink-0">
                       <span className="animate-ping absolute inset-0 rounded-full bg-[#0660E4] opacity-25" />
@@ -369,7 +397,7 @@ export function LandingSections({
               {/* Card 2 (Top-Right, 5 Cols): Compare Quotes / Transparent Quotes & Zero Hidden Cuts */}
               <article
                 data-pro-bento
-                className="md:col-span-5 bg-white rounded-[24px] border border-[#121726]/[0.07] p-7 md:p-8 shadow-[0_18px_40px_-14px_rgba(28,25,23,0.06)] hover:-translate-y-[3px] transition-transform duration-300 flex flex-col justify-between gap-6"
+                className="md:col-span-5 bg-white rounded-[22px] border border-[#DFD9CE] hover:border-[#0660E4]/[0.36] p-7 md:p-8 shadow-[0_10px_28px_-10px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
               >
                 <div className="flex flex-col gap-3">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#FDF4E3] text-[#B4690E] text-xs font-bold w-fit">
@@ -393,7 +421,7 @@ export function LandingSections({
                 </div>
 
                 <div className="flex flex-col gap-3">
-                  <div className="p-3.5 rounded-2xl bg-[#F9F8F5] hover:bg-[#F4F2EC] transition-colors flex items-center justify-between gap-3">
+                  <div className="p-3.5 rounded-[14px] bg-[#F9F8F5] border border-[#E3DDD2] hover:border-[#0660E4]/40 transition-colors flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="w-8 h-8 rounded-full bg-[#0660E4] text-white text-xs font-bold flex items-center justify-center shrink-0">
                         JB
@@ -412,7 +440,7 @@ export function LandingSections({
                     </span>
                   </div>
 
-                  <div className="p-3.5 rounded-2xl bg-[#F9F8F5] border border-[#E59824]/35 hover:bg-[#FDF4E3]/45 transition-colors flex items-center justify-between gap-3">
+                  <div className="p-3.5 rounded-[14px] bg-[#F9F8F5] border border-[#E59824]/45 hover:border-[#E59824] transition-colors flex items-center justify-between gap-3">
                     <div className="flex items-center gap-3 min-w-0">
                       <div className="w-8 h-8 rounded-full bg-[#E59824] text-white text-xs font-bold flex items-center justify-center shrink-0">
                         RC
@@ -441,7 +469,7 @@ export function LandingSections({
               {/* Card 3 (Bottom-Left, 5 Cols): Safe In-App Chat & Free Calls */}
               <article
                 data-pro-bento
-                className="md:col-span-5 bg-white rounded-[24px] border border-[#121726]/[0.07] p-7 md:p-8 shadow-[0_18px_40px_-14px_rgba(28,25,23,0.06)] hover:-translate-y-[3px] transition-transform duration-300 flex flex-col justify-between gap-6"
+                className="md:col-span-5 bg-white rounded-[22px] border border-[#DFD9CE] hover:border-[#0660E4]/[0.36] p-7 md:p-8 shadow-[0_10px_28px_-10px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
               >
                 <div className="flex flex-col gap-3">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EEF4FF] text-[#0660E4] text-xs font-bold w-fit">
@@ -461,7 +489,7 @@ export function LandingSections({
                 </div>
 
                 {/* Organic iOS/Messenger-style Chat Inset */}
-                <div className="p-4 bg-[#F4F2EC] rounded-2xl flex flex-col gap-3">
+                <div className="p-4 bg-[#F7F5F0] border border-[#E3DDD2] rounded-[14px] flex flex-col gap-3">
                   <div className="flex items-center justify-between text-[11px] font-semibold text-[#4B5565]">
                     <span>Private Number Protected</span>
                     <span className="text-[#117A58] flex items-center gap-1.5 font-bold">
@@ -473,7 +501,7 @@ export function LandingSections({
                     <div className="w-7 h-7 rounded-full bg-[#0660E4] text-white text-[10px] font-bold flex items-center justify-center shrink-0">
                       KA
                     </div>
-                    <div className="bg-white rounded-2xl rounded-bl-sm px-3.5 py-2.5 shadow-[0_6px_18px_rgba(28,25,23,0.06)] flex flex-col gap-1">
+                    <div className="bg-white border border-[#121726]/[0.07] rounded-2xl rounded-bl-sm px-3.5 py-2.5 shadow-[0_6px_18px_rgba(28,25,23,0.05)] flex flex-col gap-1">
                       <p className="text-xs font-medium text-[#121726] leading-snug">
                         “On my way po! Bringing the replacement valve now.”
                       </p>
@@ -488,7 +516,7 @@ export function LandingSections({
               {/* Card 4 (Bottom-Right, 7 Cols): Verified ID & Selfie Check / Verified Pro Badge & Payouts */}
               <article
                 data-pro-bento
-                className="md:col-span-7 bg-white rounded-[24px] border border-[#121726]/[0.07] p-7 md:p-8 shadow-[0_18px_40px_-14px_rgba(28,25,23,0.06)] hover:-translate-y-[3px] transition-transform duration-300 flex flex-col justify-between gap-6"
+                className="md:col-span-7 bg-white rounded-[22px] border border-[#DFD9CE] hover:border-[#0660E4]/[0.36] p-7 md:p-8 shadow-[0_10px_28px_-10px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
               >
                 <div className="flex flex-col gap-3 max-w-xl">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E6F4EF] text-[#117A58] text-xs font-bold w-fit">
@@ -538,7 +566,7 @@ export function LandingSections({
                   ].map((item) => (
                     <div
                       key={item.num}
-                      className="p-3.5 rounded-2xl bg-[#F4F2EC] flex items-start gap-3"
+                      className="p-3.5 rounded-[14px] bg-[#F7F5F0] border border-[#E3DDD2] flex items-start gap-3"
                     >
                       <span className="w-7 h-7 rounded-xl bg-[#E6F4EF] text-[#117A58] flex items-center justify-center shrink-0 mt-0.5">
                         <Check className="w-4 h-4" />
@@ -566,9 +594,15 @@ export function LandingSections({
       {/* 3. SERVICE CATEGORIES HORIZONTAL SHOWCASE */}
       <section
         id="services"
-        className="w-full bg-[#EFECE6] border-y border-[#18181B]/[0.07]"
+        className="w-full px-4 sm:px-6 lg:px-8"
       >
-        <div className="w-full max-w-7xl mx-auto px-5 md:px-10 py-24 md:py-32">
+        <div
+          style={{
+            boxShadow:
+              "inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 16px 40px -16px rgba(18, 23, 38, 0.05)",
+          }}
+          className="w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#F3F0E8] border border-[#DDD7CB] p-8 md:p-12 lg:p-14"
+        >
         <div className="flex flex-col gap-2 mb-12">
           <span className="text-xs font-bold uppercase tracking-wider text-[#0660E4]">
             {t.categories.eyebrow}
@@ -760,9 +794,15 @@ export function LandingSections({
       {/* 4. DRAMATIC DARK MODE SAFETY & PAYMENT SECTION */}
       <section
         id="trust-safety"
-        className="w-full bg-[#0B1220] text-white py-24 md:py-32"
+        className="w-full px-4 sm:px-6 lg:px-8"
       >
-        <div className="max-w-7xl mx-auto px-5 md:px-10 flex flex-col gap-12">
+        <div
+          style={{
+            boxShadow:
+              "inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 24px 56px -16px rgba(11, 18, 32, 0.28)",
+          }}
+          className="w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#0B1220] border border-[#24324D] p-8 md:p-12 lg:p-14 text-white flex flex-col gap-12"
+        >
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="flex flex-col gap-3 max-w-2xl">
               <span className="text-xs font-bold uppercase tracking-wider text-[#F59E0B]">
@@ -887,7 +927,7 @@ export function LandingSections({
                 { name: "GCash", dot: "bg-blue-400" },
                 { name: "Maya", dot: "bg-[#10B981]" },
                 { name: "QR Ph", dot: "bg-[#F59E0B]" },
-                { name: "Debit / Credit Card", dot: "bg-[#7C5CFC]" },
+                { name: "Debit / Credit Card", dot: "bg-[#0660E4]" },
                 { name: "Cash After Job", dot: "bg-slate-300" },
               ].map((rail) => (
                 <motion.span
@@ -908,8 +948,15 @@ export function LandingSections({
       {/* 5. SERVICE AREAS & PHILIPPINES RADAR */}
       <section
         id="coverage"
-        className="w-full max-w-7xl mx-auto px-5 md:px-10 py-24 md:py-32"
+        className="w-full px-4 sm:px-6 lg:px-8"
       >
+        <div
+          style={{
+            boxShadow:
+              "inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 18px 44px -16px rgba(18, 23, 38, 0.06)",
+          }}
+          className="w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#FAF9F6] border border-[#DDD7CB] p-8 md:p-12 lg:p-14"
+        >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-6 flex flex-col gap-6">
             <div className="flex flex-col gap-2">
@@ -1058,6 +1105,7 @@ export function LandingSections({
               </div>
             </div>
           </div>
+        </div>
         </div>
       </section>
 

@@ -69,11 +69,17 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
     <section
       id="book-flow"
       ref={sectionRef}
-      className="w-full bg-[#F7F5F0] border-y border-[#18181B]/[0.07]"
+      className="w-full px-4 sm:px-6 lg:px-8"
     >
-      <div className="w-full max-w-7xl mx-auto px-5 md:px-10 py-16 md:py-24">
+      <div
+        style={{
+          boxShadow:
+            "inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 16px 40px -16px rgba(18, 23, 38, 0.05)",
+        }}
+        className="w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#F3F0E8] border border-[#DDD7CB] p-8 md:p-12 lg:p-14"
+      >
         {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-8 mb-8 border-b border-[#121726]/[0.08]">
           <div>
             <span className="text-xs font-bold uppercase tracking-wider text-[#0660E4]">
               Simple 4-Step Booking
@@ -101,7 +107,7 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
           {/* Card 01 — Pin & Match */}
           <article
             data-bento-card
-            className="bg-white border border-[#18181B]/[0.07] rounded-[24px] p-7 shadow-[0_16px_36px_-12px_rgba(18,23,38,0.05)] hover:-translate-y-1 transition-transform duration-300 flex flex-col justify-between gap-6"
+            className="bg-white border border-[#DFD9CE] hover:border-[#0660E4]/36 rounded-[22px] p-7 shadow-[0_10px_28px_-10px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
           >
             <div className="flex flex-col gap-4">
               <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-[#EAF1FD] text-[#0660E4] text-xs font-bold tabular-nums">
@@ -138,7 +144,7 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
           {/* Card 02 — Verified Work (ID & NBI Check) */}
           <article
             data-bento-card
-            className="bg-white border border-[#18181B]/[0.07] rounded-[24px] p-7 shadow-[0_16px_36px_-12px_rgba(18,23,38,0.05)] hover:-translate-y-1 transition-transform duration-300 flex flex-col justify-between gap-6"
+            className="bg-white border border-[#DFD9CE] hover:border-[#0660E4]/36 rounded-[22px] p-7 shadow-[0_10px_28px_-10px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
           >
             <div className="flex flex-col gap-4">
               <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-[#E6F4EF] text-[#117A58] text-xs font-bold tabular-nums">
@@ -166,7 +172,7 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
           {/* Card 03 — Live Arrival */}
           <article
             data-bento-card
-            className="bg-white border border-[#18181B]/[0.07] rounded-[24px] p-7 shadow-[0_16px_36px_-12px_rgba(18,23,38,0.05)] hover:-translate-y-1 transition-transform duration-300 flex flex-col justify-between gap-6"
+            className="bg-white border border-[#DFD9CE] hover:border-[#0660E4]/36 rounded-[22px] p-7 shadow-[0_10px_28px_-10px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
           >
             <div className="flex flex-col gap-4">
               <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-[#EAF1FD] text-[#0660E4] text-xs font-bold tabular-nums">
@@ -201,7 +207,7 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
           {/* Card 04 — Safe Payment */}
           <article
             data-bento-card
-            className="bg-white border border-[#18181B]/[0.07] rounded-[24px] p-7 shadow-[0_16px_36px_-12px_rgba(18,23,38,0.05)] hover:-translate-y-1 transition-transform duration-300 flex flex-col justify-between gap-6"
+            className="bg-white border border-[#DFD9CE] hover:border-[#0660E4]/36 rounded-[22px] p-7 shadow-[0_10px_28px_-10px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
           >
             <div className="flex flex-col gap-4">
               <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-[#FDF4E3] text-[#8A5609] text-xs font-bold tabular-nums">
