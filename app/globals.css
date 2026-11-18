@@ -3,21 +3,37 @@
 :root {
   --font-plus-jakarta: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
+  --serbify-canvas: #e7eef8;
+  --serbify-canvas-alt: #dce6f5;
+  --serbify-surface: #ffffff;
+  --serbify-border: #c5d4ea;
+  --serbify-ink: #0b1c30;
+  --serbify-cobalt: #0660e4;
 }
 
 @layer base {
   html {
-    background-color: #ffffff;
-    color: #0f172a;
+    background-color: var(--serbify-canvas);
+    color: var(--serbify-ink);
     scroll-behavior: auto;
+    caret-color: var(--serbify-cobalt);
   }
 
   body {
-    background-color: #ffffff;
-    color: #0f172a;
+    background-color: var(--serbify-canvas);
+    color: var(--serbify-ink);
     overflow-x: clip;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #0660e4;
+    color: #ffffff;
+  }
+
+  a {
+    text-underline-offset: 3px;
   }
 
   :focus-visible {

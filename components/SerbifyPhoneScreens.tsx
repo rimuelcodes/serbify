@@ -48,9 +48,9 @@ export function SerbifyPhoneScreens({
       </div>
 
       {/* Screen Container */}
-      <div className="relative w-full h-full bg-[#F8FAFC] rounded-[36px] overflow-hidden flex flex-col pt-10">
+      <div className="relative w-full h-full bg-[#E7EEF8] rounded-[36px] overflow-hidden flex flex-col pt-10">
         {/* Top App Bar */}
-        <div className="px-4 py-2 flex items-center justify-between border-b border-[#E2E8F0] bg-white/90 backdrop-blur-md z-20">
+        <div className="px-4 py-2 flex items-center justify-between border-b border-[#C5D4EA] bg-white/95 backdrop-blur-md z-20">
           <div className="flex items-center gap-1.5 min-w-0">
             <img
               src="/assets/serbify-mascot.png"
@@ -257,7 +257,7 @@ function StepCompetitiveBids() {
       trade: "Master Electrician • 4.9★",
       price: "₱1,200",
       note: "Includes breaker diagnostics",
-      tone: "bg-[#7C5CFC]",
+      tone: "bg-[#0284C7]",
       recommended: false,
     },
     {
@@ -274,7 +274,7 @@ function StepCompetitiveBids() {
   return (
     <div className="flex flex-col justify-between h-full gap-2.5">
       <div className="flex items-center justify-between">
-        <span className="px-2.5 py-0.5 rounded-full bg-[#7C5CFC]/12 text-[#7C5CFC] text-[9px] font-bold">
+        <span className="px-2.5 py-0.5 rounded-full bg-[#E0F2FE] text-[#0369A1] text-[9px] font-bold">
           Competitive Project Bids
         </span>
         <span className="text-[9px] font-bold text-[#64748B] tabular-nums">
@@ -288,8 +288,8 @@ function StepCompetitiveBids() {
             key={b.name}
             className={`rounded-2xl border p-3 flex flex-col gap-2 ${
               b.recommended
-                ? "bg-[#7C5CFC]/5 border-[#7C5CFC]/40"
-                : "bg-white border-[#E2E8F0]"
+                ? "bg-[#E0F2FE]/60 border-[#0284C7]/40"
+                : "bg-white border-[#C5D4EA]"
             }`}
           >
             <div className="flex items-center justify-between gap-2">
@@ -308,7 +308,7 @@ function StepCompetitiveBids() {
                   </p>
                 </div>
               </div>
-              <span className="text-xs font-extrabold text-[#7C5CFC] tabular-nums shrink-0">
+              <span className="text-xs font-extrabold text-[#0369A1] tabular-nums shrink-0">
                 {b.price}
               </span>
             </div>
@@ -322,7 +322,7 @@ function StepCompetitiveBids() {
         ))}
       </div>
 
-      <div className="bg-[#7C5CFC] text-white rounded-full py-2.5 px-4 text-center text-xs font-bold">
+      <div className="bg-[#0284C7] text-white rounded-full py-2.5 px-4 text-center text-xs font-bold">
         Compare &amp; Lock Winning Bid
       </div>
     </div>

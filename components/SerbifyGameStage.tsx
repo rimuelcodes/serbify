@@ -74,8 +74,8 @@ const SERVICES: ServiceOption[] = [
     key: "electrician",
     label: "Electrician",
     price: "from ₱150",
-    accent: "#7C5CFC",
-    softBg: "#F3F0FF",
+    accent: "#D97706",
+    softBg: "#FEF3C7",
     videoSrc: "/animations/job-electrician.mp4",
     taskSummary: "Breaker check & outlet wiring",
     samplePrice: "₱480",
@@ -521,16 +521,24 @@ export function SerbifyGameStage({
       ref={stageRef}
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
-      className="relative w-full min-h-[100dvh] md:h-[100dvh] overflow-hidden bg-gradient-to-b from-[#EEF4FF] via-[#F4F8FF] to-[#F8FAFC] text-[#0B1C30] flex flex-col justify-between select-none"
+      className="relative w-full min-h-[100dvh] md:h-[100dvh] overflow-hidden bg-gradient-to-br from-[#D4E1F5] via-[#DEE9FA] to-[#CEDCF2] text-[#0B1C30] flex flex-col justify-between select-none"
     >
-      {/* Subtle studio ambient light */}
+      {/* Subtle studio ambient light & architectural dot grid */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"
       >
-        <div className="absolute -top-28 left-1/2 -translate-x-1/2 w-[780px] h-[420px] rounded-full bg-[#0660E4]/[0.06] blur-3xl" />
-        <div className="absolute bottom-[-120px] right-[-80px] w-[420px] h-[420px] rounded-full bg-[#7C5CFC]/[0.05] blur-3xl" />
-        <div className="absolute bottom-[-100px] left-[-80px] w-[380px] h-[380px] rounded-full bg-[#10B981]/[0.05] blur-3xl" />
+        <div
+          className="absolute inset-0 opacity-[0.28]"
+          style={{
+            backgroundImage:
+              "radial-gradient(#7A93B8 1px, transparent 1px)",
+            backgroundSize: "24px 24px",
+          }}
+        />
+        <div className="absolute -top-28 left-1/2 -translate-x-1/2 w-[780px] h-[420px] rounded-full bg-[#0660E4]/[0.11] blur-3xl" />
+        <div className="absolute bottom-[-120px] right-[-80px] w-[420px] h-[420px] rounded-full bg-[#D97706]/[0.08] blur-3xl" />
+        <div className="absolute bottom-[-100px] left-[-80px] w-[380px] h-[380px] rounded-full bg-[#10B981]/[0.09] blur-3xl" />
       </div>
 
       {/* TOP GAME HUD */}
@@ -540,7 +548,7 @@ export function SerbifyGameStage({
           <button
             type="button"
             onClick={resetGame}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-[#E2E8F0] shadow-[0_2px_10px_rgba(11,28,48,0.04)] hover:border-[#0660E4]/40 transition-colors cursor-pointer"
+            className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white border border-[#C5D4EA] shadow-[0_4px_14px_rgba(11,28,48,0.08)] hover:border-[#0660E4]/50 transition-colors cursor-pointer"
             title="Restart interactive demo"
           >
             <img
@@ -554,7 +562,7 @@ export function SerbifyGameStage({
           </button>
 
           <div
-            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#E2E8F0] shadow-[0_2px_10px_rgba(11,28,48,0.04)] text-xs font-bold text-[#0B1C30] tabular-nums"
+            className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-[#C5D4EA] shadow-[0_4px_14px_rgba(11,28,48,0.08)] text-xs font-bold text-[#0B1C30] tabular-nums"
             aria-live="polite"
           >
             <span className="w-2 h-2 rounded-full bg-[#0660E4]" />
@@ -564,7 +572,7 @@ export function SerbifyGameStage({
           <button
             type="button"
             onClick={onSkipToSite}
-            className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-semibold text-[#475569] hover:text-[#0660E4] hover:bg-white/80 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-semibold text-[#1E3A5F] bg-white/55 hover:bg-white hover:text-[#0660E4] border border-[#C5D4EA]/80 transition-colors cursor-pointer"
           >
             <span>Skip to Full Site</span>
             <ArrowDown className="w-3.5 h-3.5" />
@@ -577,7 +585,7 @@ export function SerbifyGameStage({
           onClick={() => setDrawerOpen(true)}
           aria-label="Open navigation menu"
           aria-expanded={drawerOpen}
-          className="w-12 h-12 rounded-full bg-white border border-[#E2E8F0] shadow-[0_6px_20px_rgba(11,28,48,0.08)] flex items-center justify-center text-[#0B1C30] hover:border-[#0660E4]/40 hover:text-[#0660E4] active:scale-95 transition-all cursor-pointer shrink-0"
+          className="w-12 h-12 rounded-full bg-white border border-[#C5D4EA] shadow-[0_8px_22px_rgba(11,28,48,0.12)] flex items-center justify-center text-[#0B1C30] hover:border-[#0660E4]/50 hover:text-[#0660E4] active:scale-95 transition-all cursor-pointer shrink-0"
         >
           <Menu className="w-5 h-5" />
         </button>
@@ -643,7 +651,7 @@ export function SerbifyGameStage({
                     whileHover={{ scale: 1.06, y: -4 }}
                     whileTap={{ scale: 0.94 }}
                     onClick={(e) => handleSelectService(service, e)}
-                    className={`absolute ${desktopClass} z-30 flex items-center gap-3 px-4 py-3 rounded-[24px] bg-white/90 backdrop-blur-xl border border-[#E2E8F0] shadow-[0_14px_34px_rgba(11,28,48,0.10)] hover:border-[#0660E4]/50 transition-colors cursor-pointer`}
+                    className={`absolute ${desktopClass} z-30 flex items-center gap-3 px-4 py-3 rounded-[24px] bg-white border border-[#C5D4EA] shadow-[0_16px_38px_rgba(11,28,48,0.14)] hover:border-[#0660E4]/60 transition-colors cursor-pointer`}
                   >
                     <span
                       style={{
@@ -718,9 +726,9 @@ export function SerbifyGameStage({
             />
 
             {/* Inner Screen */}
-            <div className="relative w-full h-full rounded-[34px] bg-[#F8FAFC] overflow-hidden flex flex-col">
+            <div className="relative w-full h-full rounded-[34px] bg-[#E7EEF8] overflow-hidden flex flex-col">
               {/* Dynamic Island + Status Bar */}
-              <div className="relative z-20 px-5 pt-3 pb-2 flex items-center justify-between text-[11px] font-bold text-[#0B1C30] bg-white/85 backdrop-blur-md border-b border-[#E2E8F0]/70">
+              <div className="relative z-20 px-5 pt-3 pb-2 flex items-center justify-between text-[11px] font-bold text-[#0B1C30] bg-white/95 backdrop-blur-md border-b border-[#C5D4EA]">
                 <span className="tabular-nums">9:41</span>
                 <div className="w-20 h-5 rounded-full bg-[#0B1C30] flex items-center justify-end pr-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#10B981]" />
@@ -1117,7 +1125,7 @@ export function SerbifyGameStage({
                             {selectedService.taskSummary}
                           </div>
                         </div>
-                        <span className="px-2.5 py-0.5 rounded-full bg-[#F3F0FF] text-[#7C5CFC] text-[11px] font-bold">
+                        <span className="px-2.5 py-0.5 rounded-full bg-[#FEF3C7] text-[#92400E] text-[11px] font-bold">
                           {jobFinished ? "Done" : "In Progress"}
                         </span>
                       </div>
@@ -1355,7 +1363,7 @@ export function SerbifyGameStage({
                     key={service.key}
                     type="button"
                     onClick={(e) => handleSelectService(service, e)}
-                    className="flex flex-col items-center gap-1.5 p-2.5 rounded-2xl bg-white/95 border border-[#E2E8F0] shadow-[0_6px_18px_rgba(11,28,48,0.08)] active:scale-95 transition-transform cursor-pointer"
+                    className="flex flex-col items-center gap-1.5 p-2.5 rounded-2xl bg-white border border-[#C5D4EA] shadow-[0_8px_20px_rgba(11,28,48,0.10)] active:scale-95 transition-transform cursor-pointer"
                   >
                     <span
                       style={{
@@ -1385,7 +1393,7 @@ export function SerbifyGameStage({
             ref={portalRef}
             className="absolute inset-0 z-30 flex items-center justify-center px-4 pointer-events-auto"
           >
-            <div className="w-full max-w-md rounded-[24px] bg-white/92 backdrop-blur-xl border border-[#E2E8F0] p-6 sm:p-8 text-center shadow-[0_24px_64px_rgba(11,28,48,0.14)]">
+            <div className="w-full max-w-md rounded-[24px] bg-white border border-[#C5D4EA] p-6 sm:p-8 text-center shadow-[0_24px_64px_rgba(11,28,48,0.18)]">
               <div className="mx-auto w-14 h-14 rounded-2xl bg-[#EEF4FF] border border-[#E2E8F0] flex items-center justify-center mb-4">
                 <img
                   src="/assets/serbify-mascot.png"
@@ -1414,12 +1422,12 @@ export function SerbifyGameStage({
       </div>
 
       {/* BOTTOM STAGE FOOTER HINT */}
-      <div className="relative z-20 pb-3 sm:pb-4 px-4 flex items-center justify-center gap-3 text-xs text-[#64748B]">
+      <div className="relative z-20 pb-3 sm:pb-4 px-4 flex items-center justify-center gap-3 text-xs text-[#334155]">
         {level > 1 && (
           <button
             type="button"
             onClick={resetGame}
-            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/85 border border-[#E2E8F0] text-[#475569] hover:text-[#0B1C30] font-semibold transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#C5D4EA] text-[#1E3A5F] hover:text-[#0B1C30] shadow-xs font-semibold transition-colors cursor-pointer"
           >
             <RotateCcw className="w-3.5 h-3.5" />
             <span>Restart Demo</span>

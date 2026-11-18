@@ -71,7 +71,7 @@ export function HeroSection({ persona }: HeroSectionProps) {
       ref={heroRef}
       style={{
         background:
-          "linear-gradient(180deg, #EEF4FF 0%, #F9FAFB 65%, #FFFFFF 100%)",
+          "linear-gradient(180deg, #D5E3F7 0%, #E1EBF9 60%, #E7EEF8 100%)",
       }}
       className="relative w-full overflow-x-clip"
     >
@@ -87,7 +87,7 @@ export function HeroSection({ persona }: HeroSectionProps) {
             initial={{ opacity: 0, scale: 0.92, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ ...SPRING_TACTILE, delay: 0.04 }}
-            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-[#E2E8F0] w-fit shadow-[0_1px_8px_rgba(11,28,48,0.04)]"
+            className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-white border border-[#C5D4EA] w-fit shadow-[0_4px_14px_rgba(11,28,48,0.06)]"
           >
             <span className="relative flex h-2.5 w-2.5">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#0660E4] opacity-75" />
@@ -160,7 +160,7 @@ export function HeroSection({ persona }: HeroSectionProps) {
               transition={SPRING_TACTILE}
               href="#verified-pros"
               onClick={(e) => handleScrollTo(e, "#verified-pros")}
-              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white border border-[#E2E8F0] hover:bg-[#F1F5F9] text-[#0B1C30] text-sm font-bold transition-colors"
+              className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white border border-[#C5D4EA] hover:bg-[#F4F7FC] text-[#0B1C30] text-sm font-bold shadow-[0_4px_14px_rgba(11,28,48,0.06)] transition-colors"
             >
               <BadgeCheck className="w-4 h-4 text-[#0660E4]" />
               <span>{t.ctaSecondary}</span>

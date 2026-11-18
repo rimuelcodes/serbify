@@ -106,7 +106,7 @@ export function FourActJourneyStage() {
   return (
     <section
       id="book-flow"
-      className="w-full bg-[#F6F7FA] border-y border-[#E2E8F0]/70"
+      className="w-full bg-[#DCE6F5] border-y border-[#C5D4EA]"
     >
       <div className="w-full max-w-[1200px] mx-auto px-4 sm:px-6 md:px-10 py-14 md:py-24">
       {/* Section Header */}
@@ -153,7 +153,7 @@ export function FourActJourneyStage() {
       {/* Main Cohesive Bento Stage */}
       <div
         onPointerDown={pauseTourOnInteraction}
-        className="bg-white rounded-[24px] border border-[#E2E8F0] shadow-[0_16px_48px_rgba(11,28,48,0.05)] p-4 sm:p-6 md:p-8 flex flex-col gap-8"
+        className="bg-white rounded-[24px] border border-[#C5D4EA] shadow-[0_18px_50px_rgba(11,28,48,0.08)] p-4 sm:p-6 md:p-8 flex flex-col gap-8"
       >
         {/* 1. Top Interactive Act Switcher (Pill Segmented Track) */}
         <div className="w-full overflow-x-auto no-scrollbar pb-1 -mx-1 px-1">
@@ -171,7 +171,7 @@ export function FourActJourneyStage() {
                 setActiveAct((prev) => (prev + 3) % 4);
               }
             }}
-            className="inline-flex md:grid md:grid-cols-4 w-max md:w-full p-1.5 bg-[#F1F5F9] rounded-full border border-[#E2E8F0] gap-1"
+            className="inline-flex md:grid md:grid-cols-4 w-max md:w-full p-1.5 bg-[#E7EEF8] rounded-full border border-[#C5D4EA] gap-1"
           >
             {acts.map((act, idx) => {
               const active = activeAct === idx;

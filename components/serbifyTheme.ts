@@ -1,8 +1,9 @@
 export const SERBIFY_THEME = {
-  canvas: "#F8FAFC",
+  canvas: "#E7EEF8",
+  canvasAlt: "#DCE6F5",
   surface: "#FFFFFF",
-  surfaceSubtle: "#F1F5F9",
-  borderHairline: "#E2E8F0",
+  surfaceSubtle: "#EFF4FB",
+  borderHairline: "#C5D4EA",
   inkPrimary: "#0B1C30",
   inkSecondary: "#475569",
   inkMuted: "#64748B",
@@ -10,7 +11,8 @@ export const SERBIFY_THEME = {
   cobaltHover: "#004AB4",
   emerald: "#10B981",
   emeraldDeep: "#065F46",
-  violet: "#7C5CFC",
+  amber: "#D97706",
+  amberDeep: "#92400E",
   terracotta: "#EE8B60",
   terracottaDeep: "#853A15",
   darkNavy: "#0F172A",
@@ -36,7 +38,7 @@ export interface JourneyStepMeta {
   title: string;
   subtitle: string;
   badgeText: string;
-  badgeTone: "cobalt" | "emerald" | "violet" | "terracotta";
+  badgeTone: "cobalt" | "emerald" | "amber" | "terracotta";
   telemetry: string;
 }
 
@@ -104,7 +106,7 @@ export const NINE_JOURNEY_STEPS: JourneyStepMeta[] = [
     subtitle:
       "Track live job elapsed time and before-repair photo logs. Any scope change requires your explicit in-app approval.",
     badgeText: "Scope Locked ₱450",
-    badgeTone: "violet",
+    badgeTone: "amber",
     telemetry: "Timer 00:18:42 • Escrow Held",
   },
   {

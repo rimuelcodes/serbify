@@ -90,8 +90,8 @@ const SERVICE_CATEGORIES = [
     psgcFee: 50,
     eta: "< 30 mins",
     badge: "Certified",
-    badgeTone: "bg-[#7C5CFC]/10 text-[#5B21B6]",
-    iconBg: "bg-[#7C5CFC]/10 text-[#7C5CFC]",
+    badgeTone: "bg-[#FEF3C7] text-[#92400E]",
+    iconBg: "bg-[#FEF3C7] text-[#B45309]",
     icon: Zap,
   },
   {
@@ -203,7 +203,7 @@ export function LandingSections({
       {/* 2. DUAL-PERSONA INTERACTIVE BENTO GRID */}
       <section
         id="verified-pros"
-        className="w-full bg-[#FFFFFF]"
+        className="w-full bg-[#E7EEF8]"
       >
         <div className="w-full max-w-7xl mx-auto px-5 md:px-10 py-24 md:py-32">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
@@ -457,7 +457,7 @@ export function LandingSections({
       {/* 3. SERVICE CATEGORIES HORIZONTAL SHOWCASE */}
       <section
         id="services"
-        className="w-full bg-[#F8F9FB] border-y border-[#E2E8F0]/70"
+        className="w-full bg-[#DCE6F5] border-y border-[#C5D4EA]"
       >
         <div className="w-full max-w-7xl mx-auto px-5 md:px-10 py-24 md:py-32">
         <div className="flex flex-col gap-2 mb-12">
@@ -877,7 +877,7 @@ export function LandingSections({
 
           {/* Archipelago Radar Card */}
           <div className="lg:col-span-6">
-            <div className="relative w-full h-[420px] bg-white rounded-[24px] border border-[#E2E8F0] p-6 flex flex-col justify-between overflow-hidden">
+            <div className="relative w-full h-[420px] bg-white rounded-[24px] border border-[#C5D4EA] shadow-[0_16px_42px_rgba(11,28,48,0.07)] p-6 flex flex-col justify-between overflow-hidden">
               <div className="flex items-center justify-between z-10">
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-full bg-[#0660E4] text-white flex items-center justify-center">
@@ -1082,7 +1082,7 @@ export function LandingSections({
       </section>
 
       {/* FOOTER */}
-      <footer className="w-full bg-[#F1F5F9] border-t border-[#E2E8F0] mt-16">
+      <footer className="w-full bg-[#D4DFEF] border-t border-[#BCCBE0] mt-16">
         <div className="max-w-7xl mx-auto px-5 md:px-10 py-16 flex flex-col gap-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
             <div className="lg:col-span-2 flex flex-col gap-4">
