@@ -41,7 +41,7 @@ npm run start
 
 1. Push this repository to GitHub as `serbify`:
    ```bash
-   git remote add origin https://github.com/<YOUR_USERNAME>/serbify.git
+   git remote add origin https://github.com/rimuelcodes/serbify.git
    git push -u origin main
    ```
 2. In [Vercel](https://vercel.com), import the `serbify` repository.
