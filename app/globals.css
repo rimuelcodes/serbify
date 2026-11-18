@@ -3,12 +3,18 @@
 :root {
   --font-plus-jakarta: "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
-  --serbify-canvas: #e7eef8;
-  --serbify-canvas-alt: #dce6f5;
+  --font-ui: "Inter", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  --serbify-canvas: #f7f6f2;
+  --serbify-canvas-mesh: #eceef5;
   --serbify-surface: #ffffff;
-  --serbify-border: #c5d4ea;
-  --serbify-ink: #0b1c30;
+  --serbify-border: rgba(18, 23, 38, 0.08);
+  --serbify-ink: #121726;
+  --serbify-ink-secondary: #4b5565;
   --serbify-cobalt: #0660e4;
+  --serbify-cobalt-hover: #044bb5;
+  --serbify-gold: #e59824;
+  --serbify-jade: #117a58;
 }
 
 @layer base {
