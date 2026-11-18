@@ -1076,7 +1076,6 @@ export function SerbifyGameStage({
                 <div
                   ref={phoneTiltRef}
                   style={{
-                    transformStyle: "preserve-3d",
                     boxShadow: "0 32px 64px -16px rgba(18, 23, 38, 0.16)",
                   }}
                   className="rounded-[46px]"
@@ -1123,7 +1122,7 @@ export function SerbifyGameStage({
                     {/* Inner Screen */}
                     <div
                       ref={phoneScreenRef}
-                      className="relative w-full h-full rounded-[35px] bg-[#F7F6F2] overflow-hidden flex flex-col"
+                      className="relative z-10 w-full h-full rounded-[35px] bg-[#F7F6F2] overflow-hidden flex flex-col"
                     >
                       {/* Dynamic Island + Status Bar */}
                       <div className="relative z-20 px-5 pt-3 pb-2 flex items-center justify-between text-[11px] font-bold text-[#121726] bg-white/90 backdrop-blur-md border-b border-[#121726]/8">
