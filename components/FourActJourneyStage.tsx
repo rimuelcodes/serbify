@@ -74,9 +74,9 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
       <div
         style={{
           boxShadow:
-            "inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 16px 40px -16px rgba(18, 23, 38, 0.05)",
+            "inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 16px 36px -12px rgba(18, 23, 38, 0.06)",
         }}
-        className="relative w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#F3F0E8] border border-[#DDD7CB] p-8 md:p-12 lg:p-14"
+        className="relative w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#F4F2EC] border border-[#E4DFD3] p-8 md:p-12 lg:p-14"
       >
         <SectionCornerTicks />
         {/* Section Header */}
@@ -137,7 +137,7 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
           {/* Card 01 — Pin & Match */}
           <article
             data-bento-card
-            className="bg-white border border-[#DFD9CE] hover:border-[#0660E4]/36 rounded-[22px] p-7 shadow-[0_10px_28px_-10px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
+            className="bg-white border border-[#121726]/[0.08] hover:border-[#0660E4]/36 rounded-[22px] p-7 shadow-[0_16px_36px_-12px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
           >
             <div className="flex flex-col gap-4">
               <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-[#EAF1FD] text-[#0660E4] text-xs font-bold tabular-nums">
@@ -154,7 +154,7 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
               </div>
             </div>
 
-            <div className="rounded-2xl bg-[#F7F5F0] border border-[#18181B]/[0.06] p-3.5 flex items-center justify-between gap-2">
+            <div className="rounded-2xl bg-[#F7F5EF] border border-[#E8E3D8] p-3.5 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 min-w-0">
                 <span className="w-7 h-7 rounded-lg bg-[#EAF1FD] text-[#0660E4] flex items-center justify-center shrink-0">
                   <MapPin className="w-3.5 h-3.5" />
@@ -174,7 +174,7 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
           {/* Card 02 — Verified Work (ID & NBI Check) */}
           <article
             data-bento-card
-            className="bg-white border border-[#DFD9CE] hover:border-[#0660E4]/36 rounded-[22px] p-7 shadow-[0_10px_28px_-10px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
+            className="bg-white border border-[#121726]/[0.08] hover:border-[#0660E4]/36 rounded-[22px] p-7 shadow-[0_16px_36px_-12px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
           >
             <div className="flex flex-col gap-4">
               <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-[#E6F4EF] text-[#117A58] text-xs font-bold tabular-nums">
@@ -202,7 +202,7 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
           {/* Card 03 — Live Arrival */}
           <article
             data-bento-card
-            className="bg-white border border-[#DFD9CE] hover:border-[#0660E4]/36 rounded-[22px] p-7 shadow-[0_10px_28px_-10px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
+            className="bg-white border border-[#121726]/[0.08] hover:border-[#0660E4]/36 rounded-[22px] p-7 shadow-[0_16px_36px_-12px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
           >
             <div className="flex flex-col gap-4">
               <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-[#EAF1FD] text-[#0660E4] text-xs font-bold tabular-nums">
@@ -219,7 +219,7 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
               </div>
             </div>
 
-            <div className="rounded-2xl bg-[#F7F5F0] border border-[#18181B]/[0.06] p-3.5 flex items-center justify-between gap-2">
+            <div className="rounded-2xl bg-[#F7F5EF] border border-[#E8E3D8] p-3.5 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 min-w-0">
                 <span className="w-7 h-7 rounded-lg bg-[#EAF1FD] text-[#0660E4] flex items-center justify-center shrink-0">
                   <Navigation className="w-3.5 h-3.5" />
@@ -237,7 +237,7 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
           {/* Card 04 — Safe Payment */}
           <article
             data-bento-card
-            className="bg-white border border-[#DFD9CE] hover:border-[#0660E4]/36 rounded-[22px] p-7 shadow-[0_10px_28px_-10px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
+            className="bg-white border border-[#121726]/[0.08] hover:border-[#0660E4]/36 rounded-[22px] p-7 shadow-[0_16px_36px_-12px_rgba(18,23,38,0.06)] hover:-translate-y-[3px] hover:shadow-[0_18px_36px_-12px_rgba(6,96,228,0.09)] transition-all duration-300 flex flex-col justify-between gap-6"
           >
             <div className="flex flex-col gap-4">
               <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-[#FDF4E3] text-[#8A5609] text-xs font-bold tabular-nums">

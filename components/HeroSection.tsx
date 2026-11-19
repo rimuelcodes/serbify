@@ -141,15 +141,13 @@ export function HeroSection({ persona }: HeroSectionProps) {
     >
       <div
         style={{
-          backgroundColor: "#FAF9F6",
-          backgroundImage: `
-            radial-gradient(58% 52% at 74% 48%, rgba(229, 152, 36, 0.07) 0%, rgba(229, 152, 36, 0) 70%),
-            radial-gradient(65% 60% at 15% 85%, #F3F0E8 0%, rgba(243, 240, 232, 0) 72%)
-          `,
+          backgroundColor: "#F4F2EC",
+          backgroundImage:
+            "radial-gradient(circle at 68% 48%, rgba(6, 96, 228, 0.03) 0%, rgba(229, 152, 36, 0.02) 45%, transparent 72%)",
           boxShadow:
-            "inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 18px 44px -16px rgba(18, 23, 38, 0.06)",
+            "inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 16px 36px -12px rgba(18, 23, 38, 0.06)",
         }}
-        className="relative w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] border border-[#DDD7CB] p-8 md:p-12 lg:p-14 overflow-hidden"
+        className="relative w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] border border-[#E4DFD3] p-8 md:p-12 lg:p-14 overflow-hidden"
       >
         <SectionCornerTicks />
         {/* Whisper-quiet warm architectural grid fading toward edges */}

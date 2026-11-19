@@ -777,12 +777,9 @@ export function SerbifyGameStage({
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       style={{
-        backgroundColor: "#F7F5F0",
-        backgroundImage: `
-          radial-gradient(60% 55% at 52% 48%, rgba(229, 152, 36, 0.12) 0%, rgba(229, 152, 36, 0) 68%),
-          radial-gradient(50% 45% at 20% 25%, rgba(6, 96, 228, 0.04) 0%, rgba(6, 96, 228, 0) 70%),
-          radial-gradient(65% 60% at 85% 75%, #EFECE6 0%, rgba(239, 236, 230, 0) 75%)
-        `,
+        backgroundColor: "#FAF9F5",
+        backgroundImage:
+          "radial-gradient(circle at 62% 48%, rgba(6, 96, 228, 0.035) 0%, rgba(229, 152, 36, 0.025) 42%, transparent 72%)",
       }}
       className="relative w-full min-h-[100dvh] lg:h-[100dvh] overflow-x-clip overflow-y-visible lg:overflow-hidden text-[#121726] flex flex-col justify-between"
     >
@@ -976,7 +973,7 @@ export function SerbifyGameStage({
                 <TactileTokenBadge
                   onClick={() => triggerHapticAndReward()}
                   pulseOnScroll={false}
-                  className="relative inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#FDF4E3] border border-[#E59824]/35 shadow-[0_6px_18px_rgba(229,152,36,0.14)] cursor-pointer select-none"
+                  className="relative inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#FDF6E7] border border-[#E59824]/30 shadow-[0_6px_18px_rgba(229,152,36,0.12)] cursor-pointer select-none"
                 >
                   <img
                     src="/assets/serbify-mascot.png"
@@ -985,7 +982,7 @@ export function SerbifyGameStage({
                   />
                   <span
                     style={{ fontFamily: "var(--font-ui)" }}
-                    className="text-[11px] font-bold tracking-[0.06em] uppercase text-[#8A5609] tabular-nums"
+                    className="text-[11px] font-bold tracking-[0.06em] uppercase text-[#9A580A] tabular-nums"
                   >
                     0{level} / 06 • 30-SEC INTERACTIVE DEMO
                   </span>
@@ -1173,7 +1170,7 @@ export function SerbifyGameStage({
                     {/* Inner Screen */}
                     <div
                       ref={phoneScreenRef}
-                      className="relative z-10 w-full h-full rounded-[35px] bg-[#F7F6F2] overflow-hidden flex flex-col"
+                      className="relative z-10 w-full h-full rounded-[35px] bg-[#FFFFFF] overflow-hidden flex flex-col"
                     >
                       {/* Dynamic Island + Status Bar */}
                       <div className="relative z-20 px-5 pt-3 pb-2 flex items-center justify-between text-[11px] font-bold text-[#121726] bg-white/90 backdrop-blur-md border-b border-[#121726]/8">
@@ -1258,10 +1255,10 @@ export function SerbifyGameStage({
                                             ? "translateY(-1px) scale(1)"
                                             : "scale(1)",
                                       }}
-                                      className={`relative w-full overflow-hidden flex items-center justify-between px-3.5 py-3 rounded-2xl bg-white border transition-all duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer text-left ${
+                                      className={`relative w-full overflow-hidden flex items-center justify-between px-3.5 py-3 rounded-2xl bg-[#F8F7F3] border transition-all duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer text-left ${
                                         isCoupledHighlight
                                           ? "border-[#0660E4] shadow-[0_8px_22px_rgba(6,96,228,0.16)] ring-2 ring-[#0660E4]/15"
-                                          : "border-[#121726]/8 hover:border-[#0660E4]/50 hover:shadow-[0_6px_16px_rgba(6,96,228,0.08)] active:scale-[0.96]"
+                                          : "border-[#121726]/[0.08] hover:border-[#0660E4]/50 hover:bg-white hover:shadow-[0_6px_16px_rgba(6,96,228,0.08)] active:scale-[0.96]"
                                       }`}
                                     >
                                       {showAutoRipple && (

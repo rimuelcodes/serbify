@@ -1,9 +1,9 @@
 export const SERBIFY_THEME = {
-  canvas: "#F7F6F2",
-  canvasMesh: "#ECEEF5",
-  canvasAlt: "#ECEEF5",
+  canvas: "#FAF9F5",
+  canvasMesh: "#F4F2EC",
+  canvasAlt: "#F4F2EC",
   surface: "#FFFFFF",
-  surfaceSubtle: "#F2F1EC",
+  surfaceSubtle: "#F7F5EF",
   borderHairline: "rgba(18, 23, 38, 0.08)",
   inkPrimary: "#121726",
   inkSecondary: "#4B5565",
