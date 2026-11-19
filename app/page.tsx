@@ -52,7 +52,7 @@ export default function HomePage() {
   }, [lenis]);
 
   return (
-    <div className="min-h-screen bg-[#FBF8F1] text-[#121726]">
+    <div className="min-h-screen bg-[#FAF8F3] text-[#121726]">
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:rounded-full focus:bg-[#0660E4] focus:text-white focus:text-xs focus:font-bold focus:shadow-lg"

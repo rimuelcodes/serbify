@@ -342,10 +342,9 @@ export function LandingSections({
         <div
           ref={bentoShellRef}
           style={{
-            boxShadow:
-              "inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 16px 36px -12px rgba(18, 23, 38, 0.06)",
+            boxShadow: "0 12px 32px -12px rgba(18, 23, 38, 0.05)",
           }}
-          className="relative w-full max-w-[1240px] mx-auto rounded-[28px] bg-[#F4EFE4] border border-[#E4DEC9] p-8 lg:p-10"
+          className="relative w-full max-w-[1240px] mx-auto rounded-[28px] bg-[#FFFFFF] border border-[#E4E2DC] p-8 lg:p-10"
         >
           <SectionCornerTicks />
 
@@ -369,7 +368,7 @@ export function LandingSections({
             <div
               role="tablist"
               aria-label="Choose Homeowners or Local Pros"
-              className="inline-flex flex-wrap sm:flex-nowrap p-1.5 bg-[#F7F3E8] border border-[#E6DEC8] rounded-full self-start lg:self-end"
+              className="inline-flex flex-wrap sm:flex-nowrap p-1.5 bg-[#F6F7F9] border border-[#E4E2DC] rounded-full self-start lg:self-end"
             >
               {(
                 [
@@ -495,14 +494,14 @@ export function LandingSections({
                     <span className="text-xs font-bold text-[#0660E4] tabular-nums uppercase tracking-wider">
                       {activeFeature.num} • {activeFeature.title}
                     </span>
-                    <span className="px-2.5 py-1 rounded-full bg-[#F7F5EF] border border-[#E8E3D8] text-[11px] font-bold text-[#4B5565]">
+                    <span className="px-2.5 py-1 rounded-full bg-[#F6F7F9] border border-[#E4E2DC] text-[11px] font-bold text-[#4B5565]">
                       {isPro ? "Pro App View" : "Homeowner App View"}
                     </span>
                   </div>
 
                   {/* STATE 01: Pin Your Exact Address & Barangay / Instant Barangay Job Alerts */}
                   {activeFeatureIdx === 0 && (
-                    <div className="relative flex-1 min-h-[220px] rounded-[18px] bg-[#F7F5EF] border border-[#E8E3D8] p-5 flex flex-col justify-between overflow-hidden">
+                    <div className="relative flex-1 min-h-[220px] rounded-[18px] bg-[#F6F7F9] border border-[#E4E2DC] p-5 flex flex-col justify-between overflow-hidden">
                       <div
                         aria-hidden="true"
                         className="pointer-events-none absolute inset-0 opacity-45"
@@ -546,7 +545,7 @@ export function LandingSections({
                   {/* STATE 02: Compare Quotes / Zero Hidden Commission Cuts */}
                   {activeFeatureIdx === 1 && (
                     <div className="flex-1 flex flex-col justify-center gap-3.5">
-                      <div className="p-4 rounded-[16px] bg-[#F7F5EF] border border-[#E8E3D8] hover:border-[#0660E4]/40 transition-colors flex items-center justify-between gap-4">
+                      <div className="p-4 rounded-[16px] bg-[#F6F7F9] border border-[#E4E2DC] hover:border-[#0660E4]/40 transition-colors flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3.5 min-w-0">
                           <div className="w-10 h-10 rounded-full bg-[#0660E4] text-white text-xs font-bold flex items-center justify-center shrink-0">
                             JB
@@ -569,7 +568,7 @@ export function LandingSections({
                         </span>
                       </div>
 
-                      <div className="p-4 rounded-[16px] bg-[#F7F5EF] border border-[#E59824]/45 hover:border-[#E59824] transition-colors flex items-center justify-between gap-4">
+                      <div className="p-4 rounded-[16px] bg-[#F6F7F9] border border-[#E59824]/45 hover:border-[#E59824] transition-colors flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3.5 min-w-0">
                           <div className="w-10 h-10 rounded-full bg-[#E59824] text-white text-xs font-bold flex items-center justify-center shrink-0">
                             RC
@@ -601,7 +600,7 @@ export function LandingSections({
 
                   {/* STATE 03: Safe In-App Chat & Free Calls */}
                   {activeFeatureIdx === 2 && (
-                    <div className="flex-1 p-5 bg-[#F7F5EF] border border-[#E8E3D8] rounded-[18px] flex flex-col justify-between gap-5">
+                    <div className="flex-1 p-5 bg-[#F6F7F9] border border-[#E4E2DC] rounded-[18px] flex flex-col justify-between gap-5">
                       <div className="flex items-center justify-between text-xs font-semibold text-[#4B5565] pb-3 border-b border-[#121726]/[0.07]">
                         <span className="flex items-center gap-2 text-[#121726] font-bold">
                           <Lock className="w-3.5 h-3.5 text-[#0660E4]" />
@@ -658,7 +657,7 @@ export function LandingSections({
                         <TactileTokenBadge
                           key={item.num}
                           onClick={() => {}}
-                          className="p-3.5 rounded-[14px] bg-[#F7F5EF] border border-[#E8E3D8] hover:border-[#117A58]/40 flex items-start gap-3 cursor-pointer transition-colors"
+                          className="p-3.5 rounded-[14px] bg-[#F6F7F9] border border-[#E4E2DC] hover:border-[#117A58]/40 flex items-start gap-3 cursor-pointer transition-colors"
                         >
                           <span className="w-7 h-7 rounded-xl bg-[#E6F4EF] text-[#117A58] flex items-center justify-center shrink-0 mt-0.5">
                             <Check className="w-4 h-4" />
@@ -692,10 +691,9 @@ export function LandingSections({
       >
         <div
           style={{
-            boxShadow:
-              "inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 16px 36px -12px rgba(18, 23, 38, 0.06)",
+            boxShadow: "0 12px 32px -12px rgba(18, 23, 38, 0.05)",
           }}
-          className="relative w-full max-w-[1240px] mx-auto rounded-[28px] bg-[#F4EFE4] border border-[#E4DEC9] p-8 md:p-12 lg:p-14"
+          className="relative w-full max-w-[1240px] mx-auto rounded-[28px] bg-[#FFFFFF] border border-[#E4E2DC] p-8 md:p-12 lg:p-14"
         >
         <SectionCornerTicks />
         <div className="flex flex-col gap-2 mb-12">
@@ -1049,10 +1047,9 @@ export function LandingSections({
       >
         <div
           style={{
-            boxShadow:
-              "inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 16px 36px -12px rgba(18, 23, 38, 0.06)",
+            boxShadow: "0 12px 32px -12px rgba(18, 23, 38, 0.05)",
           }}
-          className="relative w-full max-w-[1240px] mx-auto rounded-[28px] bg-[#F4EFE4] border border-[#E4DEC9] p-8 md:p-12 lg:p-14"
+          className="relative w-full max-w-[1240px] mx-auto rounded-[28px] bg-[#FFFFFF] border border-[#E4E2DC] p-8 md:p-12 lg:p-14"
         >
         <SectionCornerTicks />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -1342,7 +1339,7 @@ export function LandingSections({
       </section>
 
       {/* FOOTER */}
-      <footer className="w-full bg-[#F4EFE4] border-t border-[#E4DEC9] mt-16">
+      <footer className="w-full bg-transparent border-t border-[#E4E2DC] mt-16">
         <div className="max-w-7xl mx-auto px-5 md:px-10 py-16 flex flex-col gap-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
             <div className="lg:col-span-2 flex flex-col gap-4">

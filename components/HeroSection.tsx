@@ -141,13 +141,10 @@ export function HeroSection({ persona }: HeroSectionProps) {
     >
       <div
         style={{
-          backgroundColor: "#F4EFE4",
-          backgroundImage:
-            "radial-gradient(circle at 68% 48%, rgba(6, 96, 228, 0.03) 0%, rgba(229, 152, 36, 0.02) 45%, transparent 72%)",
-          boxShadow:
-            "inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 16px 36px -12px rgba(18, 23, 38, 0.06)",
+          backgroundColor: "#FFFFFF",
+          boxShadow: "0 12px 32px -12px rgba(18, 23, 38, 0.05)",
         }}
-        className="relative w-full max-w-[1240px] mx-auto rounded-[28px] border border-[#E4DEC9] p-8 md:p-12 lg:p-14 overflow-hidden"
+        className="relative w-full max-w-[1240px] mx-auto rounded-[28px] border border-[#E4E2DC] p-8 md:p-12 lg:p-14 overflow-hidden"
       >
         <SectionCornerTicks />
         {/* Whisper-quiet warm architectural grid fading toward edges */}
@@ -254,7 +251,7 @@ export function HeroSection({ persona }: HeroSectionProps) {
                 transition={SPRING_TACTILE}
                 href="#verified-pros"
                 onClick={(e) => handleScrollTo(e, "#verified-pros")}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white/90 border border-[#18181B]/[0.08] hover:bg-[#EFECE6] text-[#121726] text-sm font-bold shadow-[0_8px_20px_-6px_rgba(28,25,23,0.06)] transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-white border border-[#E4E2DC] hover:bg-[#F6F7F9] text-[#121726] text-sm font-bold shadow-[0_8px_20px_-6px_rgba(18,23,38,0.06)] transition-colors"
               >
                 <BadgeCheck className="w-4 h-4 text-[#117A58]" />
                 <span>{t.ctaSecondary}</span>
@@ -393,10 +390,10 @@ export function HeroSection({ persona }: HeroSectionProps) {
                     </span>
                   </div>
 
-                  {/* Inner Screen (Warm Mineral Map) */}
-                  <div className="relative w-full h-full bg-[#F7F5F0] rounded-[36px] overflow-hidden flex flex-col justify-between pt-10">
+                  {/* Inner Screen (Neutral Porcelain Map) */}
+                  <div className="relative w-full h-full bg-[#F6F7F9] rounded-[36px] overflow-hidden flex flex-col justify-between pt-10">
                     {/* Stylized Vector Map */}
-                    <div className="absolute inset-0 bg-[#EFECE6]">
+                    <div className="absolute inset-0 bg-[#F6F7F9]">
                       <svg
                         className="w-full h-full opacity-75"
                         fill="none"
@@ -541,7 +538,7 @@ export function HeroSection({ persona }: HeroSectionProps) {
                       </div>
 
                       {/* ETA Progress Strip */}
-                      <div className="bg-[#F7F5F0] border border-[#18181B]/[0.07] p-2 rounded-xl flex items-center justify-between">
+                      <div className="bg-[#F6F7F9] border border-[#E4E2DC] p-2 rounded-xl flex items-center justify-between">
                         <div className="flex items-center gap-1.5">
                           <Navigation className="w-4 h-4 text-[#0660E4]" />
                           <div className="flex flex-col">
@@ -575,7 +572,7 @@ export function HeroSection({ persona }: HeroSectionProps) {
                           className={`py-2 rounded-full text-[11px] font-bold flex items-center justify-center gap-1 transition-colors cursor-pointer ${
                             relayMode === "call"
                               ? "bg-[#117A58] text-white"
-                              : "bg-[#EFECE6] text-[#121726] hover:bg-[#E5E0D7]"
+                              : "bg-[#F6F7F9] text-[#121726] hover:bg-[#ECEEF2]"
                           }`}
                           type="button"
                         >

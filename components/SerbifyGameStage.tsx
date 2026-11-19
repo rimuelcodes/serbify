@@ -777,9 +777,7 @@ export function SerbifyGameStage({
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       style={{
-        backgroundColor: "#FBF8F1",
-        backgroundImage:
-          "radial-gradient(circle at 62% 48%, rgba(6, 96, 228, 0.035) 0%, rgba(229, 152, 36, 0.035) 45%, transparent 72%)",
+        backgroundColor: "#FAF8F3",
       }}
       className="relative w-full min-h-[100dvh] lg:h-[100dvh] overflow-x-clip overflow-y-visible lg:overflow-hidden text-[#121726] flex flex-col justify-between"
     >
@@ -1255,10 +1253,10 @@ export function SerbifyGameStage({
                                             ? "translateY(-1px) scale(1)"
                                             : "scale(1)",
                                       }}
-                                      className={`relative w-full overflow-hidden flex items-center justify-between px-3.5 py-3 rounded-2xl bg-[#F8F7F3] border transition-all duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer text-left ${
+                                      className={`relative w-full overflow-hidden flex items-center justify-between px-3.5 py-3 rounded-2xl bg-[#F6F7F9] border transition-all duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer text-left ${
                                         isCoupledHighlight
                                           ? "border-[#0660E4] shadow-[0_8px_22px_rgba(6,96,228,0.16)] ring-2 ring-[#0660E4]/15"
-                                          : "border-[#121726]/[0.08] hover:border-[#0660E4]/50 hover:bg-white hover:shadow-[0_6px_16px_rgba(6,96,228,0.08)] active:scale-[0.96]"
+                                          : "border-[#E4E2DC] hover:border-[#0660E4]/50 hover:bg-white hover:shadow-[0_6px_16px_rgba(6,96,228,0.08)] active:scale-[0.96]"
                                       }`}
                                     >
                                       {showAutoRipple && (

@@ -73,10 +73,9 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
     >
       <div
         style={{
-          boxShadow:
-            "inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 16px 36px -12px rgba(18, 23, 38, 0.06)",
+          boxShadow: "0 12px 32px -12px rgba(18, 23, 38, 0.05)",
         }}
-        className="relative w-full max-w-[1240px] mx-auto rounded-[28px] bg-[#F4EFE4] border border-[#E4DEC9] p-8 md:p-12 lg:p-14"
+        className="relative w-full max-w-[1240px] mx-auto rounded-[28px] bg-[#FFFFFF] border border-[#E4E2DC] p-8 md:p-12 lg:p-14"
       >
         <SectionCornerTicks />
         {/* Section Header */}
@@ -154,7 +153,7 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
               </div>
             </div>
 
-            <div className="rounded-2xl bg-[#F7F3E8] border border-[#E6DEC8] p-3.5 flex items-center justify-between gap-2">
+            <div className="rounded-2xl bg-[#F6F7F9] border border-[#E4E2DC] p-3.5 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 min-w-0">
                 <span className="w-7 h-7 rounded-lg bg-[#EAF1FD] text-[#0660E4] flex items-center justify-center shrink-0">
                   <MapPin className="w-3.5 h-3.5" />
@@ -219,7 +218,7 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
               </div>
             </div>
 
-            <div className="rounded-2xl bg-[#F7F3E8] border border-[#E6DEC8] p-3.5 flex items-center justify-between gap-2">
+            <div className="rounded-2xl bg-[#F6F7F9] border border-[#E4E2DC] p-3.5 flex items-center justify-between gap-2">
               <div className="flex items-center gap-2 min-w-0">
                 <span className="w-7 h-7 rounded-lg bg-[#EAF1FD] text-[#0660E4] flex items-center justify-center shrink-0">
                   <Navigation className="w-3.5 h-3.5" />
