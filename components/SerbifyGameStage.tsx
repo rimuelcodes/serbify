@@ -36,7 +36,11 @@ import {
   X,
   Zap,
 } from "lucide-react";
-import { MagneticButton } from "./KineticPrimitives";
+import {
+  KineticHeadline,
+  MagneticButton,
+  TactileTokenBadge,
+} from "./KineticPrimitives";
 import { useLenis } from "./LenisProvider";
 
 if (typeof window !== "undefined") {
@@ -130,7 +134,7 @@ const STORY_STEPS: StoryStepMeta[] = [
     shortLabel: "3. ID & NBI Check",
     title: "ID & NBI-Verified Pro",
     instruction:
-      "Review Kuya Marco's government ID, NBI clearance, and upfront quote before he heads out.",
+      "Review Kuya Arnel's government ID, NBI clearance, and upfront quote before he heads out.",
     badge: "99.4% Match Rate",
     telemetryTitle: "NBI & Gov ID Verified",
     telemetryValue: "99.4% Match Rate",
@@ -242,6 +246,32 @@ export function SerbifyGameStage({
   const [rewardPulseKey, setRewardPulseKey] = useState(0);
   const [ctaHovered, setCtaHovered] = useState(false);
   const [tappedService, setTappedService] = useState<ServiceKey | null>(null);
+  const [headerCondensed, setHeaderCondensed] = useState(false);
+  const [autoPreviewPulse, setAutoPreviewPulse] = useState(0);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setHeaderCondensed(window.scrollY > 60);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Autonomous preview tap ripple on first service row while idle on hero
+  useEffect(() => {
+    if (demoStarted || level !== 1 || prefersReducedMotion) return;
+    const interval = setInterval(() => {
+      setAutoPreviewPulse((n) => n + 1);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, [demoStarted, level, prefersReducedMotion]);
+
+  useEffect(() => {
+    if (ctaHovered && !prefersReducedMotion) {
+      setAutoPreviewPulse((n) => n + 1);
+    }
+  }, [ctaHovered, prefersReducedMotion]);
 
   // Level 2/3 radar state
   const [radarMatched, setRadarMatched] = useState(false);
@@ -421,7 +451,7 @@ export function SerbifyGameStage({
     if (prefersReducedMotion || !phoneRecoilRef.current) return;
     gsap.fromTo(
       phoneRecoilRef.current,
-      { y: -4, rotateZ: 0.8 },
+      { y: -3, rotateZ: 0.6 },
       {
         y: 0,
         rotateZ: 0,
@@ -452,7 +482,7 @@ export function SerbifyGameStage({
     }
   }, [resetSignal, resetGame]);
 
-  // Pointer-reactive 3D tilt (±5deg around resting angle) + diagonal glass sheen
+  // Pointer-reactive 3D tilt (±4.5deg around resting angle) + diagonal glass sheen
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLElement>) => {
       if (
@@ -465,8 +495,8 @@ export function SerbifyGameStage({
       const rect = stageRef.current.getBoundingClientRect();
       const nx = (e.clientX - rect.left) / rect.width - 0.5;
       const ny = (e.clientY - rect.top) / rect.height - 0.5;
-      quickTiltX.current?.(3 + Math.max(-5, Math.min(5, -ny * 10)));
-      quickTiltY.current?.(-6 + Math.max(-5, Math.min(5, nx * 10)));
+      quickTiltX.current?.(3 + Math.max(-4.5, Math.min(4.5, -ny * 9)));
+      quickTiltY.current?.(-6 + Math.max(-4.5, Math.min(4.5, nx * 9)));
       quickSheenX.current?.(nx * 32);
     },
     [ctaHovered, prefersReducedMotion]
@@ -758,18 +788,26 @@ export function SerbifyGameStage({
     >
       {/* SPLIT FLOATING HEADER: Left Brand Pill • Center Glass Scrubber • Right Actions */}
       <header className="relative z-30 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-10 pt-4 sm:pt-5">
-        <div className="w-full flex items-center justify-between gap-3">
+        <div
+          className={`w-full flex items-center justify-between gap-3 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] origin-top ${
+            headerCondensed ? "scale-[0.985]" : "scale-100"
+          }`}
+        >
           {/* 1. Left: Compact Serbify + Puppy Mascot Pill */}
           <button
             type="button"
             onClick={resetGame}
             style={{
-              backgroundColor: "rgba(255, 255, 255, 0.78)",
-              backdropFilter: "blur(16px)",
-              WebkitBackdropFilter: "blur(16px)",
-              borderColor: "rgba(18, 23, 38, 0.07)",
+              backgroundColor: "rgba(255, 255, 255, 0.8)",
+              backdropFilter: "blur(18px)",
+              WebkitBackdropFilter: "blur(18px)",
+              borderColor: "rgba(18, 23, 38, 0.09)",
             }}
-            className="flex items-center gap-2 px-3 py-1.5 rounded-full border shadow-[0_4px_16px_rgba(18,23,38,0.05)] hover:border-[#0660E4]/35 transition-colors cursor-pointer shrink-0"
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full border hover:border-[#0660E4]/35 transition-all cursor-pointer shrink-0 ${
+              headerCondensed
+                ? "shadow-[0_8px_22px_rgba(18,23,38,0.08)]"
+                : "shadow-[0_4px_16px_rgba(18,23,38,0.05)]"
+            }`}
             title="Restart interactive demo"
           >
             <img
@@ -786,12 +824,16 @@ export function SerbifyGameStage({
           <nav
             aria-label="Interactive walkthrough steps"
             style={{
-              backgroundColor: "rgba(255, 255, 255, 0.75)",
-              backdropFilter: "blur(16px)",
-              WebkitBackdropFilter: "blur(16px)",
-              borderColor: "rgba(18, 23, 38, 0.07)",
+              backgroundColor: "rgba(255, 255, 255, 0.78)",
+              backdropFilter: "blur(18px)",
+              WebkitBackdropFilter: "blur(18px)",
+              borderColor: "rgba(18, 23, 38, 0.09)",
             }}
-            className="hidden md:flex items-center gap-1.5 w-full max-w-sm px-3.5 py-1.5 rounded-full border shadow-[0_6px_22px_rgba(18,23,38,0.05)]"
+            className={`hidden md:flex items-center gap-1.5 w-full max-w-sm px-3.5 py-1.5 rounded-full border transition-shadow duration-300 ${
+              headerCondensed
+                ? "shadow-[0_10px_28px_rgba(18,23,38,0.09)]"
+                : "shadow-[0_6px_22px_rgba(18,23,38,0.05)]"
+            }`}
           >
             {STORY_STEPS.map((step) => {
               const isCompleted = demoStarted && step.level < level;
@@ -823,9 +865,9 @@ export function SerbifyGameStage({
                       {isActive && (
                         <motion.span
                           key={`ripple-${level}-${rewardPulseKey}`}
-                          initial={{ scaleX: 0.15, opacity: 0.95 }}
-                          animate={{ scaleX: 1, opacity: 0 }}
-                          transition={{ duration: 0.7, ease: SMOOTH_EASE }}
+                          initial={{ scaleX: 0, opacity: 0.95 }}
+                          animate={{ scaleX: 1, opacity: 0.35 }}
+                          transition={{ duration: 0.65, ease: SMOOTH_EASE }}
                           style={{ originX: 0 }}
                           className="absolute inset-0 bg-[#117A58]"
                         />
@@ -917,34 +959,37 @@ export function SerbifyGameStage({
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center">
           {/* LEFT STAGE (Cols 1-5): Step Eyebrow + Editorial Narrative / Coachmark */}
           <div className="lg:col-span-5 flex flex-col items-start text-left order-2 lg:order-1">
-            {/* Golden Puppy Mascot + Clean Step Eyebrow Pill (No Duplicate Copy) */}
+            {/* Golden Puppy Mascot + Clean Step Eyebrow Pill (Badgey Tactile Token) */}
             <div className="relative mb-5">
               <motion.div
                 key={`glow-${rewardPulseKey}`}
-                initial={{ opacity: 0.45, scale: 0.92 }}
+                initial={{ opacity: 0.4, scale: 0.9 }}
                 animate={{
-                  opacity: [0.45, 0.85, 0.55],
-                  scale: [0.95, 1.12, 1],
+                  opacity: [0.45, 0.95, 0.5],
+                  scale: [0.92, 1.24, 1],
                 }}
-                transition={{ duration: 0.9, ease: SMOOTH_EASE }}
+                transition={{ duration: 0.85, ease: SMOOTH_EASE }}
                 aria-hidden="true"
-                className="absolute -inset-3 rounded-full bg-[#E59824]/25 blur-xl pointer-events-none"
+                className="absolute -inset-3.5 rounded-full bg-[#FDF4E3] ring-1 ring-[#E59824]/30 blur-md pointer-events-none"
               />
-              <div
-                ref={mascotRef}
-                className="relative inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#FDF4E3] border border-[#E59824]/30 shadow-[0_4px_14px_rgba(229,152,36,0.12)]"
-              >
-                <img
-                  src="/assets/serbify-mascot.png"
-                  alt="Serbify mascot"
-                  className="w-6 h-6 object-contain"
-                />
-                <span
-                  style={{ fontFamily: "var(--font-ui)" }}
-                  className="text-[11px] font-bold tracking-[0.06em] uppercase text-[#8A5609] tabular-nums"
+              <div ref={mascotRef}>
+                <TactileTokenBadge
+                  onClick={() => triggerHapticAndReward()}
+                  pulseOnScroll={false}
+                  className="relative inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#FDF4E3] border border-[#E59824]/35 shadow-[0_6px_18px_rgba(229,152,36,0.14)] cursor-pointer select-none"
                 >
-                  0{level} / 06 • 30-SEC INTERACTIVE DEMO
-                </span>
+                  <img
+                    src="/assets/serbify-mascot.png"
+                    alt="Serbify mascot"
+                    className="w-6 h-6 object-contain"
+                  />
+                  <span
+                    style={{ fontFamily: "var(--font-ui)" }}
+                    className="text-[11px] font-bold tracking-[0.06em] uppercase text-[#8A5609] tabular-nums"
+                  >
+                    0{level} / 06 • 30-SEC INTERACTIVE DEMO
+                  </span>
+                </TactileTokenBadge>
               </div>
             </div>
 
@@ -958,9 +1003,15 @@ export function SerbifyGameStage({
                   transition={{ duration: 0.35, ease: SMOOTH_EASE }}
                   className="flex flex-col items-start gap-5 max-w-lg"
                 >
-                  <h1 className="text-[40px] sm:text-[50px] lg:text-[56px] font-bold tracking-[-0.035em] leading-[1.05] text-[#121726]">
-                    Try Serbify in 30 Seconds
-                  </h1>
+                  <KineticHeadline
+                    as="h1"
+                    immediate
+                    className="text-[40px] sm:text-[50px] lg:text-[56px] font-bold tracking-[-0.035em] leading-[1.05] text-[#121726]"
+                    lines={[
+                      { text: "Try Serbify" },
+                      { text: "in 30 Seconds" },
+                    ]}
+                  />
 
                   <p className="text-base sm:text-[17px] text-[#4B5565] leading-[1.6] max-w-md">
                     Pick a service, match with a verified local pro, watch them
@@ -1189,6 +1240,11 @@ export function SerbifyGameStage({
                                   const isTapped = tappedService === item.key;
                                   const isCoupledHighlight =
                                     ctaHovered && idx === 0;
+                                  const showAutoRipple =
+                                    idx === 0 &&
+                                    !demoStarted &&
+                                    autoPreviewPulse > 0 &&
+                                    !isTapped;
                                   return (
                                     <button
                                       key={item.key}
@@ -1197,21 +1253,33 @@ export function SerbifyGameStage({
                                       onClick={() => handleSelectService(item)}
                                       style={{
                                         transform: isTapped
-                                          ? "scale(0.97)"
+                                          ? "scale(0.96)"
                                           : isCoupledHighlight
-                                            ? "translateY(-1px)"
-                                            : undefined,
+                                            ? "translateY(-1px) scale(1)"
+                                            : "scale(1)",
                                       }}
-                                      className={`relative w-full overflow-hidden flex items-center justify-between px-3.5 py-3 rounded-2xl bg-white border transition-all duration-150 cursor-pointer text-left ${
+                                      className={`relative w-full overflow-hidden flex items-center justify-between px-3.5 py-3 rounded-2xl bg-white border transition-all duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] cursor-pointer text-left ${
                                         isCoupledHighlight
                                           ? "border-[#0660E4] shadow-[0_8px_22px_rgba(6,96,228,0.16)] ring-2 ring-[#0660E4]/15"
-                                          : "border-[#121726]/8 hover:border-[#0660E4]/50 hover:shadow-[0_6px_16px_rgba(6,96,228,0.08)]"
+                                          : "border-[#121726]/8 hover:border-[#0660E4]/50 hover:shadow-[0_6px_16px_rgba(6,96,228,0.08)] active:scale-[0.96]"
                                       }`}
                                     >
+                                      {showAutoRipple && (
+                                        <motion.span
+                                          key={`auto-ripple-${autoPreviewPulse}`}
+                                          initial={{ scale: 0.4, opacity: 0.5 }}
+                                          animate={{ scale: 1.8, opacity: 0 }}
+                                          transition={{
+                                            duration: 0.9,
+                                            ease: SMOOTH_EASE,
+                                          }}
+                                          className="pointer-events-none absolute left-7 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-[#0660E4]/25 ring-2 ring-[#0660E4]/35"
+                                        />
+                                      )}
                                       {isTapped && (
                                         <motion.span
-                                          initial={{ scale: 0.2, opacity: 0.45 }}
-                                          animate={{ scale: 2.2, opacity: 0 }}
+                                          initial={{ scale: 0.4, opacity: 0.5 }}
+                                          animate={{ scale: 1.8, opacity: 0 }}
                                           transition={{
                                             duration: 0.3,
                                             ease: SMOOTH_EASE,
@@ -1256,7 +1324,7 @@ export function SerbifyGameStage({
                           </div>
                         )}
 
-                        {/* LEVEL 2: AI PRO MATCHING (EXPANDING RADAR RINGS) */}
+                        {/* LEVEL 2: AI PRO MATCHING (CONCENTRIC SVG RADAR PULSE WAVES) */}
                         {level === 2 && (
                           <motion.div
                             initial={{ opacity: 0, y: 12 }}
@@ -1284,22 +1352,40 @@ export function SerbifyGameStage({
                                     backgroundSize: "26px 26px",
                                   }}
                                 />
-                                {[1, 2, 3].map((ring) => (
-                                  <motion.div
-                                    key={ring}
-                                    initial={{ scale: 0.35, opacity: 0.75 }}
-                                    animate={{ scale: 1.55, opacity: 0 }}
-                                    transition={{
-                                      duration: 1.6,
-                                      repeat: Infinity,
-                                      delay: ring * 0.4,
-                                      ease: "easeOut",
-                                    }}
-                                    className="absolute w-36 h-36 rounded-full border-2 border-[#0660E4]/45 bg-[#0660E4]/10"
-                                  />
-                                ))}
-                                <div className="relative z-10 w-10 h-10 rounded-full bg-[#0660E4] text-white shadow-lg flex items-center justify-center">
-                                  <MapPin className="w-5 h-5" />
+                                {/* Concentric SVG radar pulse waves */}
+                                <svg
+                                  viewBox="0 0 220 220"
+                                  className="absolute inset-0 w-full h-full pointer-events-none"
+                                  aria-hidden="true"
+                                >
+                                  {[0, 1, 2].map((ring) => (
+                                    <motion.circle
+                                      key={ring}
+                                      cx="110"
+                                      cy="110"
+                                      r="54"
+                                      fill="rgba(6, 96, 228, 0.08)"
+                                      stroke="rgba(6, 96, 228, 0.45)"
+                                      strokeWidth="1.5"
+                                      initial={{ scale: 0.35, opacity: 0.8 }}
+                                      animate={{ scale: 1.65, opacity: 0 }}
+                                      transition={{
+                                        duration: 1.8,
+                                        repeat: Infinity,
+                                        delay: ring * 0.55,
+                                        ease: "easeOut",
+                                      }}
+                                      style={{ transformOrigin: "110px 110px" }}
+                                    />
+                                  ))}
+                                </svg>
+                                <div className="relative z-10 flex flex-col items-center gap-1.5">
+                                  <div className="w-10 h-10 rounded-full bg-[#0660E4] text-white shadow-lg flex items-center justify-center">
+                                    <MapPin className="w-5 h-5" />
+                                  </div>
+                                  <span className="px-2.5 py-0.5 rounded-full bg-white/95 border border-[#121726]/10 text-[10px] font-bold text-[#121726] shadow-xs">
+                                    Brgy. Kapitolyo / San Antonio, Pasig
+                                  </span>
                                 </div>
                               </div>
                             </div>
@@ -1347,7 +1433,7 @@ export function SerbifyGameStage({
                                   className="absolute top-6 right-6 z-10 px-2.5 py-1 rounded-full bg-[#117A58] text-white text-[11px] font-bold shadow-md flex items-center gap-1"
                                 >
                                   <ShieldCheck className="w-3.5 h-3.5" />
-                                  <span>Kuya Marco</span>
+                                  <span>Kuya Arnel</span>
                                 </motion.div>
                               </div>
                             </div>
@@ -1363,18 +1449,46 @@ export function SerbifyGameStage({
                                 style={{ transformPerspective: 800 }}
                                 className="rounded-[20px] bg-white border border-[#117A58]/30 p-3.5 shadow-[0_8px_22px_rgba(17,122,88,0.1)]"
                               >
-                                <div className="flex items-start gap-2.5">
-                                  <div className="w-10 h-10 rounded-2xl bg-[#E6F4EF] text-[#117A58] flex items-center justify-center shrink-0">
-                                    <ShieldCheck className="w-5 h-5" />
+                                <div className="flex items-center justify-between gap-2.5">
+                                  <div className="flex items-start gap-2.5 min-w-0">
+                                    <div className="w-10 h-10 rounded-2xl bg-[#E6F4EF] text-[#117A58] flex items-center justify-center shrink-0">
+                                      <ShieldCheck className="w-5 h-5" />
+                                    </div>
+                                    <div className="min-w-0">
+                                      <div className="text-xs font-bold text-[#121726] leading-snug">
+                                        Kuya Arnel • {selectedService.label} • 4.9★
+                                      </div>
+                                      <div className="mt-1 text-[11px] text-[#4B5565] tabular-nums">
+                                        Gov&apos;t ID &amp; NBI checked •{" "}
+                                        {selectedService.samplePrice}
+                                      </div>
+                                    </div>
                                   </div>
-                                  <div className="min-w-0">
-                                    <div className="text-xs font-bold text-[#121726] leading-snug">
-                                      Kuya Marco • {selectedService.label} • 4.9★
-                                    </div>
-                                    <div className="mt-1 text-[11px] text-[#4B5565] tabular-nums">
-                                      Gov&apos;t ID &amp; NBI checked •{" "}
-                                      {selectedService.samplePrice}
-                                    </div>
+                                  {/* Botanical Jade verified stamp + animated SVG checkmark path draw */}
+                                  <div
+                                    aria-label="ID & NBI Verified Stamp"
+                                    className="w-8 h-8 rounded-full bg-[#E6F4EF] border border-[#117A58]/40 flex items-center justify-center shrink-0"
+                                  >
+                                    <svg
+                                      viewBox="0 0 24 24"
+                                      className="w-4 h-4 text-[#117A58]"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2.6"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                    >
+                                      <motion.path
+                                        d="M5 13l4 4L19 7"
+                                        initial={{ pathLength: 0 }}
+                                        animate={{ pathLength: 1 }}
+                                        transition={{
+                                          duration: 0.5,
+                                          delay: 0.25,
+                                          ease: SMOOTH_EASE,
+                                        }}
+                                      />
+                                    </svg>
                                   </div>
                                 </div>
                               </motion.div>
@@ -1391,16 +1505,18 @@ export function SerbifyGameStage({
                           </div>
                         )}
 
-                        {/* LEVEL 4: LIVE ARRIVAL (ANIMATED ROUTE PATH + PIN) */}
+                        {/* LEVEL 4: LIVE ARRIVAL (ANIMATED ROUTE PATH + PIN + LIVE ETA) */}
                         {level === 4 && (
                           <div className="flex-1 flex flex-col justify-between gap-2.5">
                             <div className="flex items-center justify-between">
                               <div>
                                 <div className="text-xs font-bold text-[#121726]">
-                                  Kuya Marco is on the way
+                                  Kuya Arnel is on the way
                                 </div>
-                                <div className="text-[11px] text-[#4B5565]">
-                                  Point A → Your House
+                                <div className="text-[11px] text-[#4B5565] tabular-nums">
+                                  {transitArrived
+                                    ? "Arrived at your gate"
+                                    : `ETA ${Math.max(1, Math.round(14 * (1 - transitProgress)))} mins • Brgy. Kapitolyo`}
                                 </div>
                               </div>
                               <button
@@ -1451,6 +1567,18 @@ export function SerbifyGameStage({
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                   />
+                                  {/* Animated glowing route progress draw */}
+                                  <motion.path
+                                    d="M 22 92 L 90 92 L 70 55 L 185 55 L 155 20 L 236 20"
+                                    fill="none"
+                                    stroke="#0660E4"
+                                    strokeWidth="3.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    initial={{ pathLength: 0 }}
+                                    animate={{ pathLength: transitProgress }}
+                                    transition={{ duration: 0.12, ease: "linear" }}
+                                  />
                                   <circle cx="22" cy="92" r="7" fill="#0660E4" />
                                   <text
                                     x="22"
@@ -1460,7 +1588,7 @@ export function SerbifyGameStage({
                                     fontSize="8"
                                     fontWeight="700"
                                   >
-                                    Point A
+                                    Kuya Arnel
                                   </text>
                                   <circle cx="236" cy="20" r="8" fill="#117A58" />
                                   <text
@@ -1471,7 +1599,7 @@ export function SerbifyGameStage({
                                     fontSize="8"
                                     fontWeight="700"
                                   >
-                                    House
+                                    Pinned Gate
                                   </text>
                                 </svg>
 
@@ -1509,13 +1637,18 @@ export function SerbifyGameStage({
                                   </div>
                                 </div>
                                 <span className="text-[11px] font-bold text-[#0660E4] tabular-nums">
-                                  {Math.round(transitProgress * 100)}%
+                                  {transitArrived
+                                    ? "Arrived"
+                                    : `${Math.max(1, Math.round(14 * (1 - transitProgress)))} mins`}
                                 </span>
                               </div>
                               <div className="mt-2 h-1.5 w-full rounded-full bg-[#ECEEF5] overflow-hidden">
                                 <div
-                                  style={{ width: `${transitProgress * 100}%` }}
-                                  className="h-full rounded-full bg-[#0660E4] transition-all duration-100"
+                                  style={{
+                                    transform: `scaleX(${transitProgress})`,
+                                    transformOrigin: "left",
+                                  }}
+                                  className="h-full w-full rounded-full bg-[#0660E4] transition-transform duration-100 will-change-transform"
                                 />
                               </div>
                             </div>
@@ -1541,7 +1674,7 @@ export function SerbifyGameStage({
                           </div>
                         )}
 
-                        {/* LEVEL 5: JOB COMPLETE (BOTANICAL JADE CHECKMARK DRAW) */}
+                        {/* LEVEL 5: JOB COMPLETE (BOTTOM-SHEET SLIDE-UP + PROGRESS COMPLETION) */}
                         {level === 5 && (
                           <div className="flex-1 flex flex-col justify-between gap-3">
                             <div>
@@ -1592,7 +1725,12 @@ export function SerbifyGameStage({
                                     </svg>
                                   </div>
                                 )}
-                                <div className="px-3.5 py-2.5 bg-white border-t border-[#121726]/8">
+                                <motion.div
+                                  initial={{ y: 20, opacity: 0.6 }}
+                                  animate={{ y: 0, opacity: 1 }}
+                                  transition={{ duration: 0.4, ease: SMOOTH_EASE }}
+                                  className="px-3.5 py-2.5 bg-white border-t border-[#121726]/8"
+                                >
                                   <div className="flex items-center justify-between text-[11px] font-bold text-[#4B5565] mb-1.5">
                                     <span>Repair Progress</span>
                                     <span className="tabular-nums text-[#0660E4]">
@@ -1601,23 +1739,29 @@ export function SerbifyGameStage({
                                   </div>
                                   <div className="h-1.5 w-full rounded-full bg-[#ECEEF5] overflow-hidden">
                                     <div
-                                      style={{ width: `${jobProgress * 100}%` }}
-                                      className="h-full rounded-full bg-[#117A58] transition-all duration-150"
+                                      style={{
+                                        transform: `scaleX(${jobProgress})`,
+                                        transformOrigin: "left",
+                                      }}
+                                      className="h-full w-full rounded-full bg-[#117A58] transition-transform duration-150 will-change-transform"
                                     />
                                   </div>
-                                </div>
+                                </motion.div>
                               </div>
                             </div>
 
                             {jobFinished ? (
-                              <button
+                              <motion.button
+                                initial={{ y: 18, opacity: 0 }}
+                                animate={{ y: 0, opacity: 1 }}
+                                transition={{ duration: 0.35, ease: SMOOTH_EASE }}
                                 type="button"
                                 onClick={() => jumpToLevel(6)}
                                 className="w-full py-3 rounded-2xl bg-[#0660E4] hover:bg-[#044BB5] text-white text-sm font-bold shadow-[0_8px_20px_rgba(6,96,228,0.24)] active:scale-[0.98] transition-all flex items-center justify-center gap-2 cursor-pointer"
                               >
                                 <span>Pay the {selectedService.label}</span>
                                 <ArrowRight className="w-4 h-4" />
-                              </button>
+                              </motion.button>
                             ) : (
                               <button
                                 type="button"
@@ -1630,7 +1774,7 @@ export function SerbifyGameStage({
                           </div>
                         )}
 
-                        {/* LEVEL 6: SAFE PAYMENT (BOTTOM-SHEET SLIDE-UP) */}
+                        {/* LEVEL 6: SAFE PAYMENT (BOTTOM-SHEET SLIDE-UP + MASCOT GOLD SHIMMER) */}
                         {level === 6 && (
                           <motion.div
                             initial={{ y: 28, opacity: 0 }}
@@ -1647,7 +1791,13 @@ export function SerbifyGameStage({
                                 work
                               </div>
 
-                              <div className="mt-3 rounded-[22px] bg-white border border-[#121726]/8 p-4 shadow-[0_8px_22px_rgba(18,23,38,0.05)] space-y-4">
+                              <div className="relative overflow-hidden mt-3 rounded-[22px] bg-white border border-[#121726]/8 p-4 shadow-[0_8px_22px_rgba(18,23,38,0.05)] space-y-4">
+                                {paymentPhase === "sent" && (
+                                  <div
+                                    aria-hidden="true"
+                                    className="pointer-events-none absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-transparent via-[#E59824]/25 to-transparent animate-gold-shimmer"
+                                  />
+                                )}
                                 <div className="flex items-center justify-between">
                                   <div className="flex items-center gap-2">
                                     <span className="w-9 h-9 rounded-xl bg-[#EAF1FD] text-[#0660E4] flex items-center justify-center">
@@ -1713,7 +1863,7 @@ export function SerbifyGameStage({
                                     </span>
                                     <div>
                                       <div className="text-xs font-bold text-[#121726]">
-                                        Kuya Marco&apos;s Wallet
+                                        Kuya Arnel&apos;s Wallet
                                       </div>
                                       <div className="text-[10px] text-[#4B5565]">
                                         Verified {selectedService.label}

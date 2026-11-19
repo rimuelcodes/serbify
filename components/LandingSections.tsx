@@ -39,7 +39,9 @@ import {
   CounterRollUp,
   KineticHeadline,
   MagneticButton,
+  SectionCornerTicks,
   SpotlightCard,
+  TactileTokenBadge,
 } from "./KineticPrimitives";
 import { COPY, type Persona } from "./SerbifyCopy";
 import { SPRING_TACTILE } from "./serbifyTheme";
@@ -272,8 +274,9 @@ export function LandingSections({
             boxShadow:
               "inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 18px 44px -16px rgba(18, 23, 38, 0.06)",
           }}
-          className="w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#FAF9F6] border border-[#DDD7CB] p-8 md:p-12 lg:p-14"
+          className="relative w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#F3F0E8] border border-[#DDD7CB] p-8 md:p-12 lg:p-14"
         >
+          <SectionCornerTicks />
           <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-8 mb-8 border-b border-[#121726]/[0.08]">
             <div className="flex flex-col gap-2">
               <span className="text-xs font-bold uppercase tracking-wider text-[#0660E4]">
@@ -324,8 +327,11 @@ export function LandingSections({
                     {active && (
                       <motion.span
                         layoutId="bento-persona-pill"
-                        transition={SPRING_TACTILE}
-                        className="absolute inset-0 bg-white rounded-full shadow-xs border border-[#121726]/10"
+                        transition={{
+                          duration: 0.42,
+                          ease: [0.16, 1, 0.3, 1],
+                        }}
+                        className="absolute inset-0 bg-white rounded-full shadow-xs border border-[#121726]/12"
                       />
                     )}
                     <span className="relative z-10">{item.label}</span>
@@ -564,9 +570,10 @@ export function LandingSections({
                         : "TESDA certificate or trade references",
                     },
                   ].map((item) => (
-                    <div
+                    <TactileTokenBadge
                       key={item.num}
-                      className="p-3.5 rounded-[14px] bg-[#F7F5F0] border border-[#E3DDD2] flex items-start gap-3"
+                      onClick={() => {}}
+                      className="p-3.5 rounded-[14px] bg-[#F7F5F0] border border-[#E3DDD2] hover:border-[#117A58]/40 flex items-start gap-3 cursor-pointer transition-colors"
                     >
                       <span className="w-7 h-7 rounded-xl bg-[#E6F4EF] text-[#117A58] flex items-center justify-center shrink-0 mt-0.5">
                         <Check className="w-4 h-4" />
@@ -582,7 +589,7 @@ export function LandingSections({
                           {item.desc}
                         </p>
                       </div>
-                    </div>
+                    </TactileTokenBadge>
                   ))}
                 </div>
               </article>
@@ -601,8 +608,9 @@ export function LandingSections({
             boxShadow:
               "inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 16px 40px -16px rgba(18, 23, 38, 0.05)",
           }}
-          className="w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#F3F0E8] border border-[#DDD7CB] p-8 md:p-12 lg:p-14"
+          className="relative w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#F3F0E8] border border-[#DDD7CB] p-8 md:p-12 lg:p-14"
         >
+        <SectionCornerTicks />
         <div className="flex flex-col gap-2 mb-12">
           <span className="text-xs font-bold uppercase tracking-wider text-[#0660E4]">
             {t.categories.eyebrow}
@@ -801,8 +809,9 @@ export function LandingSections({
             boxShadow:
               "inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 24px 56px -16px rgba(11, 18, 32, 0.28)",
           }}
-          className="w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#0B1220] border border-[#24324D] p-8 md:p-12 lg:p-14 text-white flex flex-col gap-12"
+          className="relative w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#0B1220] border border-[#24324D] p-8 md:p-12 lg:p-14 text-white flex flex-col gap-12"
         >
+          <SectionCornerTicks dark />
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="flex flex-col gap-3 max-w-2xl">
               <span className="text-xs font-bold uppercase tracking-wider text-[#F59E0B]">
@@ -955,8 +964,9 @@ export function LandingSections({
             boxShadow:
               "inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 18px 44px -16px rgba(18, 23, 38, 0.06)",
           }}
-          className="w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#FAF9F6] border border-[#DDD7CB] p-8 md:p-12 lg:p-14"
+          className="relative w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#F3F0E8] border border-[#DDD7CB] p-8 md:p-12 lg:p-14"
         >
+        <SectionCornerTicks />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-6 flex flex-col gap-6">
             <div className="flex flex-col gap-2">

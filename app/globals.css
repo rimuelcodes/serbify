@@ -60,3 +60,36 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+@keyframes schematic-pulse {
+  0% {
+    stroke-dashoffset: 180;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes gold-shimmer-sweep {
+  0% {
+    transform: translateX(-120%) skewX(-18deg);
+  }
+  100% {
+    transform: translateX(220%) skewX(-18deg);
+  }
+}
+
+.animate-schematic-pulse {
+  animation: schematic-pulse 3.2s linear infinite;
+}
+
+.animate-gold-shimmer {
+  animation: gold-shimmer-sweep 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-schematic-pulse,
+  .animate-gold-shimmer {
+    animation: none;
+  }
+}

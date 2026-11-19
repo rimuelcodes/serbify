@@ -27,6 +27,7 @@ import {
   CounterRollUp,
   KineticHeadline,
   MagneticButton,
+  SectionCornerTicks,
 } from "./KineticPrimitives";
 import { COPY, type Persona } from "./SerbifyCopy";
 import { SPRING_TACTILE } from "./serbifyTheme";
@@ -150,6 +151,7 @@ export function HeroSection({ persona }: HeroSectionProps) {
         }}
         className="relative w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] border border-[#DDD7CB] p-8 md:p-12 lg:p-14 overflow-hidden"
       >
+        <SectionCornerTicks />
         {/* Whisper-quiet warm architectural grid fading toward edges */}
         <div
           aria-hidden="true"

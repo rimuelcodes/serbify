@@ -10,7 +10,7 @@ import {
   ShieldCheck,
   Wallet,
 } from "lucide-react";
-import { KineticHeadline } from "./KineticPrimitives";
+import { KineticHeadline, SectionCornerTicks } from "./KineticPrimitives";
 import { useLenis } from "./LenisProvider";
 
 if (typeof window !== "undefined") {
@@ -76,8 +76,9 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
           boxShadow:
             "inset 0 1px 0 rgba(255, 255, 255, 0.75), 0 16px 40px -16px rgba(18, 23, 38, 0.05)",
         }}
-        className="w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#F3F0E8] border border-[#DDD7CB] p-8 md:p-12 lg:p-14"
+        className="relative w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#F3F0E8] border border-[#DDD7CB] p-8 md:p-12 lg:p-14"
       >
+        <SectionCornerTicks />
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 pb-8 mb-8 border-b border-[#121726]/[0.08]">
           <div>
@@ -102,8 +103,37 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
           </button>
         </div>
 
-        {/* 4-Card Editorial Process Bento */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* 4-Card Editorial Process Bento with Tarsi Schematic Workflow Connectors */}
+        <div className="relative">
+          {/* Desktop Animated SVG Schematic Connector Line (Pin Gate -> ID & NBI Check -> Live Arrival -> Safe Payment) */}
+          <svg
+            aria-hidden="true"
+            viewBox="0 0 1200 24"
+            preserveAspectRatio="none"
+            className="pointer-events-none hidden lg:block absolute top-[46px] left-[8%] w-[84%] h-6 z-0"
+          >
+            <line
+              x1="0"
+              y1="12"
+              x2="1200"
+              y2="12"
+              stroke="rgba(6, 96, 228, 0.22)"
+              strokeWidth="1"
+              strokeDasharray="6 6"
+            />
+            <line
+              x1="0"
+              y1="12"
+              x2="1200"
+              y2="12"
+              stroke="rgba(6, 96, 228, 0.65)"
+              strokeWidth="1.5"
+              strokeDasharray="24 156"
+              strokeLinecap="round"
+              className="animate-schematic-pulse"
+            />
+          </svg>
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {/* Card 01 — Pin & Match */}
           <article
             data-bento-card
@@ -231,6 +261,7 @@ export function FourActJourneyStage({ onOpenDemo }: FourActJourneyStageProps) {
               </span>
             </div>
           </article>
+        </div>
         </div>
       </div>
     </section>

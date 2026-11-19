@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { useLenis } from "./LenisProvider";
 import { MagneticButton } from "./KineticPrimitives";
 import { COPY } from "./SerbifyCopy";
@@ -7,6 +8,16 @@ import { COPY } from "./SerbifyCopy";
 export function FloatingNavbar() {
   const t = COPY.en.nav;
   const { lenis } = useLenis();
+  const [condensed, setCondensed] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setCondensed(window.scrollY > 60);
+    };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const handleAnchorClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -28,7 +39,20 @@ export function FloatingNavbar() {
 
   return (
     <header className="fixed top-0 inset-x-0 z-50 flex flex-col items-center justify-center px-3 py-3 md:px-6 md:py-4 pointer-events-none">
-      <div className="h-14 md:h-20 w-full max-w-7xl mx-auto flex items-center justify-between px-3.5 md:px-6 bg-white/86 backdrop-blur-xl rounded-full border border-[#18181B]/[0.07] shadow-[0_20px_44px_-12px_rgba(28,25,23,0.07)] pointer-events-auto gap-2">
+      <div
+        style={{
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+          borderColor: condensed
+            ? "rgba(18, 23, 38, 0.09)"
+            : "rgba(24, 24, 27, 0.07)",
+        }}
+        className={`h-14 md:h-16 w-full max-w-7xl mx-auto flex items-center justify-between px-3.5 md:px-6 bg-white/88 rounded-full border pointer-events-auto gap-2 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] origin-top ${
+          condensed
+            ? "scale-[0.985] shadow-[0_12px_32px_-10px_rgba(18,23,38,0.12)]"
+            : "scale-100 shadow-[0_20px_44px_-12px_rgba(28,25,23,0.07)]"
+        }`}
+      >
         {/* Left: Brand */}
         <div className="flex items-center min-w-0">
           <a

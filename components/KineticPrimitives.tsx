@@ -31,7 +31,7 @@ interface KineticHeadlineProps {
 }
 
 /**
- * GSAP-powered masked line-by-line clip reveal (yPercent: 100 -> 0, power4.out).
+ * GSAP-powered masked line-by-line clip reveal (yPercent: 110 -> 0, rotate: 1.5deg -> 0deg, expo.out).
  */
 export function KineticHeadline({
   lines,
@@ -52,26 +52,30 @@ export function KineticHeadline({
       const innerLines = el.querySelectorAll<HTMLElement>("[data-kinetic-line]");
       if (!innerLines.length) return;
 
-      gsap.set(innerLines, { yPercent: 105, opacity: 0 });
+      gsap.set(innerLines, {
+        yPercent: 110,
+        rotate: 1.5,
+        transformOrigin: "0% 100%",
+      });
 
       if (immediate) {
         gsap.to(innerLines, {
           yPercent: 0,
-          opacity: 1,
+          rotate: 0,
           duration: 0.85,
-          stagger: 0.09,
+          stagger: 0.08,
           delay,
-          ease: "power4.out",
+          ease: "expo.out",
           clearProps: "transform",
         });
       } else {
         gsap.to(innerLines, {
           yPercent: 0,
-          opacity: 1,
+          rotate: 0,
           duration: 0.85,
-          stagger: 0.09,
+          stagger: 0.08,
           delay,
-          ease: "power4.out",
+          ease: "expo.out",
           clearProps: "transform",
           scrollTrigger: {
             trigger: el,
@@ -88,7 +92,10 @@ export function KineticHeadline({
   return (
     <Tag ref={containerRef} className={className}>
       {lines.map((line, idx) => (
-        <span key={`${idx}-${line.text}`} className="block overflow-hidden pb-[0.06em]">
+        <span
+          key={`${idx}-${line.text}`}
+          className="block overflow-hidden pb-[0.06em]"
+        >
           <span
             data-kinetic-line
             className={`block will-change-transform ${line.className ?? ""}`}
@@ -321,5 +328,174 @@ export function MagneticButton({
         </button>
       )}
     </motion.div>
+  );
+}
+
+interface TactileTokenBadgeProps {
+  children: ReactNode;
+  className?: string;
+  style?: CSSProperties;
+  onClick?: () => void;
+  title?: string;
+  maxTilt?: number;
+  pulseOnScroll?: boolean;
+}
+
+/**
+ * Badgey-inspired tactile physical token with 1px specular inner border,
+ * ±6deg quickTo hover tilt, and crisp spring-snap scale pulse on click or scroll-in.
+ */
+export function TactileTokenBadge({
+  children,
+  className = "",
+  style,
+  onClick,
+  title,
+  maxTilt = 6,
+  pulseOnScroll = true,
+}: TactileTokenBadgeProps) {
+  const tokenRef = useRef<HTMLDivElement>(null);
+  const quickRX = useRef<gsap.QuickToFunc | null>(null);
+  const quickRY = useRef<gsap.QuickToFunc | null>(null);
+  const { prefersReducedMotion } = useLenis();
+
+  useEffect(() => {
+    const el = tokenRef.current;
+    if (!el || prefersReducedMotion) return;
+
+    const ctx = gsap.context(() => {
+      gsap.set(el, { transformPerspective: 600 });
+      quickRX.current = gsap.quickTo(el, "rotateX", {
+        duration: 0.35,
+        ease: "power3.out",
+      });
+      quickRY.current = gsap.quickTo(el, "rotateY", {
+        duration: 0.35,
+        ease: "power3.out",
+      });
+
+      if (pulseOnScroll) {
+        gsap.fromTo(
+          el,
+          { scale: 0.96 },
+          {
+            scale: 1,
+            duration: 0.55,
+            ease: "expo.out",
+            clearProps: "scale",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 92%",
+              once: true,
+            },
+          }
+        );
+      }
+    }, tokenRef);
+
+    return () => {
+      quickRX.current = null;
+      quickRY.current = null;
+      ctx.revert();
+    };
+  }, [prefersReducedMotion, pulseOnScroll]);
+
+  const triggerSnapPulse = () => {
+    if (prefersReducedMotion || !tokenRef.current) return;
+    gsap.fromTo(
+      tokenRef.current,
+      { scale: 1 },
+      {
+        scale: 1.05,
+        duration: 0.14,
+        ease: "power3.out",
+        yoyo: true,
+        repeat: 1,
+        clearProps: "scale",
+      }
+    );
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (prefersReducedMotion || e.pointerType === "touch" || !tokenRef.current)
+      return;
+    const rect = tokenRef.current.getBoundingClientRect();
+    const nx = (e.clientX - rect.left) / rect.width - 0.5;
+    const ny = (e.clientY - rect.top) / rect.height - 0.5;
+    quickRX.current?.(-ny * maxTilt * 2);
+    quickRY.current?.(nx * maxTilt * 2);
+  };
+
+  const handlePointerLeave = () => {
+    if (prefersReducedMotion) return;
+    quickRX.current?.(0);
+    quickRY.current?.(0);
+  };
+
+  return (
+    <div
+      ref={tokenRef}
+      role={onClick ? "button" : undefined}
+      tabIndex={onClick ? 0 : undefined}
+      title={title}
+      onClick={() => {
+        triggerSnapPulse();
+        onClick?.();
+      }}
+      onKeyDown={
+        onClick
+          ? (e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                triggerSnapPulse();
+                onClick();
+              }
+            }
+          : undefined
+      }
+      onPointerMove={handlePointerMove}
+      onPointerLeave={handlePointerLeave}
+      style={{
+        boxShadow: "inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+        ...style,
+      }}
+      className={className}
+    >
+      {children}
+    </div>
+  );
+}
+
+/**
+ * Tarsi-style architectural corner registration ticks (+) at the 4 outer corners of framed sections.
+ */
+export function SectionCornerTicks({ dark = false }: { dark?: boolean }) {
+  const strokeColor = dark
+    ? "rgba(255, 255, 255, 0.18)"
+    : "rgba(18, 23, 38, 0.16)";
+  const corners = [
+    "top-3.5 left-3.5",
+    "top-3.5 right-3.5",
+    "bottom-3.5 left-3.5",
+    "bottom-3.5 right-3.5",
+  ];
+  return (
+    <>
+      {corners.map((pos, idx) => (
+        <svg
+          key={idx}
+          aria-hidden="true"
+          viewBox="0 0 12 12"
+          className={`pointer-events-none absolute ${pos} w-3 h-3 z-20`}
+        >
+          <path
+            d="M6 1v10M1 6h10"
+            stroke={strokeColor}
+            strokeWidth="1"
+            strokeLinecap="round"
+          />
+        </svg>
+      ))}
+    </>
   );
 }
