@@ -41,16 +41,14 @@ export function FloatingNavbar() {
     <header className="fixed top-0 inset-x-0 z-50 flex flex-col items-center justify-center px-3 py-3 md:px-6 md:py-4 pointer-events-none">
       <div
         style={{
+          backgroundColor: "rgba(255, 255, 255, 0.84)",
           backdropFilter: "blur(18px)",
           WebkitBackdropFilter: "blur(18px)",
-          borderColor: condensed
-            ? "rgba(18, 23, 38, 0.09)"
-            : "rgba(24, 24, 27, 0.07)",
+          borderColor: "rgba(18, 23, 38, 0.10)",
+          boxShadow: "0 8px 24px -6px rgba(18, 23, 38, 0.08)",
         }}
-        className={`h-14 md:h-16 w-full max-w-7xl mx-auto flex items-center justify-between px-3.5 md:px-6 bg-white/88 rounded-full border pointer-events-auto gap-2 transition-all duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] origin-top ${
-          condensed
-            ? "scale-[0.985] shadow-[0_12px_32px_-10px_rgba(18,23,38,0.12)]"
-            : "scale-100 shadow-[0_20px_44px_-12px_rgba(28,25,23,0.07)]"
+        className={`h-14 md:h-16 w-full max-w-7xl mx-auto flex items-center justify-between px-3.5 md:px-6 rounded-full border pointer-events-auto gap-2 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] origin-top ${
+          condensed ? "scale-[0.985]" : "scale-100"
         }`}
       >
         {/* Left: Brand */}

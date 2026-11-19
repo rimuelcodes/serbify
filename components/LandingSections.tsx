@@ -191,6 +191,8 @@ export function LandingSections({
   const bentoSectionRef = useRef<HTMLElement>(null);
   const bentoShellRef = useRef<HTMLDivElement>(null);
   const stageContentRef = useRef<HTMLDivElement>(null);
+  const trustAnchorRef = useRef<HTMLDivElement>(null);
+  const downloadAnchorRef = useRef<HTMLDivElement>(null);
   const { prefersReducedMotion } = useLenis();
   const [activeFeatureIdx, setActiveFeatureIdx] = useState<number>(0);
   const [selectedServiceId, setSelectedServiceId] = useState(
@@ -220,6 +222,26 @@ export function LandingSections({
           }
         );
       }
+
+      [trustAnchorRef.current, downloadAnchorRef.current].forEach((anchor) => {
+        if (!anchor) return;
+        gsap.fromTo(
+          anchor,
+          { y: 20, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.65,
+            ease: "expo.out",
+            clearProps: "transform",
+            scrollTrigger: {
+              trigger: anchor,
+              start: "top 85%",
+              once: true,
+            },
+          }
+        );
+      });
     }, bentoSectionRef);
 
     return () => ctx.revert();
@@ -323,7 +345,7 @@ export function LandingSections({
             boxShadow:
               "inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 16px 36px -12px rgba(18, 23, 38, 0.06)",
           }}
-          className="relative w-full max-w-[1240px] mx-auto rounded-[28px] bg-[#F4F2EC] border border-[#E4DFD3] p-8 lg:p-10"
+          className="relative w-full max-w-[1240px] mx-auto rounded-[28px] bg-[#F4EFE4] border border-[#E4DEC9] p-8 lg:p-10"
         >
           <SectionCornerTicks />
 
@@ -347,7 +369,7 @@ export function LandingSections({
             <div
               role="tablist"
               aria-label="Choose Homeowners or Local Pros"
-              className="inline-flex flex-wrap sm:flex-nowrap p-1.5 bg-[#EAE7DE] border border-[#E4DFD3] rounded-full self-start lg:self-end"
+              className="inline-flex flex-wrap sm:flex-nowrap p-1.5 bg-[#F7F3E8] border border-[#E6DEC8] rounded-full self-start lg:self-end"
             >
               {(
                 [
@@ -673,7 +695,7 @@ export function LandingSections({
             boxShadow:
               "inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 16px 36px -12px rgba(18, 23, 38, 0.06)",
           }}
-          className="relative w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#F4F2EC] border border-[#E4DFD3] p-8 md:p-12 lg:p-14"
+          className="relative w-full max-w-[1240px] mx-auto rounded-[28px] bg-[#F4EFE4] border border-[#E4DEC9] p-8 md:p-12 lg:p-14"
         >
         <SectionCornerTicks />
         <div className="flex flex-col gap-2 mb-12">
@@ -864,43 +886,44 @@ export function LandingSections({
         </div>
       </section>
 
-      {/* 4. DRAMATIC DARK MODE SAFETY & PAYMENT SECTION */}
+      {/* 4. DEEP OBSIDIAN ANCHOR: TRUST & SAFETY + PROTECTED PAYMENTS */}
       <section
         id="trust-safety"
         className="w-full px-4 sm:px-6 lg:px-8"
       >
         <div
+          ref={trustAnchorRef}
           style={{
             boxShadow:
-              "inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 24px 56px -16px rgba(11, 18, 32, 0.28)",
+              "inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 28px 60px -16px rgba(18, 23, 38, 0.22)",
           }}
-          className="relative w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#0B1220] border border-[#24324D] p-8 md:p-12 lg:p-14 text-white flex flex-col gap-12"
+          className="relative w-full max-w-[1240px] mx-auto rounded-[28px] bg-[#121726] border border-white/[0.12] p-8 md:p-12 lg:p-14 text-[#FBF8F1] flex flex-col gap-12"
         >
           <SectionCornerTicks dark />
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="flex flex-col gap-3 max-w-2xl">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#F59E0B]">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E59824]/[0.14] border border-[#E59824]/[0.28] text-xs font-bold uppercase tracking-wider text-[#E59824] w-fit">
                 {t.escrow.eyebrow}
               </span>
               <KineticHeadline
                 as="h2"
-                className="text-3xl md:text-[36px] md:leading-[44px] font-bold tracking-[-0.03em] text-white"
+                className="text-3xl md:text-[36px] md:leading-[44px] font-bold tracking-[-0.03em] text-[#FBF8F1]"
                 lines={[{ text: t.escrow.heading }]}
               />
-              <p className="text-base md:text-lg text-slate-300 leading-relaxed">
+              <p className="text-base md:text-lg text-[#A3AEC2] leading-relaxed">
                 {t.escrow.subtitle}
               </p>
             </div>
 
-            <div className="p-4 bg-[#131C2E] border border-[#24324D] rounded-[20px] flex items-center gap-3 shrink-0">
-              <div className="w-10 h-10 rounded-full bg-[#10B981]/20 text-[#10B981] flex items-center justify-center">
+            <div className="p-4 bg-[#192033] border border-white/[0.09] rounded-[20px] flex items-center gap-3 shrink-0">
+              <div className="w-10 h-10 rounded-full bg-[#10B981]/[0.14] border border-[#10B981]/[0.28] text-[#10B981] flex items-center justify-center">
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-xs font-bold text-white">
+                <p className="text-xs font-bold text-[#FBF8F1]">
                   {t.escrow.guaranteeTitle}
                 </p>
-                <p className="text-[11px] text-slate-300 tabular-nums">
+                <p className="text-[11px] text-[#A3AEC2] tabular-nums">
                   {t.escrow.guaranteeSub}
                 </p>
               </div>
@@ -911,24 +934,24 @@ export function LandingSections({
             <SpotlightCard
               dark
               accent="cobalt"
-              className="bg-[#131C2E] border border-[#24324D] p-7 rounded-[24px] flex flex-col justify-between gap-6"
+              className="bg-[#192033] border border-white/[0.09] p-7 rounded-[20px] flex flex-col justify-between gap-6"
             >
               <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <span className="text-3xl font-extrabold text-[#0660E4] tabular-nums">
                     01
                   </span>
-                  <MapPin className="w-5 h-5 text-slate-400" />
+                  <MapPin className="w-5 h-5 text-[#A3AEC2]" />
                 </div>
-                <h3 className="text-lg font-bold text-white">
+                <h3 className="text-lg font-bold text-[#FBF8F1]">
                   Pin Your Exact Address
                 </h3>
-                <p className="text-sm text-slate-300 leading-relaxed">
+                <p className="text-sm text-[#A3AEC2] leading-relaxed">
                   Drop a pin at your gate or barangay. Choose emergency help now
                   or pick a scheduled time that works for you.
                 </p>
               </div>
-              <div className="text-xs text-slate-200 bg-[#0B1220] border border-[#24324D] p-3 rounded-xl font-medium tabular-nums mt-6">
+              <div className="text-xs text-[#FBF8F1] bg-[#121726] border border-white/[0.09] p-3 rounded-xl font-medium tabular-nums mt-6">
                 Brgy. San Antonio, Pasig • Pinned
               </div>
             </SpotlightCard>
@@ -936,24 +959,24 @@ export function LandingSections({
             <SpotlightCard
               dark
               accent="cobalt"
-              className="bg-[#131C2E] border border-[#24324D] p-7 rounded-[24px] flex flex-col justify-between gap-6"
+              className="bg-[#192033] border border-white/[0.09] p-7 rounded-[20px] flex flex-col justify-between gap-6"
             >
               <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-3xl font-extrabold text-[#F59E0B] tabular-nums">
+                  <span className="text-3xl font-extrabold text-[#E59824] tabular-nums">
                     02
                   </span>
-                  <Receipt className="w-5 h-5 text-slate-400" />
+                  <Receipt className="w-5 h-5 text-[#A3AEC2]" />
                 </div>
-                <h3 className="text-lg font-bold text-white">
+                <h3 className="text-lg font-bold text-[#FBF8F1]">
                   See Upfront Quotes
                 </h3>
-                <p className="text-sm text-slate-300 leading-relaxed">
+                <p className="text-sm text-[#A3AEC2] leading-relaxed">
                   Clear prices before anyone heads over mean zero haggling at
                   your door. Compare pro badges and past reviews.
                 </p>
               </div>
-              <div className="text-xs text-slate-200 bg-[#0B1220] border border-[#24324D] p-3 rounded-xl font-medium tabular-nums mt-6">
+              <div className="text-xs text-[#FBF8F1] bg-[#121726] border border-white/[0.09] p-3 rounded-xl font-medium tabular-nums mt-6">
                 Agreed Price: ₱450.00 Fixed
               </div>
             </SpotlightCard>
@@ -961,24 +984,24 @@ export function LandingSections({
             <SpotlightCard
               dark
               accent="emerald"
-              className="bg-[#131C2E] border border-[#24324D] p-7 rounded-[24px] flex flex-col justify-between gap-6"
+              className="bg-[#192033] border border-white/[0.09] p-7 rounded-[20px] flex flex-col justify-between gap-6"
             >
               <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <span className="text-3xl font-extrabold text-[#10B981] tabular-nums">
                     03
                   </span>
-                  <Lock className="w-5 h-5 text-slate-400" />
+                  <Lock className="w-5 h-5 text-[#A3AEC2]" />
                 </div>
-                <h3 className="text-lg font-bold text-white">
+                <h3 className="text-lg font-bold text-[#FBF8F1]">
                   Inspect, Approve &amp; Pay
                 </h3>
-                <p className="text-sm text-slate-300 leading-relaxed">
+                <p className="text-sm text-[#A3AEC2] leading-relaxed">
                   Follow your pro&apos;s live arrival on the map. Check
                   before-and-after photos and tap Approve when the job is done.
                 </p>
               </div>
-              <div className="text-xs text-[#10B981] bg-[#0B1220] border border-[#24324D] p-3 rounded-xl font-medium flex items-center justify-between mt-6">
+              <div className="text-xs text-[#10B981] bg-[#10B981]/[0.14] border border-[#10B981]/[0.28] p-3 rounded-xl font-semibold flex items-center justify-between mt-6">
                 <span>Payment Released on Approval</span>
                 <Check className="w-4 h-4" />
               </div>
@@ -986,12 +1009,12 @@ export function LandingSections({
           </div>
 
           {/* Payment Options Strip */}
-          <div className="bg-[#131C2E] border border-[#24324D] p-6 md:p-7 rounded-[24px] flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
+          <div className="bg-[#192033] border border-white/[0.09] p-6 md:p-7 rounded-[20px] flex flex-col lg:flex-row items-start lg:items-center justify-between gap-5">
             <div>
-              <span className="text-xs uppercase tracking-wider text-[#F59E0B] font-bold">
+              <span className="text-xs uppercase tracking-wider text-[#E59824] font-bold">
                 Flexible Local Payments
               </span>
-              <p className="text-sm text-slate-200 mt-1">
+              <p className="text-sm text-[#A3AEC2] mt-1">
                 Zero extra fees on GCash, Maya, QR Ph, Debit/Credit Card, or
                 Cash.
               </p>
@@ -1000,15 +1023,15 @@ export function LandingSections({
               {[
                 { name: "GCash", dot: "bg-blue-400" },
                 { name: "Maya", dot: "bg-[#10B981]" },
-                { name: "QR Ph", dot: "bg-[#F59E0B]" },
+                { name: "QR Ph", dot: "bg-[#E59824]" },
                 { name: "Debit / Credit Card", dot: "bg-[#0660E4]" },
-                { name: "Cash After Job", dot: "bg-slate-300" },
+                { name: "Cash After Job", dot: "bg-[#A3AEC2]" },
               ].map((rail) => (
                 <motion.span
                   key={rail.name}
                   whileHover={{ y: -2 }}
                   transition={SPRING_TACTILE}
-                  className="px-4 py-2 bg-[#0B1220] border border-[#24324D] hover:border-[#0660E4] hover:shadow-[0_0_16px_rgba(6,96,228,0.28)] transition-all rounded-full text-xs font-bold text-white flex items-center gap-2 cursor-default"
+                  className="px-4 py-2 bg-[#121726] border border-white/[0.09] hover:border-[#0660E4] hover:shadow-[0_0_16px_rgba(6,96,228,0.28)] transition-all rounded-full text-xs font-bold text-[#FBF8F1] flex items-center gap-2 cursor-default"
                 >
                   <span className={`w-2 h-2 rounded-full ${rail.dot}`} />
                   {rail.name}
@@ -1029,7 +1052,7 @@ export function LandingSections({
             boxShadow:
               "inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 16px 36px -12px rgba(18, 23, 38, 0.06)",
           }}
-          className="relative w-full max-w-[1280px] mx-auto rounded-[28px] md:rounded-[32px] bg-[#F4F2EC] border border-[#E4DFD3] p-8 md:p-12 lg:p-14"
+          className="relative w-full max-w-[1240px] mx-auto rounded-[28px] bg-[#F4EFE4] border border-[#E4DEC9] p-8 md:p-12 lg:p-14"
         >
         <SectionCornerTicks />
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -1184,34 +1207,39 @@ export function LandingSections({
         </div>
       </section>
 
-      {/* 6. HIGH-CONVERSION APP DOWNLOAD BANNER */}
+      {/* 6. DEEP OBSIDIAN ANCHOR: FINAL DOWNLOAD APP CTA */}
       <section
         id="download-app"
-        className="w-full max-w-7xl mx-auto px-5 md:px-10 py-16 md:py-24"
+        className="w-full px-4 sm:px-6 lg:px-8 pt-4 pb-8"
       >
         <div
+          ref={downloadAnchorRef}
           style={{
-            background: "linear-gradient(135deg, #0660E4 0%, #044BB3 100%)",
+            boxShadow:
+              "inset 0 1px 0 rgba(255, 255, 255, 0.10), 0 28px 60px -16px rgba(18, 23, 38, 0.22)",
           }}
-          className="relative w-full rounded-[28px] p-8 md:p-14 text-white overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-10 shadow-[0_24px_60px_rgba(6,96,228,0.22)]"
+          className="relative w-full max-w-[1240px] mx-auto rounded-[28px] bg-[#121726] border border-white/[0.12] p-8 md:p-14 text-[#FBF8F1] overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-10"
         >
+          <SectionCornerTicks dark />
           <div className="flex flex-col gap-4 max-w-xl z-10 text-center lg:text-left items-center lg:items-start">
-            <div className="flex items-center gap-2.5">
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#E59824]/[0.14] border border-[#E59824]/[0.28]">
               <img
                 alt="Serbify Logo"
-                className="w-8 h-8 object-contain rounded-full bg-white p-0.5"
+                className="w-6 h-6 object-contain rounded-full bg-[#FBF8F1] p-0.5"
                 src="/assets/serbify-mascot.png"
               />
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-100">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#E59824]">
                 {t.banner.eyebrow}
               </span>
             </div>
 
-            <h2 className="text-3xl md:text-[36px] md:leading-[44px] font-extrabold tracking-[-0.03em] text-white">
-              {t.banner.heading}
-            </h2>
+            <KineticHeadline
+              as="h2"
+              className="text-3xl md:text-[36px] md:leading-[44px] font-extrabold tracking-[-0.03em] text-[#FBF8F1]"
+              lines={[{ text: t.banner.heading }]}
+            />
 
-            <p className="text-sm md:text-base text-blue-100 leading-relaxed">
+            <p className="text-sm md:text-base text-[#A3AEC2] leading-relaxed">
               {t.banner.subtitle}
             </p>
 
@@ -1221,22 +1249,22 @@ export function LandingSections({
                 transition={SPRING_TACTILE}
               >
                 <MagneticButton
-                  className="px-5 py-3 rounded-2xl bg-white text-[#0B1C30] hover:bg-blue-50 transition-all flex items-center gap-3 shadow-[0_10px_24px_rgba(11,28,48,0.16)] hover:shadow-[0_14px_30px_rgba(11,28,48,0.22)] cursor-pointer"
+                  className="px-5 py-3 rounded-2xl bg-[#0660E4] hover:bg-[#1A73F8] text-white transition-all flex items-center gap-3 shadow-[0_10px_28px_-6px_rgba(6,96,228,0.45)] cursor-pointer"
                   onClick={() => setModalTopic("ios")}
                 >
                   {/* Official Apple Logo SVG */}
                   <svg
                     viewBox="0 0 384 512"
-                    className="w-6 h-6 fill-[#0B1C30] shrink-0"
+                    className="w-6 h-6 fill-white shrink-0"
                     aria-hidden="true"
                   >
                     <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z" />
                   </svg>
                   <div className="flex flex-col text-left">
-                    <span className="text-[10px] leading-tight text-[#475569] font-semibold">
+                    <span className="text-[10px] leading-tight text-blue-100 font-semibold">
                       Download on the
                     </span>
-                    <span className="text-sm font-extrabold leading-tight tracking-[-0.01em] text-[#0B1C30]">
+                    <span className="text-sm font-extrabold leading-tight tracking-[-0.01em] text-white">
                       App Store
                     </span>
                   </div>
@@ -1248,7 +1276,7 @@ export function LandingSections({
                 transition={SPRING_TACTILE}
               >
                 <MagneticButton
-                  className="px-5 py-3 rounded-2xl bg-white text-[#0B1C30] hover:bg-blue-50 transition-all flex items-center gap-3 shadow-[0_10px_24px_rgba(11,28,48,0.16)] hover:shadow-[0_14px_30px_rgba(11,28,48,0.22)] cursor-pointer"
+                  className="px-5 py-3 rounded-2xl bg-[#192033] border border-white/[0.12] hover:border-[#0660E4] text-[#FBF8F1] transition-all flex items-center gap-3 shadow-[0_10px_24px_rgba(11,28,48,0.22)] cursor-pointer"
                   onClick={() => setModalTopic("android")}
                 >
                   {/* Official Four-Color Google Play Prism SVG */}
@@ -1275,10 +1303,10 @@ export function LandingSections({
                     />
                   </svg>
                   <div className="flex flex-col text-left">
-                    <span className="text-[10px] uppercase tracking-wider leading-tight text-[#475569] font-bold">
+                    <span className="text-[10px] uppercase tracking-wider leading-tight text-[#A3AEC2] font-bold">
                       GET IT ON
                     </span>
-                    <span className="text-sm font-extrabold leading-tight tracking-[-0.01em] text-[#0B1C30]">
+                    <span className="text-sm font-extrabold leading-tight tracking-[-0.01em] text-[#FBF8F1]">
                       Google Play
                     </span>
                   </div>
@@ -1287,8 +1315,8 @@ export function LandingSections({
             </div>
           </div>
 
-          <div className="z-10 bg-white/12 backdrop-blur-md border border-white/20 p-5 rounded-[24px] flex flex-col items-center gap-2.5 text-center shrink-0">
-            <div className="bg-white p-4 rounded-[20px] border border-[#E2E8F0] shadow-[0_10px_28px_rgba(11,28,48,0.16)] flex items-center justify-center">
+          <div className="z-10 bg-[#192033] border border-white/[0.09] p-5 rounded-[20px] flex flex-col items-center gap-2.5 text-center shrink-0">
+            <div className="bg-white p-4 rounded-[18px] border border-white/15 shadow-[0_10px_28px_rgba(11,28,48,0.22)] flex items-center justify-center">
               <QRCodeSVG
                 value="https://serbisyohubph.com"
                 size={132}
@@ -1303,10 +1331,10 @@ export function LandingSections({
                 }}
               />
             </div>
-            <span className="text-xs font-bold text-white">
+            <span className="text-xs font-bold text-[#FBF8F1]">
               Scan to Install Mobile App
             </span>
-            <span className="text-[11px] text-blue-100">
+            <span className="text-[11px] text-[#A3AEC2]">
               iOS &amp; Android
             </span>
           </div>
@@ -1314,7 +1342,7 @@ export function LandingSections({
       </section>
 
       {/* FOOTER */}
-      <footer className="w-full bg-[#F4F2EC] border-t border-[#E4DFD3] mt-16">
+      <footer className="w-full bg-[#F4EFE4] border-t border-[#E4DEC9] mt-16">
         <div className="max-w-7xl mx-auto px-5 md:px-10 py-16 flex flex-col gap-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
             <div className="lg:col-span-2 flex flex-col gap-4">

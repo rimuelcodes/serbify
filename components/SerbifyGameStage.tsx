@@ -777,9 +777,9 @@ export function SerbifyGameStage({
       onPointerMove={handlePointerMove}
       onPointerLeave={handlePointerLeave}
       style={{
-        backgroundColor: "#FAF9F5",
+        backgroundColor: "#FBF8F1",
         backgroundImage:
-          "radial-gradient(circle at 62% 48%, rgba(6, 96, 228, 0.035) 0%, rgba(229, 152, 36, 0.025) 42%, transparent 72%)",
+          "radial-gradient(circle at 62% 48%, rgba(6, 96, 228, 0.035) 0%, rgba(229, 152, 36, 0.035) 45%, transparent 72%)",
       }}
       className="relative w-full min-h-[100dvh] lg:h-[100dvh] overflow-x-clip overflow-y-visible lg:overflow-hidden text-[#121726] flex flex-col justify-between"
     >

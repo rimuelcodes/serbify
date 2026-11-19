@@ -5,14 +5,14 @@
     "Segoe UI", sans-serif;
   --font-ui: "Inter", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
-  --bg-canvas: #faf9f5;
-  --bg-section: #f4f2ec;
+  --bg-canvas: #fbf8f1;
+  --bg-section-light: #f4efe4;
   --bg-elevated: #ffffff;
-  --bg-inset: #f7f5ef;
-  --border-section: #e4dfd3;
-  --border-inset: #e8e3d8;
-  --serbify-canvas: #faf9f5;
-  --serbify-canvas-mesh: #f4f2ec;
+  --bg-inset: #f7f3e8;
+  --border-section: #e4dec9;
+  --border-inset: #e6dec8;
+  --serbify-canvas: #fbf8f1;
+  --serbify-canvas-mesh: #f4efe4;
   --serbify-surface: #ffffff;
   --serbify-border: rgba(18, 23, 38, 0.08);
   --serbify-ink: #121726;
